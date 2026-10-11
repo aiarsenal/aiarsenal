@@ -1,0 +1,425 @@
+/**
+ * 全站背景 = landing 配色（用户要求：侧栏/头部/搜索框/筛选框/列表表格 都与 landing 一致）。
+ * 策略：对每个系统的底色做「属性级 !important 覆盖」（设 background-color 属性，确定生效），
+ * 不依赖 vben 令牌变量的级联（变量级联不稳定）。覆盖对象：
+ *  1) vben 外壳 + 卡片表面类 .bg-background/.bg-header/.bg-sidebar/.bg-sidebar-deep/.bg-card
+ *  2) 内容区 .bg-background-deep（landing 渐变）
+ *  3) vxe 表格底色变量 --vxe-ui-layout-background-color（直覆盖，不走 vben 桥接）
+ *  4) vben 令牌变量 --background/--card 等（兜底，驱动未用 .bg-* 类的元素）
+ * 亮：白系（#ffffff / 内容 gray-50）；暗：gray-900/950 系（#111827 / 内容渐变到 #030712）。
+ * 另：antd 容器底色由 app.vue ConfigProvider token（colorBgContainer 等）覆盖。
+ */
+
+/* 1) vben 外壳 + 卡片表面（搜索框/筛选框等 .bg-card 也在此列）—— 属性级覆盖 */
+.bg-background,
+.bg-header,
+.bg-sidebar,
+.bg-sidebar-deep,
+.bg-card,
+.bg-popover,
+.bg-secondary,
+.bg-heavy {
+  background-color: #ffffff !important;
+}
+html.dark .bg-background,
+html.dark .bg-header,
+html.dark .bg-sidebar,
+html.dark .bg-sidebar-deep,
+html.dark .bg-card,
+html.dark .bg-popover,
+html.dark .bg-secondary,
+html.dark .bg-heavy {
+  background-color: #111827 !important;
+}
+
+/* 2) 内容区：landing 渐变 */
+.bg-background-deep {
+  background: linear-gradient(to bottom, #ffffff, #f9fafb) !important;
+}
+html.dark .bg-background-deep {
+  background: linear-gradient(to bottom, #111827, #030712) !important;
+}
+
+/* 3) vxe 表格底色：直覆盖 vxe 变量（表格/单元格 background-color 读它）*/
+:root {
+  --vxe-ui-layout-background-color: #ffffff !important;
+}
+html.dark {
+  --vxe-ui-layout-background-color: #111827 !important;
+}
+
+/* 4) vben 令牌变量兜底（含 --card，驱动 .bg-card 等未直接覆盖到的元素）*/
+:root {
+  --background: 0 0% 100% !important;
+  --background-deep: 210 20% 98% !important;
+  --sidebar: 0 0% 100% !important;
+  --sidebar-deep: 0 0% 100% !important;
+  --header: 0 0% 100% !important;
+  --card: 0 0% 100% !important;
+  --popover: 0 0% 100% !important;
+  --secondary: 0 0% 100% !important;
+  --heavy: 0 0% 100% !important;
+  --muted: 210 20% 98% !important;
+}
+:root.dark {
+  --background: 224 71% 4% !important;
+  --background-deep: 221 39% 11% !important;
+  --sidebar: 221 39% 11% !important;
+  --sidebar-deep: 224 71% 4% !important;
+  --header: 221 39% 11% !important;
+  --card: 221 39% 11% !important;
+  --popover: 221 39% 11% !important;
+  --secondary: 221 39% 11% !important;
+  --heavy: 221 39% 11% !important;
+  --muted: 221 39% 11% !important;
+}
+
+/* 5) 侧栏【菜单项】底色：菜单项 background 读 --menu-item-background-color（经 --menu→--sidebar），
+   直接在菜单根上 !important 设为 landing，保留 hover/active 高亮（它们用独立变量）*/
+.vben-menu,
+.vben-menu__popup,
+.vben-menu__popup-container {
+  --menu-background-color: #ffffff !important;
+  --menu-item-background-color: #ffffff !important;
+  --menu-submenu-background-color: #ffffff !important;
+}
+html.dark .vben-menu,
+html.dark .vben-menu__popup,
+html.dark .vben-menu__popup-container {
+  --menu-background-color: #111827 !important;
+  --menu-item-background-color: #111827 !important;
+  --menu-submenu-background-color: #111827 !important;
+}
+
+/* 6) vxe 表头底色（表体已由 --vxe-ui-layout-background-color 覆盖到 landing）*/
+:root {
+  --vxe-ui-table-header-background-color: #ffffff !important;
+}
+html.dark {
+  --vxe-ui-table-header-background-color: #111827 !important;
+}
+
+/* 7) vxe 列表【整表】底色兜底：直接属性级覆盖表体/表头/布局容器（不靠变量级联），
+   普通行单元格透明、透出容器底色；条纹行(--vxe-ui-table-row-striped-background-color)
+   也对齐 landing；hover 用独立变量、保留高亮。
+   ⚠ 固定列(序号/勾选/首列 fixed:left + 操作 fixed:right)必须一并覆盖——vxe 给
+   .vxe-table--fixed-(left|right)-wrapper 设了 background-color:var(--vxe-ui-layout-background-color)，
+   而该变量在 .vxe-grid 上被桥接层定为 hsl(var(--background))，暗色下 --background=224 71% 4%≈#030712
+   （近黑），所以固定列会比表体(#111827)明显更黑。此处属性级压成 landing，hover/条纹(行级变量)不受影响。*/
+.vxe-table--layout-wrapper,
+.vxe-table--body-wrapper,
+.vxe-table--header-wrapper,
+.vxe-table--fixed-left-wrapper,
+.vxe-table--fixed-right-wrapper {
+  background-color: #ffffff !important;
+}
+html.dark .vxe-table--layout-wrapper,
+html.dark .vxe-table--body-wrapper,
+html.dark .vxe-table--header-wrapper,
+html.dark .vxe-table--fixed-left-wrapper,
+html.dark .vxe-table--fixed-right-wrapper {
+  background-color: #111827 !important;
+}
+:root {
+  --vxe-ui-table-row-striped-background-color: #ffffff !important;
+}
+html.dark {
+  --vxe-ui-table-row-striped-background-color: #111827 !important;
+}
+
+/* 8) vxe grid 工具条(新增按钮行)/表单区/表格容器/分页区底色：属性级覆盖。
+   这些容器原读 --vxe-ui-layout-background-color 变量，但 vxe 运行时会重设该变量，
+   变量覆盖不可靠；故直接属性级 !important 把整片 grid 区压成 landing。*/
+.vxe-grid,
+.vxe-toolbar,
+.vxe-grid--top-wrapper,
+.vxe-grid--form-wrapper,
+.vxe-grid--bottom-wrapper,
+.vxe-grid--table-container,
+.vxe-grid--table-wrapper,
+.vxe-grid--layout-body-wrapper,
+.vxe-grid--layout-body-content-wrapper {
+  background-color: #ffffff !important;
+}
+html.dark .vxe-grid,
+html.dark .vxe-toolbar,
+html.dark .vxe-grid--top-wrapper,
+html.dark .vxe-grid--form-wrapper,
+html.dark .vxe-grid--bottom-wrapper,
+html.dark .vxe-grid--table-container,
+html.dark .vxe-grid--table-wrapper,
+html.dark .vxe-grid--layout-body-wrapper,
+html.dark .vxe-grid--layout-body-content-wrapper {
+  background-color: #111827 !important;
+}
+
+/* 9) vxe 分页模块：底色对齐 landing + 字号加大 + 模块加高（与列表风格一致）。
+   选中页码用 border+bold（无 bg），故强制按钮 bg=landing 不影响选中态。
+   padding/按钮高度适度（不要过高，避免撑出容器被裁）。*/
+.vxe-pager {
+  background-color: #ffffff !important;
+  padding: 7px 16px !important;
+  font-size: 16px !important;
+}
+html.dark .vxe-pager {
+  background-color: #111827 !important;
+}
+.vxe-pager .vxe-pager--num-btn,
+.vxe-pager .vxe-pager--prev-btn,
+.vxe-pager .vxe-pager--next-btn,
+.vxe-pager .vxe-pager--jump-prev,
+.vxe-pager .vxe-pager--jump-next,
+.vxe-pager .vxe-pager--home-btn,
+.vxe-pager .vxe-pager--end-btn {
+  min-width: 2.2em !important;
+  height: 2.2em !important;
+  line-height: 2.2em !important;
+  font-size: 16px !important;
+  background-color: #ffffff !important;
+}
+html.dark .vxe-pager .vxe-pager--num-btn,
+html.dark .vxe-pager .vxe-pager--prev-btn,
+html.dark .vxe-pager .vxe-pager--next-btn,
+html.dark .vxe-pager .vxe-pager--jump-prev,
+html.dark .vxe-pager .vxe-pager--jump-next,
+html.dark .vxe-pager .vxe-pager--home-btn,
+html.dark .vxe-pager .vxe-pager--end-btn {
+  background-color: #111827 !important;
+}
+
+/* 10) vxe-select 下拉面板（分页「每页条数」等）：底色 landing（不再透明）+ 加宽，
+   与搜索筛选区 antd Select 弹层同风格（白底/深底 + 边框 + 阴影）。*/
+.vxe-select--panel,
+.vxe-select--panel-wrapper,
+.vxe-select--panel-body,
+.vxe-select--panel-header,
+.vxe-select--panel-footer,
+.vxe-select--panel-search,
+.vxe-select-option-wrapper,
+.vxe-select-option-list,
+.vxe-select-option,
+.vxe-select--dropdown,
+.vxe-pager--sizes > .vxe-select {
+  background-color: var(--aa-bg) !important;
+}
+.vxe-select--panel-wrapper {
+  min-width: 150px !important;
+}
+/* 每页条数弹层选项：对齐 antd Select 风格——左对齐、内边距、加高、字号（不再居中窄小）*/
+.vxe-pager--sizes .vxe-select-option,
+.vxe-select--panel-wrapper .vxe-select-option {
+  text-align: left !important;
+  padding: 0 14px !important;
+  min-height: 32px !important;
+  line-height: 32px !important;
+  font-size: 14px !important;
+}
+
+/* 10b) 每页条数下拉：右半箭头按钮(suffix/prefix) + 弹层(高特异性，确保不透明) → landing */
+.vxe-input--suffix,
+.vxe-input--prefix,
+.vxe-input--count,
+.vxe-pager--sizes .vxe-select--panel-wrapper,
+.vxe-pager--sizes .vxe-select--panel,
+.vxe-pager--sizes .vxe-select--panel-body,
+.vxe-pager--sizes .vxe-select-option-wrapper,
+.vxe-pager--sizes .vxe-select-option-list,
+.vxe-pager--sizes .vxe-select-option {
+  background-color: var(--aa-bg) !important;
+}
+/* 浏览器原生输入历史的「自动填充」底色 → landing。
+   注：历史下拉列表(候选菜单)由浏览器自身渲染、非页面 DOM，CSS 无法改其底色/对齐；
+   如需完全去除可给输入框 autocomplete="off"。*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--aa-bg) inset !important;
+  -webkit-text-fill-color: inherit !important;
+  caret-color: inherit !important;
+}
+
+/* 11) 分页「每页条数」下拉：与搜索筛选区 antd Select 同风格——高 36px、加宽、landing 底色 */
+.vxe-pager--sizes {
+  width: auto !important;
+  min-width: 7em !important;
+}
+.vxe-pager--sizes > .vxe-select,
+.vxe-pager--sizes .vxe-select-input,
+.vxe-pager--sizes .vxe-input,
+.vxe-pager--sizes .vxe-input--inner {
+  height: 36px !important;
+  min-height: 36px !important;
+  line-height: 36px !important;
+  background-color: var(--aa-bg) !important;
+  font-size: 15px !important;
+}
+
+/* 12) 表格行适度紧凑：让 20 行 + 工具条 + 分页在视口内完整放下，
+   分页底部边框不被裁、表体无需上下滚动（翻页已足够）。*/
+.vxe-table .vxe-header--column,
+.vxe-table .vxe-body--column {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+/* 12b) 空表【暂无数据】完整、可见、居中 + 明亮文案色。
+   vxe 空状态走 .vxe-table--empty-place-wrapper 绝对定位覆盖层（默认 display:none，仅 .is--empty
+   时 vxe 置 display:flex）。关键：覆盖层只在 is--empty 时显示——绝不能无条件 display:flex，
+   否则有数据的页也会叠一层「暂无数据」（#/client/config 曾因此误显）。
+   另：空表时表体高偏小甚至塌缩，覆盖层 height(=表体高-滚动条)随之变小，被 .vxe-table{overflow:hidden}
+   裁切 → 文案露出不全。给表体强制留最小高度即可根治。
+   配色用 --aa-empty（用户指定取自 enum-badge.css 八色枚举里的 warning/orange/gold=橙红#ff4500，
+   亮/暗通用——橙红在暗底也清晰）；图标盒子体/描边同色，整块成橙色模块）。*/
+:root {
+  --aa-empty: #ff4500;
+}
+.vxe-table.is--empty .vxe-table--body-wrapper {
+  min-height: 180px !important;
+}
+.vxe-table--empty-place-wrapper,
+.vxe-table--empty-placeholder {
+  overflow: visible !important;
+}
+/* 仅空表时显示覆盖层（scope 到 is--empty，杜绝有数据页误显）*/
+.vxe-table.is--empty .vxe-table--empty-place-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 160px !important;
+}
+.vxe-table.is--empty .vxe-table--empty-placeholder {
+  min-height: 120px !important;
+  color: var(--aa-empty) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+.vxe-table.is--empty .vxe-table--empty-content {
+  /* EmptyIcon 盒子体(--accent)/描边(--heavy) 也统一成橙红；阴影椭圆(--background-deep)保持中性 */
+  --accent: 16 100% 50%;
+  --heavy: 16 100% 50%;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  max-width: 90% !important;
+  margin: 0 auto !important;
+  color: var(--aa-empty) !important;
+  text-align: center !important;
+}
+
+/* ===== 全站 vxe 表面底色扫描（一次性覆盖）=====
+   用自有变量 --aa-bg（vxe 无法运行时重设），亮#fff/暗#111827；属性级覆盖所有
+   vxe 可见表面：工具条按钮(刷新/字段筛选)、字段筛选面板、筛选下拉、vxe 弹窗、
+   导出面板、右键菜单、各类输入框/下拉——全站统一 landing，不再逐个核对。*/
+:root {
+  --aa-bg: #ffffff;
+}
+html.dark {
+  --aa-bg: #111827;
+}
+.vxe-button,
+.vxe-button--dropdown,
+.vxe-button--dropdown-option,
+.vxe-table-custom--popup,
+.vxe-table-custom-popup--table-wrapper,
+.vxe-table-custom--panel,
+.vxe-table-custom--panel-list,
+.vxe-table-custom--header,
+.vxe-table-custom--body,
+.vxe-table-custom--checkbox-option,
+.vxe-custom--list,
+.vxe-custom--option,
+.vxe-table--filter-wrapper,
+.vxe-table--filter-header,
+.vxe-table--filter-body,
+.vxe-table--filter-template,
+.vxe-modal--box,
+.vxe-modal--header,
+.vxe-modal--body,
+.vxe-modal--footer,
+.vxe-table-export--panel,
+.vxe-table-export--panel-column,
+.vxe-table--context-menu-wrapper,
+.vxe-table--context-menu-clild-wrapper,
+.vxe-table--context-menu-group-wrapper,
+.vxe-input,
+.vxe-default-input,
+.vxe-default-select,
+.vxe-default-textarea,
+.vxe-input--inner,
+.vxe-number-input,
+.vxe-table--resizable-number-tip {
+  background-color: var(--aa-bg) !important;
+}
+
+/* 字段筛选面板/各 vxe 弹层字号加大、风格统一 */
+.vxe-table-custom--popup,
+.vxe-table-custom--panel,
+.vxe-table-custom--panel-list,
+.vxe-table-custom--checkbox-option,
+.vxe-custom--option,
+.vxe-button--dropdown-option,
+.vxe-table--context-menu-wrapper li {
+  font-size: 15px !important;
+}
+
+/* 全站按钮 hover 特效（vxe 工具条按钮 + 分页按钮）：边框加深(品牌绿)+加粗+发光+上浮，
+   与 antd 按钮(上方 .ant-btn:hover)一致；保留各按钮既有选中/hover 底色。*/
+.vxe-button:hover,
+.vxe-pager .vxe-pager--num-btn:hover,
+.vxe-pager .vxe-pager--prev-btn:hover,
+.vxe-pager .vxe-pager--next-btn:hover,
+.vxe-pager .vxe-pager--jump-prev:hover,
+.vxe-pager .vxe-pager--jump-next:hover,
+.vxe-pager .vxe-pager--home-btn:hover,
+.vxe-pager .vxe-pager--end-btn:hover,
+.vxe-pager--sizes:hover {
+  border-color: color-mix(in srgb, #42b983, #000 18%) !important;
+  border-width: 2px !important;
+  box-shadow: 0 6px 16px -6px color-mix(in srgb, #42b983 55%, transparent);
+  transform: translateY(-1px);
+}
+
+/* ===== 全站按钮 hover 特效 ===== */
+.ant-btn {
+  transition: border-color 0.18s ease, border-width 0.18s ease, box-shadow 0.18s ease,
+    transform 0.18s ease, filter 0.18s ease;
+}
+.ant-btn:hover {
+  box-shadow: 0 6px 16px -6px color-mix(in srgb, #42b983 55%, transparent);
+  transform: translateY(-1px);
+}
+.ant-btn:not(.ant-btn-primary):hover,
+.ant-btn.ant-btn-background-ghost:hover {
+  border-color: color-mix(in srgb, #42b983, #000 18%) !important;
+  border-width: 2px !important;
+}
+.ant-btn-primary:not(.ant-btn-background-ghost):hover {
+  filter: brightness(0.93);
+}
+
+/* 12c) 【列设置】下拉面板：
+   ① vxe 按表体高度限面板 maxHeight(custom/hook.js: clientHeight-22，floor 88px)→ 放开。
+   ② 面板在 .vxe-grid--layout-body-content-wrapper{overflow:hidden} 内会被裁(表体矮只露1行)
+     → adapter 已用 transfer=true teleport 到 body；此处再兜底放开限高。
+   ③ body 要能滚动：flex 子项默认 min-height:auto 不收缩、max-height 失效 → 补 min-height:0。*/
+.vxe-table-custom-wrapper {
+  max-height: none !important;
+}
+.vxe-table-custom-simple--body-wrapper,
+.vxe-table-custom--handle-wrapper {
+  min-height: 0 !important;
+}
+.vxe-table-custom--body,
+.vxe-table-custom--panel-body {
+  max-height: 60vh !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+}

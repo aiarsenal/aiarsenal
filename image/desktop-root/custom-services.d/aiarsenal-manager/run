@@ -1,0 +1,15 @@
+#!/usr/bin/with-contenv bash
+# aiarsenal-manager s6 longrun 服务（webtop s6-overlay v3 托管）。
+#
+# webtop 的 /init 是 PID 1（s6-overlay），负责拉起桌面（KasmVNC/noVNC，端口 3001）。
+# 我们把 aiarsenal-manager 注册为 s6 服务（/custom-services.d/aiarsenal-manager 脚本），
+# 容器启动时 s6 自动拉起。manager 内部按 AIARSENAL_RUNTIME fork 对应 agent（openclaw/hermes）
+# 子进程并按 api 命令管理；agent 不自动重启，崩了由 api 下发 restart。
+#
+# s6 保活的是 manager 本身：manager 进程崩了 s6 重启它。
+#
+# shebang 用 with-contenv：s6 longrun 默认是干净环境，with-contenv 继承容器 ENV
+# （AIARSENAL_BASE_URL/INSTANCE_TOKEN/INSTANCE_ID 等注入变量）。
+set -e
+echo "[aiarsenal-manager] 启动 (user=aa)..."
+exec runuser -u aa -- /usr/local/bin/aiarsenal-manager

@@ -1,0 +1,152 @@
+name: CI
+
+# push master + PR 全量流水线:
+#   backend        api/ 与 llm/ 的 go build/vet/test(纯单测,-short 跳过依赖 DB 的用例)
+#   ui             ui/ (vben monorepo) 构建前端 @vben/web-antd
+#   client-macos   client/mac/src-tauri  cargo check
+#   client-windows client/win/src-tauri  cargo check
+# 缓存: go 模块走 setup-go 内建 cache;pnpm 走 setup-node cache;cargo 走 Swatinem/rust-cache。
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+# 同分支/同 PR 的新推送取消旧跑,省额度
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (api + llm)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.27'
+          check-latest: true
+          cache: true
+          # 两个 Go 模块(api/ 与 llm/)的依赖都参与缓存 key
+          cache-dependency-path: |
+            api/go.sum
+            llm/go.sum
+
+      - name: Build api
+        working-directory: api
+        run: go build ./...
+
+      - name: Vet api
+        working-directory: api
+        run: go vet ./...
+
+      # 只跑不依赖数据库/外部中间件的纯单测,并控制超时。
+      # 约定: 需要 DB/Redis/网络等外部依赖的测试,统一加
+      #   if testing.Short() { t.Skip("需要数据库,CI(-short)跳过") }
+      # 声明式跳过;未声明的用例仍会执行。
+      - name: Test api (unit only, -short)
+        working-directory: api
+        run: go test ./... -short -timeout 300s
+
+      - name: Build llm
+        working-directory: llm
+        run: go build ./...
+
+      - name: Vet llm
+        working-directory: llm
+        run: go vet ./...
+
+      - name: Test llm (unit only, -short)
+        working-directory: llm
+        run: go test ./... -short -timeout 300s
+
+  ui:
+    name: UI (web-antd build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: ui
+    steps:
+      - uses: actions/checkout@v4
+
+      # pnpm 版本取自 ui/package.json 的 packageManager 字段(pnpm@10.34.4);
+      # repo 根目录无 package.json,须显式指向 ui/package.json 让 action-setup 读取。
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ui/package.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: ui/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # filter 名与 build script 已核对: apps/web-antd/package.json name=@vben/web-antd,
+      # 其 build 即 vite build;workspace 内部包在 install 阶段已由 postinstall stub 就绪。
+      - name: Build @vben/web-antd
+        run: pnpm --filter @vben/web-antd build
+
+  client-macos:
+    name: Client (macOS cargo check)
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: client/mac/src-tauri
+
+      # tauri 生成代码(custom-protocol 为 default feature)在编译期读取
+      # frontendDist=client/shared/frontend/dist,须先构建出来,否则 cargo check 失败。
+      - name: Build client shared frontend
+        working-directory: client/shared/frontend
+        run: |
+          npm ci
+          npm run build
+
+      # mac default features 已含 openclaw-desktop,与正式打包一致
+      - name: Cargo check
+        working-directory: client/mac/src-tauri
+        run: cargo check --locked
+
+  client-windows:
+    name: Client (Windows cargo check)
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: client/win/src-tauri
+
+      - name: Build client shared frontend
+        working-directory: client/shared/frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Cargo check
+        working-directory: client/win/src-tauri
+        run: cargo check --locked

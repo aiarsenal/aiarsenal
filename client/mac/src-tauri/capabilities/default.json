@@ -1,0 +1,9 @@
+{
+  "identifier": "default",
+  "description": "主窗口默认权限：允许前端调用核心 IPC（event listen/emit 等）与 deep-link 插件。",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "deep-link:default"
+  ]
+}

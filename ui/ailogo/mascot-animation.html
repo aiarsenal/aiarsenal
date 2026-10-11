@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI Arsenal 吉祥物 · 表情动画</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<style>
+  :root{
+    --bg1:#0b0d12; --bg2:#13182a;
+    --fg:#f4f6fb; --muted:#8b93a4;
+    --accent:#7c5cff; --accent2:#21d4fd;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{
+    background:radial-gradient(1200px 700px at 50% -10%, #1a2140 0%, var(--bg1) 60%);
+    color:var(--fg);
+    font:16px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",Segoe UI,system-ui,sans-serif;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:1.25rem;padding:2rem 1rem;overflow:hidden;
+  }
+  h1{font-size:clamp(1.1rem,2.4vw,1.5rem);font-weight:700;letter-spacing:-.01em;text-align:center}
+  h1 small{display:block;color:var(--muted);font-weight:400;font-size:.8rem;margin-top:.25rem}
+
+  .stage{
+    position:relative;
+    width:min(62vmin,440px);height:min(62vmin,440px);
+    display:grid;place-items:center;
+    filter:drop-shadow(0 30px 40px rgba(0,0,0,.45));
+  }
+  /* 表情背后的柔光,颜色随表情变化 */
+  .glow{
+    position:absolute;inset:-12%;border-radius:50%;
+    background:radial-gradient(closest-side, rgba(124,92,255,.45), transparent 70%);
+    transition:background .6s ease;filter:blur(6px);z-index:0;
+  }
+  .mascot{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+    opacity:0;will-change:transform,opacity;z-index:1;pointer-events:none;
+  }
+
+  .label{
+    height:1.6em;display:flex;align-items:center;justify-content:center;
+    font-size:1.35rem;font-weight:700;letter-spacing:.02em;
+  }
+  .label .chip{
+    padding:.3rem 1rem;border-radius:999px;
+    background:linear-gradient(90deg, rgba(124,92,255,.18), rgba(33,212,253,.18));
+    border:1px solid rgba(255,255,255,.12);
+  }
+
+  .dots{display:flex;gap:.55rem}
+  .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:#2a3145;cursor:pointer;transition:all .25s ease;border:none;padding:0;
+  }
+  .dot.active{background:var(--accent2);transform:scale(1.5);box-shadow:0 0 10px var(--accent2)}
+
+  .controls{display:flex;gap:.6rem;align-items:center}
+  .btn{
+    appearance:none;border:1px solid #262d40;background:#141a28;color:var(--fg);
+    padding:.55rem 1rem;border-radius:12px;font-size:.9rem;cursor:pointer;
+    transition:transform .12s ease,background .2s ease,border-color .2s ease;
+  }
+  .btn:hover{background:#1a2236;border-color:#36405c}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#0b0d12;font-weight:600}
+</style>
+</head>
+<body>
+  <h1>AI Arsenal 吉祥物 <small>6 个表情 · GSAP 轮播动画</small></h1>
+
+  <div class="stage" id="stage">
+    <div class="glow" id="glow"></div>
+    <!-- 6 张表情图堆叠,靠透明度切换 -->
+    <img class="mascot" data-i="0" data-name="打招呼"     src="吉祥物表情 - Hello (黑底).png"     alt="Hello" />
+    <img class="mascot" data-i="1" data-name="思考中"     src="吉祥物表情 - Thinking.png"  alt="Thinking" />
+    <img class="mascot" data-i="2" data-name="写代码"     src="吉祥物表情 - Coding.png"    alt="Coding" />
+    <img class="mascot" data-i="3" data-name="阅读"       src="吉祥物表情 - Reading.png"   alt="Reading" />
+    <img class="mascot" data-i="4" data-name="庆祝"       src="吉祥物表情 - Celebrate.png" alt="Celebrate" />
+    <img class="mascot" data-i="5" data-name="休息"       src="吉祥物表情 - Sleeping.png"  alt="Sleeping" />
+  </div>
+
+  <div class="label"><span class="chip" id="labelChip">打招呼</span></div>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="controls">
+    <button class="btn" id="prev">‹ 上一个</button>
+    <button class="btn primary" id="play">⏸ 暂停</button>
+    <button class="btn" id="next">下一个 ›</button>
+  </div>
+
+<script>
+  const mascots = Array.from(document.querySelectorAll('.mascot'));
+  const chip    = document.getElementById('labelChip');
+  const dotsBox = document.getElementById('dots');
+  const glow    = document.getElementById('glow');
+  const btnPlay = document.getElementById('play');
+
+  // 每个表情对应的背景光晕色
+  const glowColor = [
+    'rgba(124,92,255,.45)',   // Hello
+    'rgba(33,212,253,.40)',   // Thinking
+    'rgba(124,92,255,.45)',   // Coding
+    'rgba(60,200,160,.40)',   // Reading
+    'rgba(255,180,90,.45)',   // Celebrate
+    'rgba(120,150,255,.40)',  // Sleeping
+  ];
+
+  let current = 0;
+  let playing = true;
+  let timer = null;
+  const INTERVAL = 2600;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 初始化:只显示第一张
+  gsap.set('.mascot', { opacity:0, scale:.9 });
+  gsap.set(mascots[0], { opacity:1, scale:1 });
+
+  // 生成指示点
+  mascots.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'dot' + (i===0 ? ' active' : '');
+    b.addEventListener('click', () => goTo(i));
+    dotsBox.appendChild(b);
+  });
+  const dots = Array.from(dotsBox.children);
+
+  function syncUI(i){
+    dots.forEach((d,k)=>d.classList.toggle('active', k===i));
+    // 标签:淡出 -> 换字 -> 淡入
+    gsap.to(chip, {opacity:0, y:-6, duration:.18, ease:'power2.in', onComplete(){
+      chip.textContent = mascots[i].dataset.name;
+      gsap.to(chip, {opacity:1, y:0, duration:.3, ease:'power2.out'});
+    }});
+    glow.style.background = `radial-gradient(closest-side, ${glowColor[i]}, transparent 70%)`;
+  }
+
+  function crossfade(to){
+    const from = mascots[current];
+    const toEl = mascots[to];
+    const tl = gsap.timeline();
+    tl.to(from, {opacity:0, scale:1.06, duration:.45, ease:'power2.in'})
+      .set(from, {scale:.9})
+      .fromTo(toEl, {opacity:0, scale:.82}, {opacity:1, scale:1, duration:.6, ease:'back.out(1.7)'}, '-=0.25');
+    current = to;
+    syncUI(to);
+  }
+
+  function goTo(i){
+    if(i === current) return;
+    crossfade((i + mascots.length) % mascots.length);
+    if(playing) restartTimer();
+  }
+  function next(){ goTo((current+1) % mascots.length); }
+  function prev(){ goTo((current-1+mascots.length) % mascots.length); }
+
+  function restartTimer(){
+    clearInterval(timer);
+    if(playing && !reduceMotion) timer = setInterval(next, INTERVAL);
+  }
+
+  btnPlay.addEventListener('click', () => {
+    playing = !playing;
+    btnPlay.textContent = playing ? '⏸ 暂停' : '▶ 播放';
+    restartTimer();
+  });
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  // 键盘左右切换
+  document.addEventListener('keydown', e => {
+    if(e.key==='ArrowRight') next();
+    if(e.key==='ArrowLeft')  prev();
+  });
+
+  if(reduceMotion){
+    // 尊重系统「减少动效」:不自动轮播,只静态显示
+    playing = false;
+    btnPlay.textContent = '▶ 播放';
+    btnPlay.disabled = true;
+  } else {
+    // 角色待机:轻微上下浮动 + 呼吸缩放,让画面活起来
+    gsap.to('#stage', {y:-12, duration:2.4, yoyo:true, repeat:-1, ease:'sine.inOut'});
+    gsap.to('.glow',  {scale:1.06, duration:2.8, yoyo:true, repeat:-1, ease:'sine.inOut'});
+    restartTimer();
+  }
+</script>
+</body>
+</html>

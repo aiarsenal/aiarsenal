@@ -1,0 +1,81 @@
+[package]
+name = "aiarsenal-client-win"
+version = "0.1.0"
+description = "AI Arsenal 桌面客户端（Windows）"
+edition = "2021"
+
+[lib]
+name = "aiarsenal_client_win_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-deep-link = "2"
+tokio = { version = "1", features = ["time", "macros", "sync"] }
+# native-tls（schannel 系统绑定，无 C 编译）：ring 在 windows+aarch64 强制要 clang
+# （build.rs 钉死 c.compiler("clang")），本机无 clang 可装，故 win 走 schannel。
+aiarsenal-client-core = { path = "../../shared/rust", default-features = false, features = ["native-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+dirs = "5"
+open = "5"
+sha2 = "0.10"
+
+# ===== desktop node（openclaw-desktop）依赖：协议层与 mac 客户端同构 =====
+base64 = { version = "0.22", optional = true }
+tungstenite = { version = "0.24", optional = true }
+ed25519-dalek = { version = "2", optional = true, features = ["rand_core"] }
+rand = { version = "0.8", optional = true }
+regex = { version = "1", optional = true }
+reqwest = { version = "0.12", default-features = false, features = ["blocking"], optional = true }
+notify = { version = "8", optional = true }
+url = { version = "2", optional = true }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"], optional = true }
+sysinfo = { version = "0.32", optional = true }
+
+# Win32 原生能力（截屏 BitBlt / 键鼠 SendInput / 前台窗口 QueryFullProcessImageName /
+# 注册表读取 / 媒体设备 MF 枚举 / PrintWindow 画布快照 / locale）。用 0.61 与 tauri
+# 依赖的 windows 同版（Cargo.lock 共用一份，二进制不重复带两套绑定）。
+# 按 target 门（cfg(windows)）：其传递依赖 windows-future 0.2.x 的绑定在非 Windows
+# 宿主编不过（引用了 windows-core 仅 cfg(windows) 导出的 marshaler 符号）——与 tauri
+# 自身对 windows 的门法一致。Win32 代码路径在 src 里同样按 target_os cfg 隔离，
+# 宿主 check 编占位桩，x86_64-pc-windows-msvc 交叉 check 全量校验。
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.61", optional = true, features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Gdi",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_System_Threading",
+    "Win32_System_Registry",
+    "Win32_System_Com",
+    "Win32_Media_MediaFoundation",
+    "Win32_Storage_Xps",
+    "Win32_Globalization",
+] }
+
+[features]
+default = ["custom-protocol", "agent-openclaw", "agent-hermes", "agent-obsidian", "openclaw-desktop"]
+custom-protocol = ["tauri/custom-protocol"]
+# 按需打包 agent：build.sh --agents 选哪些编译进二进制（未选的落 dispatch fallback）。
+agent-openclaw = []
+agent-hermes = []
+agent-obsidian = []
+# desktop node：client 自当 openclaw Windows node（协议与 mac 客户端同构；
+# Windows 原生能力走 GDI/SendInput/注册表，TCC 类系统权限以配置化权限引擎代替）。
+openclaw-desktop = [
+    "dep:base64",
+    "dep:tungstenite",
+    "dep:ed25519-dalek",
+    "dep:rand",
+    "dep:regex",
+    "dep:reqwest",
+    "dep:notify",
+    "dep:url",
+    "dep:image",
+    "dep:sysinfo",
+    "dep:windows",
+]

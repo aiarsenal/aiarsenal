@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI Arsenal · 启动叙事动画</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<style>
+  :root{--bg:#04050a;--fg:#f4f6fb;--accent:#7c5cff;--accent2:#21d4fd;--hot:#ffd66b}
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%;overflow:hidden}
+  body{
+    background:radial-gradient(900px 600px at 50% 48%, #0a0e1c 0%, var(--bg) 70%);
+    color:var(--fg);
+    font:16px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",Segoe UI,system-ui,sans-serif;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    position:relative;
+  }
+  /* 星点底纹 */
+  body::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:radial-gradient(1px 1px at 20% 30%, #fff6, transparent),
+      radial-gradient(1px 1px at 70% 60%, #fff4, transparent),
+      radial-gradient(1px 1px at 40% 80%, #fff5, transparent),
+      radial-gradient(1px 1px at 85% 25%, #fff3, transparent),
+      radial-gradient(1px 1px at 55% 15%, #fff4, transparent);
+  }
+  .stage{
+    position:relative;width:min(72vmin,600px);height:min(72vmin,600px);
+    display:grid;place-items:center;
+  }
+  .glow{position:absolute;inset:-15%;border-radius:50%;pointer-events:none;opacity:0;
+    background:radial-gradient(closest-side, rgba(124,92,255,.55), rgba(33,212,253,.25) 45%, transparent 72%);
+    filter:blur(6px);transform:scale(.7);}
+  .ringping{position:absolute;inset:18%;border-radius:50%;border:2px solid rgba(255,214,107,.0);pointer-events:none}
+  .frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;will-change:transform,opacity;
+    filter:drop-shadow(0 24px 50px rgba(0,0,0,.6))}
+  .flash{position:absolute;inset:0;border-radius:50%;background:#fff;opacity:0;pointer-events:none;mix-blend-mode:screen}
+  .particles{position:absolute;inset:0;pointer-events:none}
+  .p{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;
+    background:#fff;box-shadow:0 0 8px var(--hot);opacity:0}
+
+  .titlewrap{position:absolute;left:0;right:0;bottom:16%;text-align:center;opacity:0}
+  .title{font-size:clamp(1.8rem,5vw,3rem);font-weight:800;letter-spacing:.04em;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .subtitle{color:#8b93a4;margin-top:.35rem;font-size:.95rem;letter-spacing:.18em}
+
+  .controls{position:fixed;bottom:1.4rem;left:0;right:0;display:flex;gap:.6rem;justify-content:center;z-index:5}
+  .btn{appearance:none;border:1px solid #262d40;background:rgba(20,26,40,.7);color:var(--fg);
+    padding:.55rem 1.1rem;border-radius:12px;font-size:.88rem;cursor:pointer;backdrop-filter:blur(6px);
+    transition:transform .12s,background .2s}
+  .btn:hover{background:#1a2236}
+  .btn:active{transform:translateY(1px)}
+  .beatbar{position:fixed;top:1.2rem;left:50%;transform:translateX(-50%);display:flex;gap:.4rem;z-index:5}
+  .beatbar i{width:22px;height:4px;border-radius:99px;background:#222a3d;transition:background .3s}
+  .beatbar i.on{background:var(--accent2);box-shadow:0 0 8px var(--accent2)}
+</style>
+</head>
+<body>
+  <div class="beatbar" id="beatbar"></div>
+
+  <div class="stage" id="stage">
+    <div class="glow" id="glow"></div>
+    <div class="ringping" id="ringping"></div>
+    <div class="flash" id="flash"></div>
+    <img class="frame" data-i="0" src="SPLASH分镜 01-初始休眠.png" alt="初始休眠" />
+    <img class="frame" data-i="1" src="SPLASH分镜 02-眼睛微睁.png" alt="眼睛微睁" />
+    <img class="frame" data-i="2" src="SPLASH分镜 03-眼睛发光.png" alt="眼睛发光" />
+    <img class="frame" data-i="3" src="SPLASH分镜 04-核心激活.png" alt="核心激活" />
+    <img class="frame" data-i="4" src="SPLASH分镜 05-能量聚集.png" alt="能量聚集" />
+    <img class="frame" data-i="5" src="SPLASH分镜 06-光环展开.png" alt="光环展开" />
+    <img class="frame" data-i="6" src="SPLASH分镜 07-系统就绪.png" alt="系统就绪" />
+    <img class="frame" data-i="7" src="SPLASH分镜 08-发射完成.png" alt="发射完成" />
+    <div class="particles" id="particles"></div>
+  </div>
+
+  <div class="titlewrap" id="titlewrap">
+    <div class="title">AI Arsenal</div>
+    <div class="subtitle">SYSTEM READY</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="replay">↻ 重播</button>
+  </div>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const frames = Array.from(document.querySelectorAll('.frame'));
+const glow = document.getElementById('glow');
+const flash = document.getElementById('flash');
+const ringping = document.getElementById('ringping');
+const titlewrap = document.getElementById('titlewrap');
+const particles = document.getElementById('particles');
+const beatbar = document.getElementById('beatbar');
+
+frames.forEach((_,i)=>{ const d=document.createElement('i'); d.dataset.i=i; beatbar.appendChild(d); });
+const beats = Array.from(beatbar.children);
+
+// 叙事节奏:[帧索引, 起始时间s, 该帧光晕强度, 备注]
+const SEQ = [
+  { i:0, t:0.00, g:0.10 },   // 初始休眠
+  { i:1, t:1.50, g:0.18 },   // 眼睛微睁
+  { i:2, t:2.15, g:0.42 },   // 眼睛发光
+  { i:3, t:2.90, g:0.60 },   // 核心激活
+  { i:4, t:3.70, g:0.78 },   // 能量聚集
+  { i:5, t:4.65, g:0.95 },   // 光环展开
+  { i:6, t:5.80, g:0.72 },   // 系统就绪
+  { i:7, t:6.55, g:1.00 },   // 发射完成
+];
+const FADE = 0.55;
+
+function reset(){
+  gsap.set(frames, {opacity:0, scale:1});
+  gsap.set(frames[0], {opacity:1});
+  gsap.set(glow, {opacity:0, scale:0.7});
+  gsap.set(flash, {opacity:0});
+  gsap.set(ringping, {opacity:0, scale:0.8});
+  gsap.set(titlewrap, {opacity:0, y:14});
+  particles.innerHTML = '';
+  beats.forEach(b=>b.classList.remove('on'));
+}
+
+function spawnBurst(){
+  const n = 26;
+  for (let k=0;k<n;k++){
+    const p = document.createElement('div');
+    p.className = 'p';
+    const tint = k%3===0 ? '#7c5cff' : (k%3===1 ? '#21d4fd' : '#ffd66b');
+    p.style.background = tint; p.style.boxShadow = '0 0 8px '+tint;
+    particles.appendChild(p);
+    const ang = (k/n)*Math.PI*2 + Math.random()*0.3;
+    const dist = 120 + Math.random()*180;
+    gsap.fromTo(p,
+      {opacity:1, x:0, y:0, scale:1},
+      {opacity:0, x:Math.cos(ang)*dist, y:Math.sin(ang)*dist, scale:0.2,
+       duration:0.9+Math.random()*0.5, ease:'power2.out', delay:Math.random()*0.12});
+  }
+}
+
+function build(){
+  reset();
+  if (reduce){
+    // 无动效:直接定格到最后一帧 + 标题
+    gsap.set(frames, {opacity:0}); gsap.set(frames[7], {opacity:1});
+    gsap.set(glow, {opacity:0.8, scale:1});
+    gsap.set(titlewrap, {opacity:1, y:0});
+    beats.forEach(b=>b.classList.add('on'));
+    return null;
+  }
+  const tl = gsap.timeline();
+
+  SEQ.forEach((s, idx) => {
+    // 交叉淡入到该帧
+    if (idx>0){
+      const prev = frames[SEQ[idx-1].i];
+      tl.to(prev, {opacity:0, duration:FADE, ease:'power2.in'}, s.t);
+      tl.fromTo(frames[s.i], {opacity:0}, {opacity:1, duration:FADE, ease:'power2.out'}, s.t);
+    }
+    // 光晕强度
+    tl.to(glow, {opacity:s.g, scale:0.85 + s.g*0.5, duration:FADE+0.2, ease:'power2.out'}, s.t);
+    // 节拍指示
+    tl.add(()=> beats[s.i].classList.add('on'), s.t);
+
+    // 特殊节拍
+    if (s.i===2){ // 眼睛发光:光晕一记脉冲
+      tl.fromTo(glow, {opacity:s.g}, {opacity:s.g+0.2, scale:1.2, duration:0.35, yoyo:true, repeat:1, ease:'sine.inOut'}, s.t+0.15);
+    }
+    if (s.i===3){ // 核心激活:白光闪一下
+      tl.fromTo(flash, {opacity:0}, {opacity:0.5, duration:0.12, ease:'power2.out'}, s.t+0.05);
+      tl.to(flash, {opacity:0, duration:0.4, ease:'power2.in'}, s.t+0.17);
+    }
+    if (s.i===5){ // 光环展开:该帧放大 + 一圈 ping
+      tl.fromTo(frames[s.i], {scale:1.0}, {scale:1.08, duration:0.9, ease:'power2.out'}, s.t);
+      tl.fromTo(ringping, {opacity:0.0, scale:0.85}, {opacity:0.7, scale:1.6, duration:1.0, ease:'power2.out'}, s.t+0.1);
+      tl.to(ringping, {opacity:0, duration:0.5}, s.t+0.9);
+    }
+    if (s.i===6){ // 系统就绪:标题浮入
+      tl.to(frames[s.i], {scale:1.0, duration:0.6, ease:'power2.out'}, s.t);
+      tl.to(titlewrap, {opacity:1, y:0, duration:0.7, ease:'power3.out'}, s.t+0.2);
+    }
+    if (s.i===7){ // 发射完成:强闪 + 粒子爆裂
+      tl.fromTo(flash, {opacity:0}, {opacity:0.8, duration:0.14, ease:'power2.out'}, s.t+0.02);
+      tl.to(flash, {opacity:0, duration:0.6, ease:'power2.in'}, s.t+0.16);
+      tl.add(()=> spawnBurst(), s.t+0.05);
+      tl.to(glow, {opacity:1, scale:1.35, duration:0.7, ease:'power2.out'}, s.t);
+      tl.to(glow, {scale:1.15, duration:1.2, ease:'sine.inOut'}, s.t+0.7); // 发射后光晕缓缓落定
+      // 标题再亮一档
+      tl.to(titlewrap, {opacity:1, duration:0.3}, s.t);
+    }
+  });
+
+  // 收尾:整体微微呼吸(待机)
+  tl.to(glow, {scale:'+=0.05', duration:2, yoyo:true, repeat:-1, ease:'sine.inOut'});
+  return tl;
+}
+
+let current = build();
+document.getElementById('replay').onclick = ()=>{
+  if (current) current.kill();
+  current = build();
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Dependabot 依赖更新:weekly,Go 模块按目录拆分(api/ 与 llm/ 是两个独立 module)。
+version: 2
+updates:
+  # api 后端 Go module(aiarsenal)
+  - package-ecosystem: gomod
+    directory: /api
+    schedule:
+      interval: weekly
+
+  # llm 服务 Go module(aiarsenal/llm)
+  - package-ecosystem: gomod
+    directory: /llm
+    schedule:
+      interval: weekly
+
+  # ui 前端(vben monorepo,pnpm)
+  - package-ecosystem: npm
+    directory: /ui
+    schedule:
+      interval: weekly
+
+  # GitHub Actions 版本更新
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

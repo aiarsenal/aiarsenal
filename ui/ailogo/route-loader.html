@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI Arsenal · 路由切换加载动画</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<style>
+  :root{--bg:#0e1117;--panel:#141a28;--fg:#f4f6fb;--muted:#8b93a4;--accent:#7c5cff;--accent2:#21d4fd;
+        --bar-track:rgb(30,121,83);--bar-fill:rgb(167,255,220)}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",Segoe UI,system-ui,sans-serif;min-height:100vh}
+
+  /* —— 假应用外壳,演示"切页面"语境 —— */
+  .app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+  .side{background:#0b0f17;border-right:1px solid #1d2433;padding:1.25rem}
+  .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;margin-bottom:1.5rem}
+  .brand .logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+  .navitem{padding:.55rem .75rem;border-radius:9px;color:var(--muted);cursor:pointer;margin-bottom:.15rem}
+  .navitem:hover{background:#161c2b;color:var(--fg)}
+  .navitem.active{background:linear-gradient(90deg,rgba(124,92,255,.18),transparent);color:var(--fg);border-left:2px solid var(--accent2)}
+  .main{padding:2rem}
+  .page-title{font-size:1.4rem;font-weight:700;margin-bottom:.5rem}
+  .page-desc{color:var(--muted)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-top:1.5rem}
+  .card{height:96px;border-radius:12px;background:linear-gradient(180deg,#161c2b,#11151f);border:1px solid #1d2433}
+
+  /* —— 加载遮罩 —— */
+  .overlay{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+    background:rgba(8,10,16,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:9999;
+  }
+  .loader{position:relative;display:flex;flex-direction:column;align-items:center;gap:1.1rem}
+  /* 方形舞台:放大显示。shot 裁掉 shot-inner 缩放后的溢出;glow 在 shot 外,不受裁剪 */
+  .stage{position:relative;width:min(56vmin,420px);height:min(56vmin,420px);
+    filter:drop-shadow(0 16px 30px rgba(0,0,0,.5))}
+  .shot{position:absolute;inset:0;opacity:0;overflow:hidden;will-change:transform,opacity}
+  .shot-inner{position:absolute;inset:0;transform-origin:center center}
+  .frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  .glow{position:absolute;inset:-8%;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(124,92,255,.40),transparent 70%);filter:blur(4px);opacity:0;pointer-events:none}
+
+  /* —— 图内进度条:只接管"两条细线之间"的填充,细线保留原图 —— */
+  .inbar{
+    position:absolute;left:20.12%;top:85.8%;width:59.67%;height:3.0%;
+    border-radius:2px;background:rgb(3,21,22);overflow:hidden;opacity:0;
+    pointer-events:none;z-index:2;
+  }
+  .infill{
+    position:absolute;inset:0;width:100%;transform-origin:left center;transform:scaleX(0);
+    background:linear-gradient(180deg, rgba(255,255,255,.15), transparent 55%), rgb(63,189,123);
+    box-shadow:0 0 6px rgb(63,189,123);
+  }
+  .infill::after{ /* 流光 */
+    content:"";position:absolute;top:0;left:-40%;width:40%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
+    animation:sweep 1.3s linear infinite;
+  }
+  @keyframes sweep{0%{left:-40%}100%{left:110%}}
+
+  .label{font-size:1rem;font-weight:600;min-height:1.2em}
+  .label .dots::after{content:"";animation:dots 1.2s steps(4,end) infinite}
+  @keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+  .pct{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.8rem;min-height:1em}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="logo"></span> AI Arsenal</div>
+    <div class="navitem active" data-page="概览">概览</div>
+    <div class="navitem" data-page="设备管理">设备管理</div>
+    <div class="navitem" data-page="Agent 实例">Agent 实例</div>
+    <div class="navitem" data-page="模型密钥">模型密钥</div>
+    <div class="navitem" data-page="系统设置">系统设置</div>
+  </aside>
+  <main class="main">
+    <div class="page-title" id="pageTitle">概览</div>
+    <div class="page-desc">点击左侧菜单切换页面。加载时会播放 Launch → Loading(图内进度条实时填充)→ Ready。</div>
+    <div class="cards"><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div></div>
+  </main>
+</div>
+
+<!-- 加载遮罩 -->
+<div class="overlay" id="overlay">
+  <div class="loader">
+    <div class="stage">
+      <div class="glow" id="glow"></div>
+      <div class="shot" id="s0"><div class="shot-inner" style="transform:scale(1.05)"><img class="frame" src="AI Arsenal 启动页 Launch.png" alt="Launch" /></div></div>
+      <div class="shot" id="s1">
+        <div class="shot-inner" style="transform:scale(1.29)">
+          <img class="frame" src="AI Arsenal 启动页 Loading.png" alt="Loading" />
+          <!-- 叠在原图进度条上的动态填充(与图片同处一个 shot-inner,缩放同步) -->
+          <div class="inbar" id="inbar"><div class="infill" id="infill"></div></div>
+        </div>
+      </div>
+      <div class="shot" id="s2"><div class="shot-inner" style="transform:scale(1.18)"><img class="frame" src="AI Arsenal 启动页 Ready.png" alt="Ready" /></div></div>
+    </div>
+    <div class="label" id="label">启动中<span class="dots"></span></div>
+    <div class="pct" id="pct"></div>
+  </div>
+</div>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+gsap.set('.shot', {opacity:0, scale:.9});
+
+const overlay=document.getElementById('overlay');
+const glow=document.getElementById('glow');
+const label=document.getElementById('label');
+const pct=document.getElementById('pct');
+const inbar=document.getElementById('inbar');
+const infill=document.getElementById('infill');
+const fL=document.getElementById('s0'), fLoad=document.getElementById('s1'), fR=document.getElementById('s2');
+const stage=document.getElementById('stage');
+let idle=null; // 待机轻浮 tween(独立持有,用完显式 kill,避免泄漏)
+
+const setLabel=(t,d)=>label.innerHTML=t+(d?'<span class="dots"></span>':'');
+
+/** 模拟一次切页面 */
+function switchTo(pageName){
+  document.querySelectorAll('.navitem').forEach(n=>n.classList.toggle('active', n.dataset.page===pageName));
+  if(reduce){ document.getElementById('pageTitle').textContent=pageName; return; }
+
+  overlay.style.display='flex';
+  const tl=gsap.timeline({onComplete(){overlay.style.display='none';}});
+
+  // 重置
+  idle&&idle.kill(); gsap.set(stage,{y:0});
+  gsap.set([fLoad,fR],{opacity:0,scale:.9});
+  gsap.set(inbar,{opacity:0}); gsap.set(infill,{scaleX:0}); pct.textContent='';
+
+  // ① 进场 + Launch 点火
+  gsap.set(overlay,{opacity:0});
+  tl.to(overlay,{opacity:1,duration:.2,ease:'power2.out'});
+  setLabel('启动中',true);
+  tl.fromTo(fL,{opacity:0,scale:.78},{opacity:1,scale:1,duration:.5,ease:'back.out(1.8)'});
+  tl.fromTo(glow,{opacity:0,scale:.6},{opacity:1,scale:1,duration:.5,ease:'power2.out'},'<');
+
+  // ② 切到 Loading:显示图内进度条,填充 0 -> 90%
+  tl.to(fL,{opacity:0,scale:1.08,duration:.3,ease:'power2.in'},'+=.25');
+  tl.add(()=>{ setLabel('加载中',true); });
+  tl.fromTo(fLoad,{opacity:0,scale:.92},{opacity:1,scale:1,duration:.4,ease:'power2.out'});
+  // 待机:整体上下轻浮(y 平移,不改填充宽度 → 进度条不会"回退");独立 tween,稍后 kill
+  tl.add(()=>{ idle&&idle.kill(); idle=gsap.to(stage,{y:-6,duration:1.1,yoyo:true,repeat:-1,ease:'sine.inOut'}); });
+  // 进度条覆盖层淡入,然后填充
+  tl.to(inbar,{opacity:1,duration:.3,ease:'power2.out'},'<+=.05');
+  tl.fromTo(infill,{scaleX:0},{scaleX:.90,duration:1.4,ease:'power1.out'},'<');
+  // 用 onUpdate 驱动百分比文字
+  const obj={v:0};
+  tl.to(obj,{v:90,duration:1.4,ease:'power1.out',onUpdate(){pct.textContent=Math.round(obj.v)+'%';}},'<');
+
+  // ③ 数据就绪 -> Ready:进度满 100% + ping
+  tl.add(()=>{ setLabel('就绪',false); idle&&idle.kill(); gsap.set(stage,{y:0}); },'+=.4');
+  tl.to(infill,{scaleX:1,duration:.3,ease:'power2.out'});
+  const o2={v:90}; tl.to(o2,{v:100,duration:.3,onUpdate(){pct.textContent=Math.round(o2.v)+'%';}},'<');
+  tl.to(fLoad,{opacity:0,scale:1.08,duration:.3,ease:'power2.in'},'<');
+  tl.to(inbar,{opacity:0,duration:.25},'<');
+  tl.fromTo(fR,{opacity:0,scale:.85},{opacity:1,scale:1,duration:.45,ease:'back.out(2)'});
+  tl.fromTo(glow,{opacity:.5},{opacity:1,duration:.3},'<');
+
+  // ④ 收起,露出新页面
+  tl.to([fR,glow,label,pct],{opacity:0,duration:.3,ease:'power2.in',delay:.45});
+  tl.to(overlay,{opacity:0,duration:.25,onComplete(){
+    gsap.set([fL,fLoad,fR],{opacity:0,scale:.9});
+    document.getElementById('pageTitle').textContent=pageName;
+  }});
+}
+
+document.querySelectorAll('.navitem').forEach(n=>
+  n.addEventListener('click',()=>{ if(!n.classList.contains('active')) switchTo(n.dataset.page); })
+);
+</script>
+</body>
+</html>

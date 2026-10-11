@@ -1,0 +1,16 @@
+{
+  "name": "aiarsenal-client-mac",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "AI Arsenal 桌面客户端（macOS）",
+  "scripts": {
+    "dev": "tauri dev --features openclaw-desktop",
+    "build": "tauri build --features openclaw-desktop",
+    "tauri": "tauri",
+    "build:debug": "tauri build --features openclaw-desktop --debug; bash scripts/sign-debug.sh"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}

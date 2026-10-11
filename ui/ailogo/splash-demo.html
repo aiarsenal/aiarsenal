@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AISplash 组件 · 调试台</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="ai-splash.js"></script>
+<style>
+  :root{--bg:#0e1117;--fg:#f4f6fb;--muted:#8b93a4;--accent:#7c5cff;--accent2:#21d4fd}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--fg);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",Segoe UI,system-ui,sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;padding:2rem}
+  h1{font-size:1.3rem}
+  p.sub{color:var(--muted);max-width:560px;text-align:center;font-size:.92rem}
+  .row{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+  .btn{appearance:none;border:1px solid #262d40;background:#141a28;color:var(--fg);
+    padding:.6rem 1.1rem;border-radius:12px;font-size:.9rem;cursor:pointer;transition:transform .12s,background .2s}
+  .btn:hover{background:#1a2236}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#0b0d12;font-weight:600}
+  pre{background:#0b0f17;border:1px solid #1d2433;border-radius:12px;padding:1rem;font-size:.82rem;color:#c8d0dd;max-width:680px;width:100%;overflow:auto}
+</style>
+</head>
+<body>
+  <h1>AISplash 组件 · 调试台</h1>
+  <p class="sub">全屏启动叙事,8 帧串联。默认<b>不带标题</b>(你之前不想要的蓝字)。点 play 播放,hide 淡出。</p>
+  <div class="row">
+    <button class="btn primary" id="b-play">▶ play()</button>
+    <button class="btn" id="b-replay">↻ replay()</button>
+    <button class="btn" id="b-hide">hide()</button>
+    <button class="btn" id="b-title">带标题版重播</button>
+  </div>
+  <pre id="code"></pre>
+
+<script>
+// 不带标题(默认)
+const splash = AISplash.create({
+  onComplete(){ console.log('splash 播完,已定格在"发射完成"'); }
+});
+
+document.getElementById('b-play').onclick   = () => splash.play();
+document.getElementById('b-replay').onclick = () => splash.replay();
+document.getElementById('b-hide').onclick   = () => splash.hide();
+
+// 演示带标题版(同一个组件,只是传了 title)
+let titled = null;
+document.getElementById('b-title').onclick = () => {
+  if (titled) titled.destroy();
+  titled = AISplash.create({
+    title: 'AI Arsenal', subtitle: 'SYSTEM READY',
+    onComplete(){ console.log('带标题版播完'); }
+  });
+  titled.play();
+};
+
+document.getElementById('code').textContent =
+`<script src="gsap.min.js"><\/script>
+<script src="ai-splash.js"><\/script>
+
+const splash = AISplash.create({
+  // frames: 默认就是 SPLASH 分镜 8 帧,可覆盖
+  size: 'min(72vmin,600px)',
+  title: '',                 // 默认空 = 不显示标题
+  onComplete(){ /* 定格在"发射完成"时触发 */ }
+});
+
+splash.play();    // 全屏播放,结束定格
+splash.hide();    // 应用就绪 -> 淡出,露出主界面
+splash.replay();`;
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+name: Client Release
+
+# 打 tag(v*)构建桌面客户端并发布 GitHub Release:
+#   macos-latest   → client/build.sh mac(tauri build,产物 dmg + app)
+#   windows-latest → client/build.sh win(tauri build,产物 msi + nsis setup.exe)
+#
+# 说明:
+# - client/ 目录使用 npm(package-lock.json),tauri 的 beforeBuildCommand 也是 npm run build,
+#   故本工作流用 npm ci;ui/ 的 pnpm 工程与客户端构建无关,不参与。
+# - tauri 编译期会读 client/shared/frontend/dist,构建前先 npm build 该目录。
+# - 签名与公证为「条件执行」:未配置对应 secrets 时环境变量为空,tauri 自动跳过,产出未签名包。
+#
+# ── INTEGRATION: 需要用户在 Repo Settings → Secrets and variables → Actions 配置 ──
+# 全部可选;不配则发未签名安装包(macOS 需右键打开)。
+# macOS 签名 + 公证(Tauri 2 通过 APPLE_* 环境变量自动完成,无需改 tauri.conf.json):
+#   MACOS_CERTIFICATE            .p12 证书的 base64(base64 -i cert.p12 | pbcopy)
+#   MACOS_CERTIFICATE_PASSWORD   .p12 导出密码
+#   MACOS_SIGNING_IDENTITY       如 "Developer ID Application: Your Company (TEAMID)"
+#   APPLE_ID                     Apple ID 邮箱(公证用)
+#   APPLE_PASSWORD               Apple 专用密码(App Specific Password,公证用)
+#   APPLE_TEAM_ID                Apple 团队 ID(公证用)
+#   MACOS_KEYCHAIN_PASSWORD      CI 临时钥匙串密码(可选,缺省用内置占位串)
+# Windows 签名(可选,后续接入时在 windows job 增加 signtool 步骤):
+#   WINDOWS_CERTIFICATE          .pfx 证书 base64(预留)
+#   WINDOWS_CERTIFICATE_PASSWORD .pfx 密码(预留)
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      env_name:
+        description: '烘焙进客户端的环境名(api/config/client-envs.json 的 name,如 prod);留空=编译期默认'
+        required: false
+        default: ''
+
+# 发版不并发取消,但同一时刻只允许一条发版流水
+concurrency:
+  group: client-release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    name: Build macOS (dmg)
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env:
+      # secrets 未配置时取值为空串 → tauri 跳过签名/公证(条件执行的下层机制)
+      APPLE_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+      APPLE_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+      APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_SIGNING_IDENTITY }}
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+      MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+      MACOS_KEYCHAIN_PASSWORD: ${{ secrets.MACOS_KEYCHAIN_PASSWORD || 'aiarsenal-ci-temp' }}
+      ENV_NAME: ${{ inputs.env_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: client/mac/src-tauri
+
+      - name: Install client dependencies (tauri CLI)
+        working-directory: client/mac
+        run: npm ci
+
+      - name: Build client shared frontend
+        working-directory: client/shared/frontend
+        run: |
+          npm ci
+          npm run build
+
+      # 条件执行:仅当配置了 MACOS_CERTIFICATE 才导入证书到临时钥匙串。
+      # (tauri 读到 APPLE_CERTIFICATE 后也会自行导入,此步骤保证 codesign 一定找得到身份。)
+      - name: Import macOS signing certificate
+        if: ${{ env.MACOS_CERTIFICATE != '' }}
+        run: |
+          CERT_PATH="$RUNNER_TEMP/certificate.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
+          echo -n "$MACOS_CERTIFICATE" | base64 --decode -o "$CERT_PATH"
+          security create-keychain -p "$MACOS_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$MACOS_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -k "$KEYCHAIN_PATH" \
+            -P "$MACOS_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s \
+            -k "$MACOS_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          # 把临时钥匙串加入搜索路径(login.keychain-db 是 runner 默认用户钥匙串)
+          security list-keychain -d user -s "$KEYCHAIN_PATH" login.keychain-db
+
+      - name: Skip signing note
+        if: ${{ env.MACOS_CERTIFICATE == '' }}
+        run: echo '未配置签名 secrets(MACOS_CERTIFICATE 等),产出未签名 dmg。配置清单见本工作流头部注释。'
+
+      - name: Build macOS client
+        run: |
+          ARGS=(mac --build)
+          if [[ -n "$ENV_NAME" ]]; then
+            ARGS+=(--env "$ENV_NAME")
+          fi
+          bash client/build.sh "${ARGS[@]}"
+
+      - name: Upload artifact (dmg)
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg
+          path: client/mac/src-tauri/target/release/bundle/dmg/*.dmg
+          if-no-files-found: error
+          retention-days: 7
+
+  windows:
+    name: Build Windows (msi + nsis)
+    runs-on: windows-latest
+    timeout-minutes: 60
+    env:
+      ENV_NAME: ${{ inputs.env_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: client/win/src-tauri
+
+      - name: Install client dependencies (tauri CLI)
+        working-directory: client/win
+        run: npm ci
+
+      - name: Build client shared frontend
+        working-directory: client/shared/frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build Windows client
+        shell: bash
+        run: |
+          ARGS=(win --build)
+          if [[ -n "$ENV_NAME" ]]; then
+            ARGS+=(--env "$ENV_NAME")
+          fi
+          bash client/build.sh "${ARGS[@]}"
+
+      - name: Upload artifact (msi + nsis)
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installers
+          path: |
+            client/win/src-tauri/target/release/bundle/msi/*.msi
+            client/win/src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    name: Upload GitHub Release
+    runs-on: ubuntu-latest
+    needs: [macos, windows]
+    timeout-minutes: 10
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Attach installers to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # 匹配 dmg / msi / nsis 三类安装包(文件名含空格不影响 glob 匹配)
+          files: |
+            dist/*.dmg
+            dist/*.msi
+            dist/*.exe
+          fail_on_unmatched_files: true
+          generate_release_notes: true

@@ -1,0 +1,75 @@
+# ===== 依赖 =====
+node_modules/
+# Go workspace（机器本地开发用；部署机无此文件，走 go.mod 拉 github tag）
+go.work
+go.work.sum
+
+# ===== 编译产物 / 构建结果 =====
+ui/dist/
+api/bin/
+llm/bin/
+# Windows 本地部署：stdio demo exe 的部署位（种子里命令 bin/mcp-demo 解析到 ../mcp/bin/）
+mcp/bin/
+
+# ===== 日志 =====
+api/resource/log/
+*.log
+api/resource/log/systemd-*.log
+
+# ===== IDE / 编辑器 / 系统 =====
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# ===== 本地运行时数据（不入库）=====
+api/resource/data/temp/
+api/dump
+# 桌面端安装包缓存（后端从官网拉取，体积大）
+data/client/packages/
+
+# ===== 桌面客户端（client/）产物与依赖 =====
+client/**/node_modules/
+client/shared/frontend/dist/
+client/win/src-tauri/target/
+client/mac/src-tauri/target/
+# Tauri 图标由用户本机生成（npx tauri icon <png>），不入库
+client/**/src-tauri/icons/
+!client/**/src-tauri/icons/.gitkeep
+client/**/src-tauri/gen/
+
+# 部署时旧 dist 备份（本地保留，不入库）
+
+# 旧前端备份（本地保留，不入库）
+ui-legacy.bak/
+ui/dist.bak/
+
+# 设计稿/调试图（本地工作文件，不入库）
+c6d022cb-4c30-4de8-aeec-c0fa644caa38.png
+design-blobs.png
+design-sheet-annotated.png
+ui/ailogo/
+
+# openclaw 第三方源码下载副本（本地翻源码用，不入库；查 openclaw 走 GitHub API）
+openclaw-main/
+openclaw-main.zip
+# hermes 第三方源码（hermes-desktop 镜像构建上下文需它 COPY，但作为外部源码不入库；本地放 hermes-agent-main/）
+hermes-agent-main/
+hermes-agent-main.zip
+hermes-agent-v*.zip
+main.zip
+# skill 运行时存储（api 上传/导入的技能包落盘目录，运行时生成不入库；
+# 已跟踪的内置演示包不受影响仍保留，新增运行时包被本规则隐藏）
+api/resource/data/skill/skill/
+# 腾讯云密钥配置（含 SecretId/SecretKey，绝不入库）；路径以 api/ 为准
+api/config/tencent.yaml
+api/config/tencent.local.yaml
+config/tencent.yaml
+config/tencent.local.yaml
+client/shared/rust/target/
+
+# 本机运行时文件（pid / 日志；数据库快照含 LLM key 明文，绝不入库）
+.run/
+
+# Claude Code 本机许可缓存（含运维命令历史，绝不入库）
+.claude/settings.json

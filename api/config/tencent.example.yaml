@@ -1,0 +1,17 @@
+# 腾讯云 CVM 运行时配置示例（复制为 tencent.yaml 并填真实值；tencent.yaml 已 gitignore）。
+# enabled=false 或 tencent.yaml 不存在 → 走 localdocker；enabled=true → 实例创建到腾讯云 CVM。
+enabled: false
+
+region: "ap-beijing"
+zone: "ap-beijing-6"
+# 凭据留空走环境变量 TENCENTCLOUD_SECRET_ID / TENCENTCLOUD_SECRET_KEY（推荐）。
+secretId: ""
+secretKey: ""
+vpcId: ""
+subnetId: ""
+securityGroupId: ""
+imageId: ""          # CVM 镜像 Id，如 img-mmytdhbn (Ubuntu 24.04)
+instanceType: ""     # CVM 机型，如 SA2.MEDIUM4
+bandwidthMbps: 5     # 公网带宽上限 Mbps（按流量后付费；桌面 VNC 建议 10+，纯 API 5 够）
+loginKey: ""         # SSH 密钥对 KeyId
+loginUser: "ubuntu"

@@ -1,0 +1,7 @@
+{
+  "_comment": "client 编译期环境配置。client/build.sh --env <name> 按 scheme+domain 烘焙 {scheme}://api.{domain} 进 client 二进制（shared/rust option_env! AA_BASE_URL）。加自定义环境就在 envs 里加一条。",
+  "envs": [
+    { "name": "test", "scheme": "http", "domain": "aiarsenal.cc" },
+    { "name": "prod", "scheme": "https", "domain": "aiarsenal.cc" }
+  ]
+}

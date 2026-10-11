@@ -1,0 +1,12 @@
+# Issue 模板总配置:非模板类入口走 contact_links,避免一切咨询都开成 bug。
+# Template config: route non-issue topics via contact_links.
+blank_issues_enabled: true
+contact_links:
+  - name: GitHub Discussions 讨论区
+    url: https://github.com/aiarsenal/aiarsenal/discussions
+    about: 使用咨询、经验交流与开放讨论 / Questions, experience sharing and open discussion
+  # 如需补充微信/QQ/邮箱等联系方式,按下面格式追加:
+  # To add WeChat/QQ/email channels, append entries in the same shape:
+  # - name: 社区微信群 / Community WeChat Group
+  #   url: https://example.com/join-wechat
+  #   about: 扫码进群交流 / Scan to join

@@ -1,0 +1,96 @@
+<style data-app-loading="inject-css">
+  html {
+    line-height: 1.15;
+  }
+
+  .dark .loading {
+    background-color: #0d0d10;
+  }
+
+  .dark .loading .title {
+    color: rgb(255 255 255 / 85%);
+  }
+
+  .loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: #f4f7f9;
+  }
+
+  .loading.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.6s ease-out;
+  }
+
+  .loading .logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 16px;
+  }
+
+  .loading .title {
+    margin-top: 24px;
+    font-size: 26px;
+    font-weight: 600;
+    color: rgb(0 0 0 / 85%);
+    letter-spacing: 1px;
+  }
+
+  .loading .bar {
+    margin-top: 18px;
+    width: 120px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgb(66 185 131 / 20%);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .loading .bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    border-radius: 2px;
+    background: #42b983;
+    animation: ai-slide 1.2s ease-in-out infinite;
+  }
+
+  @keyframes ai-pulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgb(66 185 131 / 40%);
+    }
+    50% {
+      transform: scale(1.08);
+      box-shadow: 0 0 0 12px rgb(66 185 131 / 0%);
+    }
+  }
+
+  @keyframes ai-slide {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(350%);
+    }
+  }
+</style>
+<div class="loading" id="__app-loading__">
+  <img class="logo" src="/splash.gif" alt="AI Arsenal" />
+  <div class="title">%VITE_APP_TITLE%</div>
+  <div class="bar"></div>
+</div>

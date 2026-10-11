@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "AI Arsenal",
+  "version": "0.1.0",
+  "identifier": "cc.aiarsenal.client",
+  "build": {
+    "frontendDist": "../../shared/frontend/dist",
+    "beforeBuildCommand": "cd ../shared/frontend && npm run build"
+  },
+  "app": {
+    "windows": [],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["dmg", "app"],
+    "icon": ["icons/icon.icns"],
+    "macOS": {
+      "signingIdentity": null,
+      "entitlements": null,
+      "infoPlist": "Info.plist"
+    }
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["aiarsenal"]
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+[Unit]
+Description=AI Arsenal API (gin + DDD 管理后台)
+After=network.target postgresql.service redis-server.service
+Wants=postgresql.service redis-server.service
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+# 密钥经 /etc/aiarsenal/env 注入（deploy.sh 首次部署生成，root:0600）；文件缺失不阻塞（“-”前缀）
+EnvironmentFile=-/etc/aiarsenal/env
+WorkingDirectory=/home/ubuntu/aiarsenal/api
+# __PUBLIC_SCHEME__ 由 deploy.sh 按环境替换（test→http / prod→https）；决定对外 URL 协议。
+Environment=AIARSENAL_PUBLIC_SCHEME=__PUBLIC_SCHEME__
+ExecStart=/home/ubuntu/aiarsenal/api/bin/main
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65536
+StandardOutput=append:/home/ubuntu/aiarsenal/api/resource/log/systemd-stdout.log
+StandardError=append:/home/ubuntu/aiarsenal/api/resource/log/systemd-stderr.log
+
+[Install]
+WantedBy=multi-user.target

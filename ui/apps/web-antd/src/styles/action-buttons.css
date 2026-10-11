@@ -1,0 +1,18 @@
+/**
+ * 列表【操作】列按钮间距
+ * 仅作用于表格单元格内（vxe 单元格 / antd 表体）的相邻按钮，
+ * 不影响工具栏(toolbar 在 .vxe-cell 之外)与弹窗按钮。
+ */
+.vxe-cell .ant-btn + .ant-btn,
+.ant-table-tbody .ant-btn + .ant-btn {
+  margin-left: 8px;
+}
+
+/**
+ * 操作列按钮组强制单行：英文文案更长时也不换行（宁可横向溢出也不堆叠成两行）。
+ */
+.action-overflow {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}

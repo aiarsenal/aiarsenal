@@ -1,0 +1,18 @@
+AI Arsenal
+Copyright 2026 CHIN <chinlee@azrobot.co>
+
+本产品按 Apache License 2.0 分发（见 LICENSE）。ui/ 子树为 MIT 分发（见 ui/LICENSE）。
+
+本项目包含/使用了以下第三方组件，其权利归各自所有者：
+
+| 组件 | 位置 | 许可 |
+| --- | --- | --- |
+| vue-vben-admin | ui/（底座框架，深度定制） | MIT — Copyright (c) 2024-present Vben |
+| GSAP | ui/apps/web-antd/public/vendor/gsap.min.js | GreenSock 标准许可（"no charge" 条款） |
+| Go 标准库 PDF 读取器（fork 自 ledongthuc/pdf，溯源自 rsc.io/pdf） | api/third_party/pdf/ | BSD-3-Clause — Copyright 2014 The Go Authors |
+| OpenClaw CLI 安装脚本（改编） | client/mac/src-tauri/resources/install-cli.sh | MIT — OpenClaw 作者 |
+| ip2region | 已移除（历史版本曾包含） | Apache-2.0 — lionsoul2014 |
+
+产品名称与标识：本项目内出现的第三方产品名称、Logo（Apple、Microsoft、Google、
+Tencent、OpenAI、Anthropic、Baidu、Obsidian、OpenClaw 等）仅用于识别对应产品，
+其商标与著作权归各自所有者，本项目与上述各方无从属或背书关系。

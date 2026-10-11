@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AILoading 组件 · 调试台</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="ai-loading.js"></script>
+<style>
+  :root{--bg:#0e1117;--fg:#f4f6fb;--muted:#8b93a4;--accent:#7c5cff;--accent2:#21d4fd}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--fg);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",Segoe UI,system-ui,sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;padding:2rem}
+  h1{font-size:1.3rem}
+  p.sub{color:var(--muted);max-width:560px;text-align:center;font-size:.92rem}
+  pre{background:#0b0f17;border:1px solid #1d2433;border-radius:12px;padding:1rem;font-size:.82rem;overflow:auto;max-width:680px;width:100%;color:#c8d0dd}
+  .row{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+  .btn{appearance:none;border:1px solid #262d40;background:#141a28;color:var(--fg);
+    padding:.6rem 1rem;border-radius:12px;font-size:.9rem;cursor:pointer;transition:transform .12s,background .2s,border-color .2s}
+  .btn:hover{background:#1a2236;border-color:#36405c}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#0b0d12;font-weight:600}
+  .btn.ghost{background:transparent}
+  code{color:var(--accent2)}
+</style>
+</head>
+<body>
+  <h1>AILoading 组件 · 调试台</h1>
+  <p class="sub">下面每个按钮对应组件一个方法。图内进度条是叠在 Loading 图上的动态填充,原图未改动。</p>
+
+  <div class="row">
+    <button class="btn primary" id="b-show">show()</button>
+    <button class="btn" id="b-p25">setProgress(.25)</button>
+    <button class="btn" id="b-p60">setProgress(.60)</button>
+    <button class="btn" id="b-p90">setProgress(.90)</button>
+    <button class="btn" id="b-label">setLabel('拉取实例…')</button>
+    <button class="btn" id="b-ready">ready()</button>
+    <button class="btn ghost" id="b-hide">hide()</button>
+  </div>
+  <div class="row">
+    <button class="btn primary" id="b-sim">▶ 模拟真实异步加载</button>
+    <button class="btn ghost" id="b-destroy">destroy()</button>
+  </div>
+
+  <pre id="code"></pre>
+
+<script>
+// 创建一个全局实例(带就绪图,ready() 时会切换)
+const loading = AILoading.create({
+  imageSrc: 'AI Arsenal 启动页 Loading.png',
+  readyImageSrc: 'AI Arsenal 启动页 Ready.png',
+  size: 380,
+  // contentScale / readyContentScale 默认已按这两张图量好(裁掉留白让角色铺满)
+});
+
+const $ = id => document.getElementById(id);
+$('b-show').onclick   = () => loading.show();
+$('b-p25').onclick    = () => loading.setProgress(0.25);
+$('b-p60').onclick    = () => loading.setProgress(0.60);
+$('b-p90').onclick    = () => loading.setProgress(0.90);
+$('b-label').onclick  = () => loading.setLabel('拉取实例…');
+$('b-ready').onclick  = () => loading.ready();
+$('b-hide').onclick   = () => loading.hide();
+$('b-destroy').onclick= () => loading.destroy();
+
+$('b-sim').onclick = () => {
+  loading.show({ label: '加载中' });
+  let p = 0;
+  const t = setInterval(() => {
+    p += 0.06 + Math.random() * 0.12;       // 模拟不均匀的进度
+    if (p >= 0.9) {
+      clearInterval(t);
+      loading.setProgress(0.9, { label: '即将就绪' });
+      setTimeout(() => loading.ready({ autoHide: 700 }), 350);
+    } else {
+      loading.setProgress(p);
+    }
+  }, 220);
+};
+
+$('code').textContent =
+`// 1. 引入 gsap + 组件
+//    <script src="gsap.min.js"><\/script>
+//    <script src="ai-loading.js"><\/script>
+
+// 2. 创建实例
+const loading = AILoading.create({
+  imageSrc:        'AI Arsenal 启动页 Loading.png',
+  readyImageSrc:   'AI Arsenal 启动页 Ready.png',  // 可选
+  size: 380,
+  contentScale:    1.29,   // 裁掉留白让角色铺满(用 measure-image.py 量)
+  readyContentScale: 1.18,
+  bar: { left:'20.12%', top:'85.8%', width:'59.67%', height:'3.0%' }  // 已按图量好
+});
+
+// 3. 用法
+loading.show();
+loading.setProgress(0.45);          // 0..1,带动画 + 百分比同步
+loading.setLabel('拉取实例…');
+loading.ready({ autoHide: 700 });   // 冲 100% + ping,可选自动收起
+loading.hide();                     // 强制收起`;
+</script>
+</body>
+</html>

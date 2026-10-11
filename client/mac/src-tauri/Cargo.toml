@@ -1,0 +1,82 @@
+[package]
+name = "aiarsenal-client-mac"
+version = "0.1.0"
+description = "AI Arsenal 桌面客户端（macOS）"
+edition = "2021"
+
+[lib]
+name = "aiarsenal_client_mac_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-deep-link = "2"
+tokio = { version = "1", features = ["time", "macros", "sync"] }
+aiarsenal-client-core = { path = "../../shared/rust" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+dirs = "5"
+open = "5"
+# openclaw-desktop feature 专用（optional：feature 禁用时不引入）
+base64 = { version = "0.22", optional = true }
+tungstenite = { version = "0.24", optional = true }
+ed25519-dalek = { version = "2", optional = true, features = ["rand_core"] }
+sha2 = { version = "0.10", optional = true }
+rand = { version = "0.8", optional = true }
+# exec 审批：allowlist glob 编译 + argPattern 求值（Cargo.lock 已含 1.12，零新增下载）。
+regex = { version = "1", optional = true }
+# browser.proxy：转发本地 gateway 浏览器控制服务（loopback 纯 HTTP，无需 TLS）。
+# Cargo.lock 已含 0.12（Tauri 间接依赖），零新增下载。
+reqwest = { version = "0.12", default-features = false, features = ["blocking"], optional = true }
+# Canvas：canvas 根目录文件监听（变更 → webview 自动 reload）。唯一全新下载的依赖。
+notify = { version = "8", optional = true }
+# Canvas：WKWebView takeSnapshot（canvas.snapshot 截渲染图）。Cargo.lock 已含（Tauri 间接依赖）。
+# objc2-app-kit feature 是 takeSnapshot block 签名里 NSImage 类型的编译开关。
+objc2-web-kit = { version = "0.3.2", optional = true, features = ["WKWebView", "WKSnapshotConfiguration", "block2", "objc2-app-kit"] }
+objc2-app-kit = { version = "0.3.2", optional = true, features = ["NSImage"] }
+url = { version = "2", optional = true }
+core-foundation = { version = "0.10", optional = true }
+# ScreenCaptureKit 绑定：截屏走进程内 SC（SCScreenshotManager 单次截图），权限弹框同意后同进程即时生效、不重启。
+# Cargo.lock 已含 objc2 系列（Tauri 间接依赖），零成本复用版本图。features 按需启用 SC 类。
+objc2-screen-capture-kit = { version = "0.3.2", optional = true, features = ["SCScreenshotManager", "block2", "objc2-core-foundation", "objc2-core-graphics", "SCStream", "SCShareableContent", "SCRecordingOutput", "SCError", "objc2-core-media"] }
+# objc2-screen-capture-kit 的传递依赖，加为直接依赖以便 screen.rs 里 use（版本复用 Cargo.lock）。
+objc2-foundation = { version = "0.3.2", optional = true, features = ["NSError", "NSString", "NSArray", "NSDate", "NSPredicate", "NSCalendar", "NSData", "NSSortDescriptor", "NSDictionary", "NSURL"] }
+objc2-core-graphics = { version = "0.3.2", optional = true }
+objc2-core-foundation = { version = "0.3.2", optional = true }
+block2 = { version = "0.6.2", optional = true }
+objc2-av-foundation = { version = "0.3.2", optional = true, features = ["AVCaptureDevice", "AVMediaFormat", "AVCaptureSession", "AVCaptureOutputBase", "AVCapturePhotoOutput", "AVCaptureInput", "AVVideoSettings", "AVCaptureFileOutput"] }
+# UserNotifications：system.notify（UNUserNotificationCenter 弹通知 + 请求通知权限）。
+# bitflags feature 启用 UNAuthorizationOptions；UNNotificationTrigger 是
+# UNNotificationRequest::requestWithIdentifier_content_trigger 签名的参数类型（传 None 也要 feature）。
+objc2-user-notifications = { version = "0.3.2", optional = true, features = ["UNUserNotificationCenter", "UNNotificationContent", "UNNotificationRequest", "UNNotificationSettings", "UNNotificationTrigger", "bitflags"] }
+objc2 = { version = "0.6.4", optional = true }
+# CoreLocation：location.get（CLLocationManager + delegate）。
+objc2-core-location = { version = "0.3.2", optional = true, features = ["CLLocationManager", "CLLocation", "CLLocationManagerDelegate"] }
+# Contacts：contacts.search（CNContactStore enumerateContacts block）。
+objc2-contacts = { version = "0.3.2", optional = true, features = ["CNContactStore", "CNContact", "CNContactFetchRequest", "CNLabeledValue", "CNPhoneNumber", "block2"] }
+# EventKit：calendar.events + reminders.list（EKEventStore）。
+# EKCalendarItem 是 EKEvent/EKReminder 基类（title/location/calendar getter）；EKTypes 含 EKEntityType/EKAuthorizationStatus。
+objc2-event-kit = { version = "0.3.2", optional = true, features = ["EKEventStore", "EKEvent", "EKReminder", "EKCalendar", "EKCalendarItem", "EKTypes", "block2"] }
+# Photos：photos.latest（PHAsset fetch + PHImageManager requestImageDataAndOrientation block → base64）。
+# PHObject 是 PHAsset/PHFetchResult 基类；PhotosTypes 含 PHAssetMediaType/PHAccessLevel/PHAuthorizationStatus 枚举。
+objc2-photos = { version = "0.3.2", optional = true, features = ["PHPhotoLibrary", "PHAsset", "PHFetchOptions", "PHFetchResult", "PHImageManager", "PHObject", "PhotosTypes", "block2"] }
+# ImageIO：requestImageDataAndOrientation block 的 CGImagePropertyOrientation 参数类型。
+objc2-image-io = { version = "0.3.2", optional = true, features = ["CGImageProperties"] }
+# CoreMedia：screen.record 的 SCStreamConfiguration.setMinimumFrameInterval 参数（CMTime）。
+objc2-core-media = { version = "0.3.2", optional = true }
+
+[features]
+default = ["custom-protocol", "agent-openclaw", "agent-hermes", "agent-obsidian", "openclaw-desktop"]
+custom-protocol = ["tauri/custom-protocol"]
+# 按需打包 agent：build 时 --features agent-openclaw 选要打包的 agent（client/build.sh --agents 翻这个）。
+# 未启用的 agent：platform.rs 对应 mod 不编译、dispatch 走 _ fallback（"未打包"）。默认全开（向后兼容）。
+agent-openclaw = []
+agent-hermes = []
+agent-obsidian = []
+# openclaw desktop node：client 自实现 openclaw 的 macOS node（截屏/控鼠键/TCC 权限），替代 OpenClaw.app。
+# 禁用时 desktop_node 模块不编译，openclaw 退回无 desktop（只渠道+浏览器）—— 可轻松卸载（只支持 hermes 时）。
+# 启用：cargo build --features openclaw-desktop（tauri build 同理）。
+openclaw-desktop = ["dep:base64", "dep:tungstenite", "dep:ed25519-dalek", "dep:sha2", "dep:rand", "dep:regex", "dep:reqwest", "dep:notify", "dep:objc2-web-kit", "dep:objc2-app-kit", "dep:url", "dep:core-foundation", "dep:objc2-screen-capture-kit", "dep:objc2-foundation", "dep:objc2-core-graphics", "dep:objc2-core-foundation", "dep:block2", "dep:objc2-av-foundation", "dep:objc2-user-notifications", "dep:objc2", "dep:objc2-core-location", "dep:objc2-contacts", "dep:objc2-event-kit", "dep:objc2-photos", "dep:objc2-image-io", "dep:objc2-core-media"]

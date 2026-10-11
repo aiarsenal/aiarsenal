@@ -1,0 +1,25 @@
+[package]
+name = "aiarsenal-client-core"
+version = "0.1.0"
+edition = "2021"
+description = "AI Arsenal 桌面客户端共享核心：API 客户端 + device-code 登录 + 类型（Win/Mac 复用）"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rand = "0.8"
+thiserror = "1"
+mac_address = "1"
+hostname = "0.4"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+
+# TLS 后端可选：mac 维持默认 rustls；win-arm64 用 native-tls（schannel），
+# 绕开 ring 在 windows+aarch64 硬性要求 clang 编译 C 的问题（见 win/src-tauri/Cargo.toml）。
+[features]
+default = ["rustls-tls"]
+rustls-tls = ["reqwest/rustls-tls"]
+native-tls = ["reqwest/native-tls"]

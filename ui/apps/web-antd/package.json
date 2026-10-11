@@ -1,0 +1,56 @@
+{
+  "name": "@vben/web-antd",
+  "version": "5.7.1",
+  "homepage": "https://aiarsenal.cc",
+  "bugs": "https://github.com/aiarsenal/aiarsenal/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aiarsenal/aiarsenal.git",
+    "directory": "ui/apps/web-antd"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "AI Arsenal",
+    "url": "https://aiarsenal.cc"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "pnpm run clean:cache && pnpm vite build --mode production",
+    "build:production": "pnpm run clean:cache && pnpm vite build --mode production",
+    "build:analyze": "pnpm vite build --mode analyze",
+    "build:test": "pnpm run clean:cache && pnpm vite build --mode test",
+    "clean:cache": "node -e \"require('fs').rmSync('node_modules/.vite',{recursive:true,force:true})\"",
+    "dev": "pnpm vite --mode development",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+  },
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "dependencies": {
+    "@vben/access": "workspace:*",
+    "@vben/common-ui": "workspace:*",
+    "@vben/constants": "workspace:*",
+    "@vben/hooks": "workspace:*",
+    "@vben/icons": "workspace:*",
+    "@vben/layouts": "workspace:*",
+    "@vben/locales": "workspace:*",
+    "@vben/plugins": "workspace:*",
+    "@vben/preferences": "workspace:*",
+    "@vben/request": "workspace:*",
+    "@vben/stores": "workspace:*",
+    "@vben/styles": "workspace:*",
+    "@vben/types": "workspace:*",
+    "@vben/utils": "workspace:*",
+    "@vueuse/core": "catalog:",
+    "ant-design-vue": "catalog:",
+    "dayjs": "catalog:",
+    "docx-preview": "^0.4.0",
+    "exceljs": "^4.4.0",
+    "gsap": "^3.15.0",
+    "pinia": "catalog:",
+    "qrcode": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:"
+  }
+}

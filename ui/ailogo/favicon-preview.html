@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI Arsenal · Favicon 整套预览</title>
+<style>
+  *{box-sizing:border-box;margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",Segoe UI,system-ui,sans-serif}
+  body{background:#0e1117;color:#dde3ee;padding:2rem;line-height:1.5}
+  h1{font-size:1.25rem;margin-bottom:.2rem}
+  .sub{color:#8b93a4;font-size:.88rem;margin-bottom:1.3rem}
+  h2{font-size:.95rem;color:#21d4fd;margin:1.4rem 0 .6rem}
+  .row{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start}
+  .tile{display:flex;flex-direction:column;align-items:center;gap:.35rem;font-size:.75rem;color:#8b93a4}
+  .stage{display:flex;gap:6px;align-items:center;justify-content:center;padding:8px;border-radius:8px}
+  .stage.light{background:#fff}
+  .stage.dark{background:#0b0d12;border:1px solid #222a3d}
+  .stage img{display:block;image-rendering:pixelated}
+  .big img{width:96px;height:96px;image-rendering:pixelated}
+  pre{background:#0b0f17;border:1px solid #1d2433;border-radius:10px;padding:1rem;font-size:.8rem;color:#c8d0dd;overflow:auto;margin-top:.4rem}
+  code{color:#21d4fd}
+  .note{color:#8b93a4;font-size:.82rem;margin-top:.5rem}
+  .tabbar{display:flex;gap:2px;background:#1f2430;padding:6px 6px 0;border-radius:10px 10px 0 0;max-width:560px;overflow:hidden}
+  .tab{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#2a3142;color:#c8d0dd;
+    border-radius:8px 8px 0 0;font-size:.8rem;min-width:120px}
+  .tab img{width:16px;height:16px}
+  .tab.active{background:#0b0d12;color:#fff}
+</style>
+</head>
+<body>
+  <h1>AI Arsenal · Favicon 整套预览</h1>
+  <div class="sub">浏览器 favicon 已改透明版(白边消除);apple-touch / maskable 保持不透明。</div>
+
+  <h2>模拟深色浏览器标签(白边是否消失)</h2>
+  <div class="tabbar">
+    <div class="tab"><img src="favicons/favicon-16x16.png"> AI Arsenal</div>
+    <div class="tab"><img src="favicons/favicon-32x32.png"> AI Arsenal</div>
+    <div class="tab active"><img src="favicons/favicon-32x32.png"> AI Arsenal</div>
+  </div>
+  <div class="note">透明 favicon → 标签上只剩吉祥物,无白方块。若仍见白边,强刷一次(Cmd+Shift+R)清缓存。</div>
+
+  <h2>浏览器标签尺寸(真实大小 + 放大)</h2>
+  <div class="row">
+    <div class="tile">16×16
+      <div class="stage light"><img src="favicons/favicon-16x16.png" width="16" height="16"></div>
+      <div class="stage dark"><img src="favicons/favicon-16x16.png" width="16" height="16"></div>
+      <div class="stage light big"><img src="favicons/favicon-16x16.png"></div>
+    </div>
+    <div class="tile">32×32
+      <div class="stage light"><img src="favicons/favicon-32x32.png" width="32" height="32"></div>
+      <div class="stage dark"><img src="favicons/favicon-32x32.png" width="32" height="32"></div>
+      <div class="stage light big"><img src="favicons/favicon-32x32.png"></div>
+    </div>
+    <div class="tile">48×48
+      <div class="stage light"><img src="favicons/favicon-48x48.png" width="48" height="48"></div>
+      <div class="stage dark"><img src="favicons/favicon-48x48.png" width="48" height="48"></div>
+    </div>
+  </div>
+
+  <h2>触摸图标 / PWA / Maskable</h2>
+  <div class="row">
+    <div class="tile">apple-touch 180
+      <div class="stage light"><img src="favicons/apple-touch-icon.png" width="64" height="64" style="border-radius:14px"></div></div>
+    <div class="tile">android 192
+      <div class="stage light"><img src="favicons/android-chrome-192x192.png" width="64" height="64"></div></div>
+    <div class="tile">android 512
+      <div class="stage light"><img src="favicons/android-chrome-512x512.png" width="64" height="64"></div></div>
+    <div class="tile">maskable 512(安全区内)
+      <div class="stage light"><img src="favicons/maskable-512x512.png" width="64" height="64"></div></div>
+  </div>
+
+  <h2>接入代码(放进 &lt;head&gt;)</h2>
+  <pre>&lt;!-- 把 favicons/ 整个目录复制到 web 应用 public/ 下,路径按需改 --&gt;
+&lt;link rel="icon" href="/favicons/favicon.ico" sizes="any"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png"&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png"&gt;
+&lt;link rel="manifest" href="/favicons/site.webmanifest"&gt;
+&lt;meta name="theme-color" content="#0b0d12"&gt;</pre>
+  <div class="note">web-antd 项目:复制到 <code>ui/apps/web-antd/public/favicons/</code>,在 <code>index.html</code> 的 <code>&lt;head&gt;</code> 加上面 link 标签即可。</div>
+</body>
+</html>

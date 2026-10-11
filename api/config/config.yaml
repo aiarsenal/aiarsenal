@@ -1,0 +1,82 @@
+# AI Arsenal API 配置（gin 风格）
+# 仅保留 config.go 实际读取的字段；goframe 模板遗留字段（serverRoot/openapiPath/
+# swaggerPath/NameToUriType/dumpRouterMap/maxHeaderBytes/clientMaxBodySize/
+# accessLogEnabled 及各 logger 段）已清除。
+
+server:
+  address: ":43211"
+
+# 对外公开访问（开源部署改成自己的域名/协议；亦可用环境变量覆盖，见 config.go PublicScheme/PublicDomain）。
+# scheme + domain 决定 api/mcp/llm 子域与对外协议：测试 http / 生产 https。
+# deploy.sh 按环境把 AIARSENAL_PUBLIC_SCHEME 注入 systemd 单元（test→http / prod→https）。
+public:
+  scheme: https        # http | https
+  domain: aiarsenal.cc # 对外根域名；api./mcp./llm. 子域据此推导
+
+# 数据库：pgsql link 经 config.parseLink 转 gorm postgres DSN
+database:
+  default:
+    link: "pgsql:aiarsenal:aiarsenal123@tcp(127.0.0.1:5432)/aiarsenal?sslmode=disable"
+    maxIdle: 10        # 连接池最大闲置连接数
+    maxOpen: 10        # 连接池最大打开连接数
+    maxLifetime: "30s" # 连接对象可重复使用时长
+
+# Redis
+redis:
+  default:
+    address: 127.0.0.1:6379
+    db: 1
+
+# JWT
+jwt:
+  cacheKey: "jwt:"
+  timeOut: 2592000      # token 有效期（秒）= 30 天
+  maxRefresh: 5400
+  multiLogin: true
+  encryptKey: "fc6eab236b50ac1ba29f968e0c80dcea"   # 开发占位值；生产用环境变量 AIARSENAL_JWT_ENCRYPT_KEY 覆盖
+  cacheModel: "redis"
+  excludePaths:
+    - "/api/v1/system/login"
+
+# 系统配置
+actor:
+  # 令牌交换签名密钥（网关→ops 身份透传 HMAC-SHA256；api 与 mcp 须同值）
+  signKey: "aa-actor-540e5d465ea9609863aa8c62beed0ebe"   # 开发占位值；生产用环境变量 AIARSENAL_ACTOR_SIGN_KEY 覆盖（api 与 mcp 同值）
+
+system:
+  dataDir: "./resource/data"
+
+# 对象存储（技能包文件）。type=local 走本机磁盘；type=s3 走 S3 兼容(OSS/COS/MinIO/AWS)。
+storage:
+  type: local            # local | s3
+  localRoot: ""          # local 模式根目录；空→${system.dataDir}/skill（兼容已传包）
+  # ↓ type=s3 时生效（阿里云 OSS / 腾讯云 COS / MinIO / AWS S3 均用 S3 兼容端点）
+  endpoint: ""           # 例：oss-cn-beijing.aliyuncs.com / cos.ap-beijing.myqcloud.com / minio.local:9000
+  region: ""
+  accessKey: ""
+  secretKey: ""
+  bucket: "aiarsenal-skill"
+  basePath: ""           # 留空：service 层 key 已含 skill/ 前缀
+  useSSL: true
+  forcePathStyle: true   # OSS/COS/MinIO 必须 true；AWS S3 视区域设 false
+
+# Casbin RBAC
+casbin:
+  modelFile: "./resource/casbin/rbac_model.conf"
+  policyFile: "./resource/casbin/rbac_policy.csv"
+  cluster: false
+
+# llm 网关语义嵌入：Skill/文档/KB 的向量检索走真实语义嵌入（经 llm 网关 /v1/embeddings
+# 代理 OpenAI 兼容族上游 embedding 模型）。读取见 service/llm_embedding.go：
+# base_url/api_key/model 三者任一为空视为未配置，自动回落离线 LocalEmbedding（同维度哈希）；
+# 密钥类用环境变量覆盖（AIARSENAL_LLM_EMBEDDING_BASE_URL/API_KEY/MODEL/DIM/TIMEOUT_SECONDS，优先于 yaml）。
+llm_embedding:
+  base_url: ""          # llm 网关地址，如 https://llm.aiarsenal.cc（内部拼 /v1/embeddings）
+  api_key: ""           # 虚拟 Key 明文（Authorization: Bearer）；生产用 AIARSENAL_LLM_EMBEDDING_API_KEY 覆盖
+  model: ""             # embedding 调用 id：裸分组或 group/model（同 /v1/models 口径），须在该 Key 的 allowed_models 内
+  dim: 1536             # 期望维度：须与向量列既有维度一致（LocalEmbedding 1536），不符自动回落
+  timeout_seconds: 30   # 单次请求超时
+
+# Agent 模块运行配置（v2：实例备份/持久卷等本机落盘路径）
+agent:
+  backupDir: "/var/lib/aiarsenal/backup" # 实例工作区备份落盘目录（<backupId>.tar.gz）；localdocker 单机场景

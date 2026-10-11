@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Arsenal — 企业级 AI 应用一体化管理平台</title>
+  <meta name="description" content="AI Arsenal 把 Skill、MCP、LLM、Agent 与文档知识库放进同一个管理后台，自带 OpenAI 兼容网关、MCP 网关与 Mac/Windows 桌面客户端。开源，自行部署。" />
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="wrap nav-inner">
+      <div class="brand">
+        <img src="assets/logo.png" alt="AI Arsenal logo" />
+        <span>AI Arsenal</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">核心能力</a>
+        <a href="#roadmap">功能路线</a>
+        <a href="#quickstart">快速开始</a>
+        <a href="#tech">技术栈</a>
+        <a href="#about">关于项目</a>
+      </div>
+      <div class="nav-actions">
+        <a class="btn" href="https://gitee.com/aiarsenal/aiarsenal" target="_blank" rel="noopener">Gitee</a>
+        <a class="btn" href="https://github.com/aiarsenal/aiarsenal" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero：不提供在线体验，CTA 指向仓库与部署指南 -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="badge">⚡ 全栈基于 GLM-5.2 构建 · 开源自部署</div>
+      <h1>企业级 AI 应用<br /><span class="hl">一体化管理平台</span></h1>
+      <p class="sub">
+        Skill、MCP、LLM、Agent 和文档知识库，一个后台统一管理。自带 OpenAI 兼容网关与 MCP
+        网关，配套 Mac / Windows 桌面客户端，代码开源，部署在你自己的服务器上。
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="https://github.com/aiarsenal/aiarsenal" target="_blank" rel="noopener">⭐ GitHub 仓库</a>
+        <a class="btn btn-lg" href="#quickstart">自部署指南</a>
+      </div>
+      <div class="stats">
+        <div><div class="num">13</div><div class="label">功能目录</div></div>
+        <div><div class="num">60+</div><div class="label">管理页面</div></div>
+        <div><div class="num">529</div><div class="label">后端路由</div></div>
+      </div>
+      <div class="hero-video">
+        <video id="brandVideo" muted loop playsinline preload="none" poster="assets/cover.png" src="assets/brand.mp4"></video>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features：已上线模块 -->
+  <section id="features">
+    <div class="wrap">
+      <h2>核心能力</h2>
+      <p class="section-sub">八个模块全部实现，以下均为已上线功能</p>
+      <div class="grid grid-4">
+        <div class="card" style="--c:#3b82f6">
+          <div class="card-head"><span class="card-icon">⚙️</span><span class="tag tag-online">已上线</span></div>
+          <h3>系统管理</h3>
+          <p class="desc">用户/角色/菜单/部门/岗位 · 权限粒度与安全审计</p>
+        </div>
+        <div class="card" style="--c:#8b5cf6">
+          <div class="card-head"><span class="card-icon">🧩</span><span class="tag tag-online">已上线</span></div>
+          <h3>Skill 管理</h3>
+          <p class="desc">zip 上传解析 · 安全扫描拦截（密钥/危险脚本）· 向量检索 · 讯飞第三方市场导入</p>
+        </div>
+        <div class="card" style="--c:#ec4899">
+          <div class="card-head"><span class="card-icon">🧠</span><span class="tag tag-online">已上线</span></div>
+          <h3>LLM 管理</h3>
+          <p class="desc">OpenAI 兼容 + Anthropic / Gemini 原生端点 · 虚拟 Key · 预算计费 · 路由轮询与健康探测</p>
+        </div>
+        <div class="card" style="--c:#06b6d4">
+          <div class="card-head"><span class="card-icon">🔌</span><span class="tag tag-online">已上线</span></div>
+          <h3>MCP 管理</h3>
+          <p class="desc">SSE / streamable-http 双协议网关 · OAuth 客户端与令牌 · $smart 向量智能路由 · 企业能力工具集</p>
+        </div>
+        <div class="card" style="--c:#64748b">
+          <div class="card-head"><span class="card-icon">📑</span><span class="tag tag-online">已上线</span></div>
+          <h3>文档与知识库</h3>
+          <p class="desc">上传/预览/分块向量嵌入 · 语义检索 · 行级授权 · web/数据库/API/对象存储数据源定时同步</p>
+        </div>
+        <div class="card" style="--c:#14b8a6">
+          <div class="card-head"><span class="card-icon">📋</span><span class="tag tag-online">已上线</span></div>
+          <h3>项目管理</h3>
+          <p class="desc">项目/任务/看板 · 里程碑 · 报表排期 · 自定义字段，绑定 Agent/Skill/KB/LLM/MCP</p>
+        </div>
+        <div class="card" style="--c:#10b981">
+          <div class="card-head"><span class="card-icon">🤖</span><span class="tag tag-online">已上线</span></div>
+          <h3>Agent 管理</h3>
+          <p class="desc">实例生命周期（Docker/腾讯云 CVM）· 远程桌面 · Web 终端 · 工作区文件 · 备份与滚动发布 · 审计与风险监控</p>
+        </div>
+        <div class="card" style="--c:#f59e0b">
+          <div class="card-head"><span class="card-icon">💻</span><span class="tag tag-online">已上线</span></div>
+          <h3>客户端 App</h3>
+          <p class="desc">Tauri 2 双端 · 装/启停 OpenClaw/Hermes/Obsidian · 微信扫码绑定 · Mac / Windows 桌面节点（截屏/控鼠键）</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap：在建/规划 -->
+  <section id="roadmap">
+    <div class="wrap">
+      <h2>功能路线图</h2>
+      <p class="section-sub">下一步打算做的</p>
+      <div class="grid grid-3">
+        <div class="card" style="--c:#6366f1">
+          <div class="card-head"><span class="card-icon">💻</span><span class="tag tag-plan">规划中</span></div>
+          <h3>客户端渠道</h3>
+          <p class="desc">微信渠道已上线，计划接入钉钉 / 企微 / 飞书 / Telegram</p>
+          <div class="chips"><span class="chip">钉钉</span><span class="chip">企微</span><span class="chip">飞书</span><span class="chip">Telegram</span></div>
+        </div>
+        <div class="card" style="--c:#10b981">
+          <div class="card-head"><span class="card-icon">🖥️</span><span class="tag tag-plan">规划中</span></div>
+          <h3>桌面节点补齐</h3>
+          <p class="desc">Mac / Windows 桌面节点已对齐，录屏与摄像头采集（screen.record / camera）两端补齐</p>
+          <div class="chips"><span class="chip">录屏</span><span class="chip">摄像头</span></div>
+        </div>
+        <div class="card" style="--c:#f43f5e">
+          <div class="card-head"><span class="card-icon">🔍</span><span class="tag tag-plan">规划中</span></div>
+          <h3>知识检索打通</h3>
+          <p class="desc">docsource 已能拉取飞书 / 钉钉 / 腾讯文档 / Notion 文档，下一步与站内文档、知识库统一检索</p>
+          <div class="chips"><span class="chip">docsource</span><span class="chip">统一检索</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quickstart：自部署三步（官网不提供在线体验） -->
+  <section id="quickstart">
+    <div class="wrap">
+      <h2>快速开始</h2>
+      <p class="section-sub">开源 · 自行部署 · 数据完全在自己手里（本站不提供在线体验服务）</p>
+      <div class="steps">
+        <div class="step">
+          <h3><span class="step-no">1</span>获取源码</h3>
+          <p>从 GitHub 克隆仓库，按 README 准备运行环境（Node / Go / PostgreSQL + pgvector / Redis）。</p>
+          <pre>git clone https://github.com/aiarsenal/aiarsenal.git
+cd aiarsenal</pre>
+        </div>
+        <div class="step">
+          <h3><span class="step-no">2</span>本地一键起全栈（macOS / Windows）</h3>
+          <p>脚本自动初始化 10 个数据库（基线 SQL 已固化，无需迁移）、构建前后端并拉起三个服务。</p>
+          <pre>bash scripts/local-test.sh deploy      # macOS
+bash scripts/local-test-win.sh deploy  # Windows（Git Bash）</pre>
+          <p class="note">默认账号 <code>hi / aiarsenal123</code>（详见 README「默认账号」节，登录后请立即修改）。</p>
+        </div>
+        <div class="step">
+          <h3><span class="step-no">3</span>服务器部署（Ubuntu）</h3>
+          <p>systemd + nginx 一键部署；桌面客户端（macOS .dmg / Windows .msi）从 GitHub Releases 下载，连接你自己的服务端。</p>
+          <pre>sudo bash deploy.sh rebuild-db   # 首次建库（⚠️ 会清空重建）
+sudo bash deploy.sh test         # 测试环境：纯 HTTP + /etc/hosts</pre>
+          <p class="note">完整步骤与桌面客户端说明见 <a href="https://github.com/aiarsenal/aiarsenal#readme" target="_blank" rel="noopener">README</a> · 下载 <a href="https://github.com/aiarsenal/aiarsenal/releases" target="_blank" rel="noopener">Releases</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech stack -->
+  <section id="tech">
+    <div class="wrap">
+      <h2>技术栈</h2>
+      <p class="section-sub">全栈基于 GLM-5.2 构建</p>
+      <div class="grid grid-tech">
+        <div class="tech" style="--c:#6366f1"><div class="tech-icon">🧠</div><div class="name">GLM-5.2</div><div class="desc">全程参与编写</div></div>
+        <div class="tech" style="--c:#06b6d4"><div class="tech-icon">🐹</div><div class="name">Gin</div><div class="desc">后端 Web 框架</div></div>
+        <div class="tech" style="--c:#10b981"><div class="tech-icon">🗂️</div><div class="name">GORM</div><div class="desc">多库 ORM</div></div>
+        <div class="tech" style="--c:#3b82f6"><div class="tech-icon">🐘</div><div class="name">PostgreSQL</div><div class="desc">数据库 · pgvector</div></div>
+        <div class="tech" style="--c:#ef4444"><div class="tech-icon">🟥</div><div class="name">Redis</div><div class="desc">缓存 · 会话</div></div>
+        <div class="tech" style="--c:#42b983"><div class="tech-icon">⚡</div><div class="name">Vue 3</div><div class="desc">前端框架</div></div>
+        <div class="tech" style="--c:#8b5cf6"><div class="tech-icon">🎨</div><div class="name">Vben Admin</div><div class="desc">Ant Design Vue</div></div>
+        <div class="tech" style="--c:#f59e0b"><div class="tech-icon">🖥️</div><div class="name">Tauri</div><div class="desc">桌面端客户端</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="wrap about">
+      <h2>关于项目</h2>
+      <p style="margin-top: 16px">
+        AI Arsenal 是一个企业级 AI 应用管理平台，全部代码由 GLM-5.2 参与编写。系统、Skill、LLM、MCP、文档与知识库、项目管理、Agent、客户端八个模块都已实现，以 <a href="https://github.com/aiarsenal/aiarsenal/blob/master/LICENSE" target="_blank" rel="noopener" style="color: var(--primary)">Apache-2.0</a> 协议开源。
+        部署遇到问题欢迎提 Issue，改进欢迎提 PR。
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-inner">
+      <div class="brand"><img src="assets/logo.png" alt="logo" /><span>AI Arsenal</span></div>
+      <p>© 2026 AI Arsenal. All Rights Reserved.</p>
+      <p>Powered by Gin + Vben · <a href="https://github.com/aiarsenal/aiarsenal" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // 视频懒播放：进入视口再加载播放（preload=none，首屏不拉 5.9MB）
+    new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var v = e.target;
+          v.play().catch(function () {});
+          obs.unobserve(v);
+        }
+      });
+    }, { rootMargin: '200px' }).observe(document.getElementById('brandVideo'));
+  </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="description" content="A Modern Back-end Management System" />
+    <meta name="keywords" content="Vben Admin Vue3 Vite" />
+    <meta name="author" content="Vben" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0"
+    />
+    <!-- 由 vite 注入 VITE_APP_TITLE 变量，在 .env 文件内配置 -->
+    <title>%VITE_APP_TITLE%</title>
+    <!-- 浏览器标签 favicon：与侧边栏 logo 同一个机甲浣熊形象（裁自 logo.png，去掉小尺寸下糊掉的文字） -->
+    <link rel="icon" href="/favicon.ico?v=10" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=10" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=10" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=9" />
+    <link rel="mask-icon" href="/logo.png?v=9" color="#42b983" />
+  </head>
+  <body>
+    <!-- AI Arsenal 启动叙事动画：冷启动全屏播放 8 帧，应用就绪（main.ts 置 __appReady）后淡出 -->
+    <script src="/vendor/gsap.min.js"></script>
+    <script src="/vendor/ai-splash.js"></script>
+    <script>
+      (function () {
+        // 资源缺失（如 gsap 未加载）则静默跳过，绝不阻塞应用启动
+        if (!window.gsap || !window.AISplash) return;
+        var frames = [
+          '/splash/frame-1.png', '/splash/frame-2.png', '/splash/frame-3.png', '/splash/frame-4.png',
+          '/splash/frame-5.png', '/splash/frame-6.png', '/splash/frame-7.png', '/splash/frame-8.png',
+        ];
+        window.__aiMinUntil = Date.now() + 1200; // 最短展示 ~1.2s，避免极快加载时动画一闪而过
+        window.__appReady = false;
+        function maybeHide() {
+          var sp = window.__aiSplash;
+          if (!sp) return;
+          if (window.__appReady && Date.now() >= window.__aiMinUntil) {
+            sp.hide(); // ai-splash.js 内置 0.5s 淡出
+            window.__aiSplash = null;
+          } else if (window.__appReady) {
+            setTimeout(maybeHide, window.__aiMinUntil - Date.now() + 30);
+          }
+        }
+        try {
+          window.__aiSplash = window.AISplash.create({
+            frames: frames,
+            title: 'AI Arsenal',
+          });
+          window.__aiSplash.play();
+        } catch (e) {
+          window.__aiSplash = null;
+        }
+        window.__aiHideSplash = maybeHide; // 供 main.ts 在 bootstrap 完成后调用
+      })();
+    </script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

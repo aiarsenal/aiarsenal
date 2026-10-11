@@ -1,0 +1,63 @@
+name: Bug 报告 / Bug Report
+description: 报告一个可复现的问题 / Report a reproducible problem
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈问题!请尽量填写完整,便于快速定位。
+        Thanks for taking the time to report a bug — please fill in as much detail as possible.
+
+  - type: textarea
+    id: repro-steps
+    attributes:
+      label: 复现步骤 / Steps to Reproduce
+      description: |
+        按顺序列出操作步骤,例如:
+        1. 打开「xx」页面
+        2. 点击「yy」
+        3. 出现报错
+        Numbered steps to reproduce the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为 / Expected Behavior
+      description: 你期望发生什么 / What you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为 / Actual Behavior
+      description: 实际发生了什么 / What actually happened.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境 / Environment
+      description: |
+        请包含 / Please include:
+        - 操作系统 / OS(如 macOS 15 / Windows 11)
+        - 客户端版本 / Client version(或桌面端 / Web 端)
+        - 后端版本 / Backend version(commit、tag 或部署方式)
+        - 浏览器 / Browser(Web 端问题)
+      placeholder: |
+        OS: macOS 15.2
+        Client: v0.1.0 (macOS)
+        Backend: master@abcdef
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志与截图 / Logs & Screenshots
+      description: 报错日志、控制台输出或截图(注意脱敏)/ Error logs, console output or screenshots (redact sensitive info).
+    validations:
+      required: false

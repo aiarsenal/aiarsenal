@@ -1,0 +1,95 @@
+/* ant-design-vue 组件库的一些样式重置 */
+
+/*
+ * 「形状/动效」相关修饰（颜色无关，全部走中性/主题变量）。
+ * 不改任何颜色令牌：品牌色、暗亮主题仍由 --primary / --foreground / --border 等驱动。
+ */
+:root {
+  /* 面板软投影：中性深石板色，亮/暗两态都呈现为「下沉」阴影而非发光 */
+  --shadow-soft: 0 10px 30px -24px rgb(15 23 42 / 35%);
+}
+
+.ant-app {
+  width: 100%;
+  height: 100%;
+  overscroll-behavior: none;
+  color: inherit;
+  /* 字体族（与 antd ConfigProvider token 一致，覆盖非 antd 文本） */
+  font-family:
+    'Segoe UI Variable', 'Segoe UI', 'SF Pro Text', system-ui, sans-serif;
+}
+
+/* 顶层卡片/面板带柔和阴影浮动 */
+.ant-card {
+  box-shadow: var(--shadow-soft);
+}
+
+.ant-btn {
+  .anticon {
+    display: inline-flex;
+  }
+
+  /* * 修复按钮添加图标时的位置问题 */
+  > svg {
+    display: inline-block;
+  }
+
+  > svg + span {
+    margin-inline-start: 6px;
+  }
+}
+
+.ant-tag {
+  > svg {
+    display: inline-block;
+  }
+
+  > svg + span {
+    margin-inline-start: 4px;
+  }
+}
+
+.ant-message-notice-content,
+.ant-notification-notice {
+  &:is(.dark *) {
+    border-color: hsl(var(--border) / 60%);
+    border-width: 1px;
+  }
+}
+
+.form-valid-error {
+  /** select 选择器的样式 */
+
+  .ant-select:not(.valid-success) .ant-select-selector:not(.valid-success) {
+    border-color: hsl(var(--destructive)) !important;
+  }
+
+  .ant-select-focused .ant-select-selector {
+    box-shadow: 0 0 0 2px rgb(255 38 5 / 6%) !important;
+  }
+
+  /** 数字输入框样式 */
+  .ant-input-number-focused {
+    box-shadow: 0 0 0 2px rgb(255 38 5 / 6%);
+  }
+
+  /** 密码输入框样式 */
+  .ant-input-affix-wrapper:hover {
+    border-color: hsl(var(--destructive));
+    box-shadow: 0 0 0 2px rgb(255 38 5 / 6%);
+  }
+
+  .ant-input:not(.valid-success) {
+    border-color: hsl(var(--destructive)) !important;
+  }
+}
+
+/** 区间选择器下面来回切换时的样式 */
+.ant-app .form-valid-error .ant-picker-active-bar {
+  background-color: hsl(var(--destructive));
+}
+
+/** 时间选择器的样式 */
+.ant-app .form-valid-error .ant-picker-focused {
+  box-shadow: 0 0 0 2px rgb(255 38 5 / 6%);
+}

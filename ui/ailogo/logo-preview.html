@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>主Logo 透明版 · 多底预览</title>
+<style>
+  *{box-sizing:border-box;margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",Segoe UI,system-ui,sans-serif}
+  body{background:#11151f;color:#c8d0dd;padding:2rem}
+  h1{font-size:1.2rem;margin-bottom:.25rem}
+  .sub{color:#8b93a4;font-size:.85rem;margin-bottom:1.4rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem;max-width:1100px}
+  .card{border-radius:14px;padding:1.6rem;display:flex;flex-direction:column;align-items:center;gap:.8rem;
+    border:1px solid rgba(128,128,128,.18);min-height:200px;justify-content:center;position:relative}
+  .card .tag{position:absolute;top:.6rem;left:.7rem;font-size:.72rem;opacity:.6;
+    padding:.15rem .5rem;border-radius:6px;background:rgba(128,128,128,.18)}
+  .card img{width:75%;max-width:300px;height:auto;display:block}
+  .c-white{background:#ffffff}
+  .c-light{background:#eef1f6}
+  .c-grad{background:linear-gradient(135deg,#7c5cff,#21d4fd)}
+  .c-dark{background:#0b0d12}
+  .c-dark .tag,.c-grad .tag{color:#fff}
+  .compare{margin-top:1.6rem;max-width:1100px;color:#8b93a4;font-size:.85rem}
+  .compare span{display:inline-block;margin-top:.5rem;padding:.6rem;background:#000;border-radius:10px}
+  .compare img{height:60px;width:auto;vertical-align:middle}
+</style>
+</head>
+<body>
+  <h1>主Logo 透明版 · 四种背景验证</h1>
+  <div class="sub">同一张 <code>主Logo 高清版-透明.png</code>,不改图,只换底色。重点看白底/浅底(之前缺的场景)。</div>
+
+  <div class="grid">
+    <div class="card c-white"><span class="tag" style="color:#333">白底 #fff</span><img src="AI Arsenal 主Logo 高清版-透明.png" alt=""></div>
+    <div class="card c-light"><span class="tag" style="color:#333">浅灰底 #eef1f6</span><img src="AI Arsenal 主Logo 高清版-透明.png" alt=""></div>
+    <div class="card c-grad"><span class="tag">品牌渐变</span><img src="AI Arsenal 主Logo 高清版-透明.png" alt=""></div>
+    <div class="card c-dark"><span class="tag">深色底 #0b0d12</span><img src="AI Arsenal 主Logo 高清版-透明.png" alt=""></div>
+  </div>
+
+  <div class="compare">
+    对照 · 原件(纯黑底,只能用于黑底场景):
+    <span><img src="AI Arsenal 主Logo 高清版.png" alt="原件"></span>
+  </div>
+</body>
+</html>

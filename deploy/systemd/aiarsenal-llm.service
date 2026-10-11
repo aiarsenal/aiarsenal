@@ -1,0 +1,24 @@
+[Unit]
+Description=AI Arsenal LLM Gateway (OpenAI 兼容 /v1/chat/completions 等)
+After=network.target postgresql.service redis.service
+Wants=postgresql.service redis.service
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+# 密钥经 /etc/aiarsenal/env 注入（deploy.sh 首次部署生成，root:0600）；文件缺失不阻塞（“-”前缀）
+EnvironmentFile=-/etc/aiarsenal/env
+WorkingDirectory=/home/ubuntu/aiarsenal/llm
+# __ENV__ 由 deploy.sh 按环境(test/prod)替换；domain 由 APP_ENV 推导(llm.<domain>)
+Environment=APP_ENV=__ENV__
+Environment=PORT=43214
+ExecStart=/home/ubuntu/aiarsenal/llm/bin/llm
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65536
+StandardOutput=append:/home/ubuntu/aiarsenal/llm/resource/log/systemd-stdout.log
+StandardError=append:/home/ubuntu/aiarsenal/llm/resource/log/systemd-stderr.log
+
+[Install]
+WantedBy=multi-user.target

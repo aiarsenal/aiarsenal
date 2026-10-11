@@ -1,0 +1,25 @@
+# .dockerignore（仓库根）— 仅为 hermes-desktop 构建瘦身。
+#
+# hermes-desktop 的 docker build 用「仓库根」作上下文（因需 hermes-agent-main/ 源码）。
+# openclaw 系列构建用 context=image/，有它自己（无）的上下文，本文件不影响它们（Docker 只读
+# 上下文根的 .dockerignore）。
+#
+# 默认排除一切，只放行 image/ 与 hermes-agent-main/。
+*
+
+# 保留 image/（manager 源码 + desktop-root s6 脚本 + Dockerfile + build.sh）。
+!image
+!image/**
+
+# 保留 hermes-agent-main/（hermes 源码 + pyproject + uv.lock）。
+!hermes-agent-main
+!hermes-agent-main/**
+
+# 即便放行目录内，仍剔除这些重物（构建 hermes 不需要）。
+hermes-agent-main/.git
+hermes-agent-main/docs
+hermes-agent-main/contributors
+hermes-agent-main/infographic
+hermes-agent-main/.venv
+image/manager/aiarsenal-agent
+image/manager/manager

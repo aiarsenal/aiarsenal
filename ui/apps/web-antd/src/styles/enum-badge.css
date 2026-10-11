@@ -1,0 +1,56 @@
+/**
+ * 枚举徽标全局样式（胶囊浅彩底，暗/亮主题自适应）
+ * 用法：<span class="aa-enum aa-enum--{色词}">文本</span>
+ * 色词→主色（用户指定 8 色枚举调色板，success=绿；类名沿用旧色词仅为兼容调用点，实际色值见下）：
+ *   default/grey=灰#8c8c8c  success/green/magenta=绿#349e48  error/red/danger=暗红#b8001f
+ *   warning/orange/gold=橙红#ff4500  processing/blue=蓝#0266b3  purple=洋红#cc52b9  geekblue=青#0dd3bb
+ *   （#94e044 / #ffd635 暂备用未接线）
+ * 背景由 currentColor 派生（color-mix 22%），换色只需设 color。
+ */
+.aa-enum {
+  display: inline-block;
+  padding: 3px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 22%, transparent);
+}
+
+.aa-enum--default,
+.aa-enum--grey {
+  color: #8c8c8c;
+}
+
+.aa-enum--success,
+.aa-enum--green,
+.aa-enum--magenta {
+  color: #349e48;
+}
+
+.aa-enum--error,
+.aa-enum--red,
+.aa-enum--danger {
+  color: #b8001f;
+}
+
+.aa-enum--warning,
+.aa-enum--orange,
+.aa-enum--gold {
+  color: #ff4500;
+}
+
+.aa-enum--processing,
+.aa-enum--blue {
+  color: #0266b3;
+}
+
+.aa-enum--purple {
+  color: #cc52b9;
+}
+
+.aa-enum--geekblue {
+  color: #0dd3bb;
+}

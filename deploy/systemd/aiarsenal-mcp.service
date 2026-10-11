@@ -1,0 +1,24 @@
+[Unit]
+Description=AI Arsenal MCP Gateway (面向 AI 客户端的 MCP 协议端点)
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+# 密钥经 /etc/aiarsenal/env 注入（deploy.sh 首次部署生成，root:0600）；文件缺失不阻塞（“-”前缀）
+EnvironmentFile=-/etc/aiarsenal/env
+# 网关是 api module 第三 main（api/cmd/mcp）：cwd=api/ 使配置读 api/config/config.yaml
+# （database + actor 节，与主服务同份，无独立 mcp 配置副本）
+WorkingDirectory=/home/ubuntu/aiarsenal/api
+Environment=MCP_PORT=43213
+ExecStart=/home/ubuntu/aiarsenal/api/bin/mcp
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65536
+StandardOutput=append:/home/ubuntu/aiarsenal/api/resource/log/mcp-systemd-stdout.log
+StandardError=append:/home/ubuntu/aiarsenal/api/resource/log/mcp-systemd-stderr.log
+
+[Install]
+WantedBy=multi-user.target
