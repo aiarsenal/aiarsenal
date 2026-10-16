@@ -79,7 +79,7 @@ jobs:
       # pnpm 版本取自 ui/package.json 的 packageManager 字段(pnpm@10.34.4);
       # repo 根目录无 package.json,须显式指向 ui/package.json 让 action-setup 读取。
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           package_json_file: ui/package.json
 
