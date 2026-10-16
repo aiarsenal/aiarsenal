@@ -153,7 +153,7 @@ catalog:
   oxlint-tsgolint: ^0.23.0
   pinia: ^3.0.4
   pinia-plugin-persistedstate: ^4.7.1
-  pkg-types: ^2.3.1
+  pkg-types: ^2.3.3
   playwright: ^1.61.0
   postcss: ^8.5.15
   postcss-html: ^1.8.1
