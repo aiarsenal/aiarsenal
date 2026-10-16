@@ -44,7 +44,7 @@ catalog:
   '@clack/prompts': ^1.5.1
   '@commitlint/cli': ^21.0.2
   '@commitlint/config-conventional': ^21.0.2
-  '@ctrl/tinycolor': ^4.2.0
+  '@ctrl/tinycolor': ^4.2.1
   '@eslint-community/eslint-plugin-eslint-comments': ^4.7.2
   '@eslint/js': ^10.0.1
   '@faker-js/faker': ^10.4.0
