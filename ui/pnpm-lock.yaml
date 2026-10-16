@@ -202,8 +202,8 @@ catalogs:
       specifier: ^10.0.1
       version: 10.0.1
     cz-git:
-      specifier: ^1.13.1
-      version: 1.13.1
+      specifier: ^1.14.0
+      version: 1.14.0
     czg:
       specifier: ^1.13.1
       version: 1.13.1
@@ -677,7 +677,7 @@ importers:
         version: 5.0.1(@commitlint/lint@21.0.2)
       cz-git:
         specifier: 'catalog:'
-        version: 1.13.1
+        version: 1.14.0
       czg:
         specifier: 'catalog:'
         version: 1.13.1
@@ -6034,6 +6034,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -6111,8 +6112,8 @@ packages:
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
-  cz-git@1.13.1:
-    resolution: {integrity: sha512-xeMA5ci+gkBY6uKmqc6nzhG/Q4pmK1DKbVVUgByOTBgregoiYE0f3otEF0ADelyEWH4vNsO1W2o7QZYEe7Nwlw==}
+  cz-git@1.14.0:
+    resolution: {integrity: sha512-QjwlXZrGWsXQkyregBHhA2qNNGB2TCuf0ovkW1Q5OLgdJDs9Tq1yahfKpSMLyqOBjVRuv1iHBTDP83zJDBlJdg==}
     engines: {node: '>=v12.20.0'}
 
   czg@1.13.1:
@@ -14760,7 +14761,7 @@ snapshots:
 
   csstype@3.2.3: {}
 
-  cz-git@1.13.1: {}
+  cz-git@1.14.0: {}
 
   czg@1.13.1: {}
 

@@ -112,7 +112,7 @@ catalog:
   consola: ^3.4.2
   cross-env: ^10.1.0
   cspell: ^10.0.1
-  cz-git: ^1.13.1
+  cz-git: ^1.14.0
   czg: ^1.13.1
   dayjs: ^1.11.21
   defu: ^6.1.7
