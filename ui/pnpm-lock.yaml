@@ -262,8 +262,8 @@ catalogs:
       specifier: ^7.2.0
       version: 7.2.0
     globals:
-      specifier: ^17.6.0
-      version: 17.6.0
+      specifier: ^17.13.0
+      version: 17.13.0
     happy-dom:
       specifier: ^20.10.6
       version: 20.10.6
@@ -719,7 +719,7 @@ importers:
         version: 3.4.0(eslint@10.5.0(jiti@2.7.0))
       globals:
         specifier: 'catalog:'
-        version: 17.6.0
+        version: 17.13.0
       vue-eslint-parser:
         specifier: 'catalog:'
         version: 10.4.1(eslint@10.5.0(jiti@2.7.0))
@@ -6034,6 +6034,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -6965,8 +6966,8 @@ packages:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
 
-  globals@17.6.0:
-    resolution: {integrity: sha512-sepffkT8stwnIYbsMBpoCHJuJM5l98FUF2AnE07hfvE0m/qp3R586hw4jF4uadbhvg1ooIdzuu7CsfD2jzCaNA==}
+  globals@17.13.0:
+    resolution: {integrity: sha512-RwMTC61u7hrG3ZJMkZQOK4JLJrKS8QtoTii63EmWvFXHqycY9FObBJQCbsLxSO8kjKhWE5kV1GC+Vb1g3RI0Zg==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -15728,7 +15729,7 @@ snapshots:
 
   globals@15.15.0: {}
 
-  globals@17.6.0: {}
+  globals@17.13.0: {}
 
   globalthis@1.0.4:
     dependencies:
