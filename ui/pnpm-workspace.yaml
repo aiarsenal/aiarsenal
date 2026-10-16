@@ -113,7 +113,7 @@ catalog:
   cross-env: ^10.1.0
   cspell: ^10.0.1
   cz-git: ^1.13.1
-  czg: ^1.13.1
+  czg: ^1.14.0
   dayjs: ^1.11.21
   defu: ^6.1.7
   dotenv: ^17.4.2
