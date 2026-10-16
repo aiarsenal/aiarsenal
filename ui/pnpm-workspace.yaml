@@ -160,7 +160,7 @@ catalog:
   postcss-scss: ^4.0.9
   publint: ^0.3.21
   qrcode: ^1.5.4
-  qs: ^6.15.2
+  qs: ^6.16.0
   reka-ui: ^2.9.10
   resolve.exports: ^2.0.3
   rimraf: ^6.1.3
