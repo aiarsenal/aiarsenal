@@ -43,7 +43,7 @@ catalog:
   '@changesets/git': ^3.0.4
   '@clack/prompts': ^1.5.1
   '@commitlint/cli': ^21.0.2
-  '@commitlint/config-conventional': ^21.0.2
+  '@commitlint/config-conventional': ^21.2.3
   '@ctrl/tinycolor': ^4.2.0
   '@eslint-community/eslint-plugin-eslint-comments': ^4.7.2
   '@eslint/js': ^10.0.1
