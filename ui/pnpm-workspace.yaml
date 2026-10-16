@@ -114,7 +114,7 @@ catalog:
   cspell: ^10.0.1
   cz-git: ^1.13.1
   czg: ^1.13.1
-  dayjs: ^1.11.21
+  dayjs: ^1.11.23
   defu: ^6.1.7
   dotenv: ^17.4.2
   echarts: ^6.1.0

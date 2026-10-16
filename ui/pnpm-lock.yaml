@@ -208,8 +208,8 @@ catalogs:
       specifier: ^1.13.1
       version: 1.13.1
     dayjs:
-      specifier: ^1.11.21
-      version: 1.11.21
+      specifier: ^1.11.23
+      version: 1.11.23
     defu:
       specifier: ^6.1.7
       version: 6.1.7
@@ -638,7 +638,7 @@ importers:
         version: 4.2.6(vue@3.5.38(typescript@6.0.3))
       dayjs:
         specifier: 'catalog:'
-        version: 1.11.21
+        version: 1.11.23
       docx-preview:
         specifier: ^0.4.0
         version: 0.4.0
@@ -804,7 +804,7 @@ importers:
         version: 3.4.2
       dayjs:
         specifier: 'catalog:'
-        version: 1.11.21
+        version: 1.11.23
       execa:
         specifier: 'catalog:'
         version: 9.6.1
@@ -901,7 +901,7 @@ importers:
         version: 5.1.5(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
       dayjs:
         specifier: 'catalog:'
-        version: 1.11.21
+        version: 1.11.23
       dotenv:
         specifier: 'catalog:'
         version: 17.4.2
@@ -961,7 +961,7 @@ importers:
         version: 2.1.1
       dayjs:
         specifier: 'catalog:'
-        version: 1.11.21
+        version: 1.11.23
       defu:
         specifier: 'catalog:'
         version: 6.1.7
@@ -6034,6 +6034,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -6135,8 +6136,8 @@ packages:
   dataloader@1.4.0:
     resolution: {integrity: sha512-68s5jYdlvasItOJnCuI2Q9s4q98g0pCyL3HrcKJu8KNugUl8ahgmZYg38ysLTgQjjXX3H8CJLkAvWrclWfcalw==}
 
-  dayjs@1.11.21:
-    resolution: {integrity: sha512-98IT+HOahAisibz/yjKbzuOBwYcjJ7BCLPzARyHiyEBmRz4fatF+KPJszEHXsGYjUG234aH/cOjW1wwTbKUZlA==}
+  dayjs@1.11.23:
+    resolution: {integrity: sha512-QDTCU0M0MxR3hQfnlDJfwekQiaanm1ubOD231u73WBckQ/fsamwRLiE2GBz6D3a/xF1NgfiDLJjXBa1hYOYTtQ==}
 
   db0@0.3.4:
     resolution: {integrity: sha512-RiXXi4WaNzPTHEOu8UPQKMooIbqOEyqA1t7Z6MsdxSCeb8iUC9ko3LcmsLmeUt2SM5bctfArZKkRQggKZz7JNw==}
@@ -13944,7 +13945,7 @@ snapshots:
       array-tree-filter: 2.1.0
       async-validator: 4.2.5
       csstype: 3.2.3
-      dayjs: 1.11.21
+      dayjs: 1.11.23
       dom-align: 1.12.4
       dom-scroll-into-view: 2.0.1
       lodash: 4.18.1
@@ -14784,7 +14785,7 @@ snapshots:
 
   dataloader@1.4.0: {}
 
-  dayjs@1.11.21: {}
+  dayjs@1.11.23: {}
 
   db0@0.3.4: {}
 
@@ -15381,7 +15382,7 @@ snapshots:
   exceljs@4.4.0:
     dependencies:
       archiver: 5.3.2
-      dayjs: 1.11.21
+      dayjs: 1.11.23
       fast-csv: 4.3.6
       jszip: 3.10.1
       readable-stream: 3.6.2
