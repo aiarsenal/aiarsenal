@@ -49,8 +49,8 @@ catalogs:
       specifier: ^2.16.1
       version: 2.16.2
     '@lucide/vue':
-      specifier: ^1.18.0
-      version: 1.21.0
+      specifier: ^1.56.0
+      version: 1.56.0
     '@manypkg/get-packages':
       specifier: ^3.1.0
       version: 3.1.0
@@ -940,7 +940,7 @@ importers:
         version: 5.0.1(vue@3.5.38(typescript@6.0.3))
       '@lucide/vue':
         specifier: 'catalog:'
-        version: 1.21.0(vue@3.5.38(typescript@6.0.3))
+        version: 1.56.0(vue@3.5.38(typescript@6.0.3))
       vue:
         specifier: ^3.5.38
         version: 3.5.38(typescript@6.0.3)
@@ -1174,7 +1174,7 @@ importers:
     dependencies:
       '@lucide/vue':
         specifier: 'catalog:'
-        version: 1.21.0(vue@3.5.38(typescript@6.0.3))
+        version: 1.56.0(vue@3.5.38(typescript@6.0.3))
       '@vben-core/composables':
         specifier: workspace:*
         version: link:../../composables
@@ -3335,8 +3335,8 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@lucide/vue@1.21.0':
-    resolution: {integrity: sha512-eoFn3tppjKAc12ZqdnRSMFdtwQ1ZMRQFb6SV1Eub6Y8kU28ccnqKeSFdnur9hMg8gIbosU2Y3WFJr/J/xS/IlQ==}
+  '@lucide/vue@1.56.0':
+    resolution: {integrity: sha512-IA7xSJwb5NQ6zamA1+zUmbVrWeX8TFPxCeqTRKJGLjb7jJmR2+USChuVRy+Opf9T545xkCSz/UJT2g44zyGgng==}
     peerDependencies:
       vue: ^3.5.38
 
@@ -6034,6 +6034,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -12187,7 +12188,7 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@lucide/vue@1.21.0(vue@3.5.38(typescript@6.0.3))':
+  '@lucide/vue@1.56.0(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       vue: 3.5.38(typescript@6.0.3)
 

@@ -54,7 +54,7 @@ catalog:
   '@intlify/core-base': ^11.4.5
   '@intlify/unplugin-vue-i18n': ^11.2.3
   '@jspm/generator': ^2.16.1
-  '@lucide/vue': ^1.18.0
+  '@lucide/vue': ^1.56.0
   '@manypkg/get-packages': ^3.1.0
   '@nolebase/vitepress-plugin-git-changelog': ^2.18.2
   '@playwright/test': ^1.61.0
