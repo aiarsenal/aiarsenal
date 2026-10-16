@@ -14,7 +14,7 @@ require (
 	github.com/ledongthuc/pdf v0.0.0-20250511090121-5959a4027728
 	github.com/lib/pq v1.12.3
 	github.com/mholt/archives v0.1.5
-	github.com/modelcontextprotocol/go-sdk v1.6.1
+	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/mojocn/base64Captcha v1.3.8
 	github.com/mssola/user_agent v0.6.0
 	github.com/redis/go-redis/v9 v9.21.0
