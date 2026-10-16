@@ -64,7 +64,7 @@ catalog:
   '@tailwindcss/vite': ^4.3.1
   '@tanstack/vue-query': ^5.101.0
   '@tanstack/vue-store': ^0.11.0
-  '@tiptap/core': ^3.26.1
+  '@tiptap/core': ^3.32.0
   '@tiptap/extension-document': ^3.26.1
   '@tiptap/extension-highlight': ^3.26.1
   '@tiptap/extension-image': ^3.26.1
