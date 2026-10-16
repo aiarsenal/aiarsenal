@@ -448,8 +448,8 @@ catalogs:
       specifier: ^3.3.5
       version: 3.3.5
     vxe-pc-ui:
-      specifier: ^4.14.39
-      version: 4.15.5
+      specifier: ^4.20.0
+      version: 4.20.0
     vxe-table:
       specifier: ^4.19.14
       version: 4.19.17
@@ -1509,7 +1509,7 @@ importers:
         version: 3.5.38(typescript@6.0.3)
       vxe-pc-ui:
         specifier: 'catalog:'
-        version: 4.15.5(vue@3.5.38(typescript@6.0.3))
+        version: 4.20.0(vue@3.5.38(typescript@6.0.3))
       vxe-table:
         specifier: 'catalog:'
         version: 4.19.17(vue@3.5.38(typescript@6.0.3))
@@ -5339,8 +5339,8 @@ packages:
     peerDependencies:
       vue: ^3.5.38
 
-  '@vxe-ui/core@4.4.14':
-    resolution: {integrity: sha512-bEMnvZl+R39+midxlz0vcpWS/w4WsdN9bOfjxWIfz7o95FyxOQWUjHs63IT9wNeUP09WhLkmUDKKjdl7BQYUMw==}
+  '@vxe-ui/core@4.4.28':
+    resolution: {integrity: sha512-2dDl56bN1+wzVHvkJE2MTlh2XeeExdFO/gBZ+kc1ZAUUOvNQC0mKiYjqQNcoX5QFUMTNzMf1e2Hk45kLg0cujQ==}
     peerDependencies:
       vue: ^3.5.38
 
@@ -6034,6 +6034,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -10041,8 +10042,8 @@ packages:
       typescript:
         optional: true
 
-  vxe-pc-ui@4.15.5:
-    resolution: {integrity: sha512-g9m95gh1MZsnCTwN++jcQVzPwFgs81LaKjFC3u1Mt2o85F17FHcjDaiOufAGUPnzo4LPLC1rCCBIqVd8a2lwjQ==}
+  vxe-pc-ui@4.20.0:
+    resolution: {integrity: sha512-EnPq9AXPZdq9NjP/H7rCtclX7NbWYTnhkXZMhVbIrdaFlMnXcD3/sYG0Y+4ghhMQjHQfLseF5fxD6taJ33EuYw==}
 
   vxe-table@4.19.17:
     resolution: {integrity: sha512-zbuEdFbw6Pt6hsULmSW9VyJPlz/w6elGx3mmstWAI/GAiFO3zD391/s3ViJMvTD5Styyr7pzystv++elNjDPFg==}
@@ -10227,8 +10228,8 @@ packages:
   xe-utils@3.9.1:
     resolution: {integrity: sha512-Ujk5UmoH6Iaqhgz3oGwfCXVcMdUJKlXnfvLABdnMyseMG0eHsX2mcCvLd/8sGlIXtfwsprI9bW7vgcVognLmqQ==}
 
-  xe-utils@4.0.9:
-    resolution: {integrity: sha512-LLO3Otzg2i9ArUoBdsjse9Tw7cwE0XvvoP98IMjoqL8l4UELO/a8c041Mq9cAfaUdd6ksamSvGF5luZkwVArqw==}
+  xe-utils@4.1.3:
+    resolution: {integrity: sha512-Ki2lJGLaLu5TzgJPEePxen5Apf/FB8k9/evDdvOiuiALB+jG2JDciOfNfRmkMNZUkS5AlrRGsHgQrQUJiWCN+w==}
 
   xml-name-validator@4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
@@ -13862,11 +13863,11 @@ snapshots:
     dependencies:
       vue: 3.5.38(typescript@6.0.3)
 
-  '@vxe-ui/core@4.4.14(vue@3.5.38(typescript@6.0.3))':
+  '@vxe-ui/core@4.4.28(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       dom-zindex: 1.0.7
       vue: 3.5.38(typescript@6.0.3)
-      xe-utils: 4.0.9
+      xe-utils: 4.1.3
 
   abbrev@2.0.0: {}
 
@@ -18972,15 +18973,15 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  vxe-pc-ui@4.15.5(vue@3.5.38(typescript@6.0.3)):
+  vxe-pc-ui@4.20.0(vue@3.5.38(typescript@6.0.3)):
     dependencies:
-      '@vxe-ui/core': 4.4.14(vue@3.5.38(typescript@6.0.3))
+      '@vxe-ui/core': 4.4.28(vue@3.5.38(typescript@6.0.3))
     transitivePeerDependencies:
       - vue
 
   vxe-table@4.19.17(vue@3.5.38(typescript@6.0.3)):
     dependencies:
-      vxe-pc-ui: 4.15.5(vue@3.5.38(typescript@6.0.3))
+      vxe-pc-ui: 4.20.0(vue@3.5.38(typescript@6.0.3))
     transitivePeerDependencies:
       - vue
 
@@ -19237,7 +19238,7 @@ snapshots:
 
   xe-utils@3.9.1: {}
 
-  xe-utils@4.0.9: {}
+  xe-utils@4.1.3: {}
 
   xml-name-validator@4.0.0: {}
 

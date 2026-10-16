@@ -205,7 +205,7 @@ catalog:
   vue-router: ^5.1.0
   vue-tippy: ^6.7.1
   vue-tsc: ^3.3.5
-  vxe-pc-ui: ^4.14.39
+  vxe-pc-ui: ^4.20.0
   vxe-table: ^4.19.14
   watermark-js-plus: ^1.6.3
   yaml-eslint-parser: ^2.0.0
