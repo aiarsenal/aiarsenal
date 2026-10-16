@@ -141,7 +141,7 @@ catalog:
   json-bigint: ^1.0.0
   jsonwebtoken: ^9.0.3
   knip: ^6.17.0
-  lefthook: ^2.1.9
+  lefthook: ^2.2.2
   lodash.clonedeep: ^4.5.0
   medium-zoom: ^1.1.0
   naive-ui: ^2.44.1
