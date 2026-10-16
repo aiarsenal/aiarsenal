@@ -75,7 +75,7 @@ catalog:
   '@tiptap/extension-underline': ^3.26.1
   '@tiptap/pm': ^3.26.1
   '@tiptap/starter-kit': ^3.26.1
-  '@tiptap/vue-3': ^3.26.1
+  '@tiptap/vue-3': ^3.32.0
   '@tsdown/css': ^0.22.3
   '@types/archiver': ^8.0.0
   '@types/html-minifier-terser': ^7.0.2
