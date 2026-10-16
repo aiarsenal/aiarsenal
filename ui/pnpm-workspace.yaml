@@ -59,7 +59,7 @@ catalog:
   '@nolebase/vitepress-plugin-git-changelog': ^2.18.2
   '@playwright/test': ^1.61.0
   '@pnpm/workspace.read-manifest': ^1000.3.1
-  '@stylistic/stylelint-plugin': ^5.2.0
+  '@stylistic/stylelint-plugin': ^5.3.1
   '@tailwindcss/typography': ^0.5.20
   '@tailwindcss/vite': ^4.3.1
   '@tanstack/vue-query': ^5.101.0
