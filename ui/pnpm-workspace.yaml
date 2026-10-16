@@ -51,7 +51,7 @@ catalog:
   '@iconify/json': ^2.2.487
   '@iconify/tailwind4': ^1.2.3
   '@iconify/vue': ^5.0.1
-  '@intlify/core-base': ^11.4.5
+  '@intlify/core-base': ^11.4.14
   '@intlify/unplugin-vue-i18n': ^11.2.3
   '@jspm/generator': ^2.16.1
   '@lucide/vue': ^1.18.0
