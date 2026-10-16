@@ -451,8 +451,8 @@ catalogs:
       specifier: ^4.14.39
       version: 4.15.5
     vxe-table:
-      specifier: ^4.19.14
-      version: 4.19.17
+      specifier: ^4.22.4
+      version: 4.22.4
     watermark-js-plus:
       specifier: ^1.6.3
       version: 1.6.3
@@ -1512,7 +1512,7 @@ importers:
         version: 4.15.5(vue@3.5.38(typescript@6.0.3))
       vxe-table:
         specifier: 'catalog:'
-        version: 4.19.17(vue@3.5.38(typescript@6.0.3))
+        version: 4.22.4
 
   packages/effects/request:
     dependencies:
@@ -6034,6 +6034,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -10044,8 +10045,8 @@ packages:
   vxe-pc-ui@4.15.5:
     resolution: {integrity: sha512-g9m95gh1MZsnCTwN++jcQVzPwFgs81LaKjFC3u1Mt2o85F17FHcjDaiOufAGUPnzo4LPLC1rCCBIqVd8a2lwjQ==}
 
-  vxe-table@4.19.17:
-    resolution: {integrity: sha512-zbuEdFbw6Pt6hsULmSW9VyJPlz/w6elGx3mmstWAI/GAiFO3zD391/s3ViJMvTD5Styyr7pzystv++elNjDPFg==}
+  vxe-table@4.22.4:
+    resolution: {integrity: sha512-WkJF8nZMWMdRnSLvR3G4nKDrk3LE2srrfMCcLd8TOO59vimEOy+r+wFkA6PKe/O34/GloJ5vDyFEOs1DQGx7MQ==}
 
   w3c-keyname@2.2.8:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==}
@@ -18978,11 +18979,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  vxe-table@4.19.17(vue@3.5.38(typescript@6.0.3)):
-    dependencies:
-      vxe-pc-ui: 4.15.5(vue@3.5.38(typescript@6.0.3))
-    transitivePeerDependencies:
-      - vue
+  vxe-table@4.22.4: {}
 
   w3c-keyname@2.2.8: {}
 
