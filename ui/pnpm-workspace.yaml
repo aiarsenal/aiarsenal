@@ -37,7 +37,7 @@ overrides:
   vue: 'catalog:'
 
 catalog:
-  '@ast-grep/napi': ^0.43.0
+  '@ast-grep/napi': ^0.50.0
   '@changesets/changelog-github': ^0.7.0
   '@changesets/cli': ^2.31.0
   '@changesets/git': ^3.0.4
