@@ -148,8 +148,8 @@ catalogs:
       specifier: ^5.1.5
       version: 5.1.5
     '@vue/shared':
-      specifier: ^3.5.38
-      version: 3.5.38
+      specifier: ^3.5.44
+      version: 3.5.44
     '@vue/test-utils':
       specifier: ^2.4.11
       version: 2.4.11
@@ -955,7 +955,7 @@ importers:
         version: 0.11.0(vue@3.5.38(typescript@6.0.3))
       '@vue/shared':
         specifier: 'catalog:'
-        version: 3.5.38
+        version: 3.5.44
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -5256,6 +5256,9 @@ packages:
   '@vue/shared@3.5.38':
     resolution: {integrity: sha512-FTW0AFZNaK5/mOqvGBwVfUlNLU38TiQn4+DQgIFUnrBBJQ1crMJ82yeGQLV5jyKFsO8yRukpbuP7x+nRbH6aug==}
 
+  '@vue/shared@3.5.44':
+    resolution: {integrity: sha512-H82XLH0DjmSOdbEwO15x3QTo1f5PWEtv237eLpYKc0mqLu+B8hnq16lFWmuBmNurkeiG3wr+oM1FhOll/YVFRg==}
+
   '@vue/test-utils@2.4.11':
     resolution: {integrity: sha512-GDqaqZsA6m2E5vNzej0aYiIb6BX8xV9pNSbbbXKOfEYwg7ZNblVX8suyqmUBThq8VIrgAJNxn+z72hVtUeiWHA==}
     peerDependencies:
@@ -6034,6 +6037,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -13799,6 +13803,8 @@ snapshots:
       vue: 3.5.38(typescript@6.0.3)
 
   '@vue/shared@3.5.38': {}
+
+  '@vue/shared@3.5.44': {}
 
   '@vue/test-utils@2.4.11(@vue/compiler-dom@3.5.38)(@vue/server-renderer@3.5.38(vue@3.5.38(typescript@6.0.3)))(vue@3.5.38(typescript@6.0.3))':
     dependencies:
