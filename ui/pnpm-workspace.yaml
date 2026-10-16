@@ -94,7 +94,7 @@ catalog:
   '@vitejs/plugin-vue-jsx': ^5.1.5
   '@vue/shared': ^3.5.38
   '@vue/test-utils': ^2.4.11
-  '@vueuse/core': ^14.3.0
+  '@vueuse/core': ^15.0.0
   '@vueuse/integrations': ^14.3.0
   '@vueuse/motion': ^3.0.3
   ant-design-vue: ^4.2.6
