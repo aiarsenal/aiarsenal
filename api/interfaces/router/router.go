@@ -34,9 +34,10 @@ type Deps struct {
 	SkillPkg    *controller.SkillPackageController
 	SkillMarket *controller.SkillMarketController
 	MenuRepo    repository.IMenuRepository
+	OperLogRepo repository.IOperLogRepository
 	// LLM 网关模块（llm 库，跨库软引用 aa_user）
-	LLMConfig       *controller.LLMConfigController
-	LLMKey          *controller.LLMKeyController
+	LLMConfig  *controller.LLMConfigController
+	LLMKey     *controller.LLMKeyController
 	LLMOrg     *controller.LLMOrgController
 	LLMMonitor *controller.LLMMonitorController
 	// 数据看板（LLM 用量 / 技能资产，只读聚合）
@@ -113,7 +114,9 @@ func Register(r *gin.Engine, d Deps) {
 	r.NoRoute(middleware.NoRouteHandler())
 
 	v1 := r.Group("/api/v1")
-	v1.Use(middleware.CORS())
+	// 审计挂在 v1 根分组：不依赖各业务分组是否记得加，漏挂一个分组就是漏一片审计。
+	// 中间件在 c.Next() 之后读取 JWTAuth 写入的身份，未登录请求自然不记录。
+	v1.Use(middleware.CORS(), middleware.OperLog(d.OperLogRepo))
 
 	// 公开：验证码
 	pub := v1.Group("/pub")

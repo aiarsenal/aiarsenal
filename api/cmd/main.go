@@ -516,6 +516,7 @@ func main() {
 		SkillPkg:       skillPkgCtl,
 		SkillMarket:    skillMarketCtl,
 		MenuRepo:       menuRepo,
+		OperLogRepo:    operLogRepo,
 		LLMConfig:      llmConfigCtl,
 		LLMKey:         llmKeyCtl,
 		ReviewOrder:    reviewOrderCtl,
