@@ -56,7 +56,8 @@ func (s *PersonalService) Info(ctx context.Context, userId string) (*entity.User
 // Edit 修改个人资料，返回 (userInfo, newToken)
 func (s *PersonalService) Edit(ctx context.Context, userId string, p *entity.User) (*entity.User, string, error) {
 	p.UserId = userId
-	if err := s.userRepo.Edit(ctx, p, nil, nil); err != nil {
+	// 自助改资料不得触碰 is_admin：setAdmin 恒 nil（仓储不写该列）。
+	if err := s.userRepo.Edit(ctx, p, nil, nil, nil); err != nil {
 		return nil, "", err
 	}
 	user, err := s.userRepo.GetEntityById(ctx, userId)

@@ -7,6 +7,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 
 	"aiarsenal/config"
+	"aiarsenal/infrastructure/idgen"
 )
 
 // Claims JWT 载荷：登录用户信息（替代旧 gtoken 的服务端缓存 token）
@@ -30,6 +31,7 @@ func Generate(userId string, userName string, isAdmin int, deptId string, postId
 
 // GenerateForDevice 签发带 deviceId 的 JWT（桌面 App 登录用，deviceId 非空）。
 // deviceId 为空时等同 web 登录 token（向后兼容 Generate）。
+// 每个登录令牌带 jti 并登记进会话注册表：退出/吊销才有服务端依据（见 session.go）。
 func GenerateForDevice(userId string, userName string, isAdmin int, deviceId string, deptId string, postIds []string, employeeNo string) (string, error) {
 	c := config.Get()
 	timeout := c.Jwt.TimeOut
@@ -45,12 +47,18 @@ func GenerateForDevice(userId string, userName string, isAdmin int, deviceId str
 		EmployeeNo: employeeNo,
 		DeviceId:   deviceId,
 		RegisteredClaims: jwt.RegisteredClaims{
+			ID:        idgen.New(),
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(timeout) * time.Second)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	}
 	tok := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return tok.SignedString([]byte(c.Jwt.EncryptKey))
+	signed, err := tok.SignedString([]byte(c.Jwt.EncryptKey))
+	if err != nil {
+		return "", err
+	}
+	RegisterSession(userId, claims.ID)
+	return signed, nil
 }
 
 // GenerateForInstance 签发带 instanceId 的 JWT（容器内 agent 控制面鉴权用）。

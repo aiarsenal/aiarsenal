@@ -33,6 +33,25 @@ func NewAgentInstanceController(s *service.AgentInstanceService) *AgentInstanceC
 	return &AgentInstanceController{svc: s}
 }
 
+// checkOwner 实例存在 + 归属校验（返回 true=通过）。
+// 与 AgentWorkspaceController.checkOwner 保持同一约定：实例级接口放行归属人；
+// 超管（is_admin=1）代管全量实例，判定口径与 CasbinAuth 的超管短路一致。
+func (h *AgentInstanceController) checkOwner(c *gin.Context, id string) bool {
+	uid := middleware.GetUserId(c)
+	ins, err := h.svc.Get(c, id)
+	if err != nil || ins == nil {
+		middleware.Fail(c, "未找到实例")
+		return false
+	}
+	if ins.UserId != uid {
+		if u := middleware.GetUser(c); u == nil || u.IsAdmin != 1 {
+			middleware.Fail(c, "无权访问该实例")
+			return false
+		}
+	}
+	return true
+}
+
 // deriveLLMBaseURL 从请求 Host 推导 LLM 网关地址（api.aiarsenal.cc→<scheme>://llm.aiarsenal.cc），
 // 写进 agent 运行配置的 LLM provider baseUrl（openclaw.json/hermes config.yaml）。非 api.* 域返回空（跳过密钥相关下发）。
 // scheme 跟随入口协议 X-Forwarded-Proto：测试环境纯 HTTP，生产 HTTPS；缺省 https。
@@ -99,6 +118,9 @@ func (h *AgentInstanceController) Get(c *gin.Context) {
 		middleware.Fail(c, "参数错误")
 		return
 	}
+	if !h.checkOwner(c, id) {
+		return
+	}
 	v, err := h.svc.Get(c, id)
 	if err != nil {
 		middleware.Fail(c, "未找到")
@@ -161,6 +183,9 @@ func (h *AgentInstanceController) Create(c *gin.Context) {
 // RefreshLLMKey 轮换实例专属 LLM 密钥并重发 agent 运行配置（零停机，5 分钟宽限内切换）。
 func (h *AgentInstanceController) RefreshLLMKey(c *gin.Context) {
 	id := c.Param("id")
+	if !h.checkOwner(c, id) {
+		return
+	}
 	if err := h.svc.RefreshLLMKey(c, id, deriveLLMBaseURL(c)); err != nil {
 		middleware.Fail(c, err.Error())
 		return
@@ -170,6 +195,9 @@ func (h *AgentInstanceController) RefreshLLMKey(c *gin.Context) {
 
 func (h *AgentInstanceController) Start(c *gin.Context) {
 	id := c.Param("id")
+	if !h.checkOwner(c, id) {
+		return
+	}
 	if err := h.svc.Start(c, id); err != nil {
 		middleware.Fail(c, err.Error())
 		return
@@ -179,6 +207,9 @@ func (h *AgentInstanceController) Start(c *gin.Context) {
 
 func (h *AgentInstanceController) Stop(c *gin.Context) {
 	id := c.Param("id")
+	if !h.checkOwner(c, id) {
+		return
+	}
 	if err := h.svc.Stop(c, id); err != nil {
 		middleware.Fail(c, err.Error())
 		return
@@ -188,6 +219,9 @@ func (h *AgentInstanceController) Stop(c *gin.Context) {
 
 func (h *AgentInstanceController) Restart(c *gin.Context) {
 	id := c.Param("id")
+	if !h.checkOwner(c, id) {
+		return
+	}
 	if err := h.svc.Restart(c, id); err != nil {
 		middleware.Fail(c, err.Error())
 		return
@@ -201,6 +235,11 @@ func (h *AgentInstanceController) Delete(c *gin.Context) {
 		middleware.Fail(c, err.Error())
 		return
 	}
+	for _, id := range req.Ids {
+		if !h.checkOwner(c, id) {
+			return
+		}
+	}
 	if err := h.svc.Remove(c, req.Ids); err != nil {
 		middleware.Fail(c, err.Error())
 		return
@@ -210,6 +249,9 @@ func (h *AgentInstanceController) Delete(c *gin.Context) {
 
 func (h *AgentInstanceController) Status(c *gin.Context) {
 	id := c.Param("id")
+	if !h.checkOwner(c, id) {
+		return
+	}
 	st, err := h.svc.Status(c, id)
 	if err != nil {
 		middleware.Fail(c, err.Error())
@@ -220,6 +262,9 @@ func (h *AgentInstanceController) Status(c *gin.Context) {
 
 func (h *AgentInstanceController) Exec(c *gin.Context) {
 	id := c.Param("id")
+	if !h.checkOwner(c, id) {
+		return
+	}
 	var req dto.AgentInstanceExecReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		middleware.Fail(c, err.Error())
@@ -235,6 +280,9 @@ func (h *AgentInstanceController) Exec(c *gin.Context) {
 
 func (h *AgentInstanceController) Logs(c *gin.Context) {
 	id := c.Param("id")
+	if !h.checkOwner(c, id) {
+		return
+	}
 	follow := c.Query("follow") == "1"
 	tail := c.Query("tail")
 	rc, err := h.svc.Logs(c, id, follow, tail)

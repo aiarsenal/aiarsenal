@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"aiarsenal/application/service"
+	"aiarsenal/infrastructure/auth"
 	"aiarsenal/interfaces/dto"
 	"aiarsenal/interfaces/middleware"
 )
@@ -39,8 +40,11 @@ func (h *LoginController) Login(c *gin.Context) {
 }
 
 // Logout 退出登录  GET /api/v1/system/logout
-// JWT 为无状态令牌，退出由前端丢弃 token 即可；此处直接返回成功
+// 会话有服务端状态（jti 注册表）：吊销当前会话，已签发令牌立即失效，前端再丢弃 token。
 func (h *LoginController) Logout(c *gin.Context) {
+	if claims := middleware.GetClaims(c); claims != nil {
+		auth.RevokeSession(claims.UserId, claims.ID)
+	}
 	middleware.Success(c, struct{}{})
 }
 

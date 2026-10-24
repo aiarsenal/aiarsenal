@@ -12,6 +12,8 @@ type IUserRepository interface {
 	// 登录相关
 	GetUserByUsername(ctx context.Context, userName string) (*model.LoginUserRes, error)
 	GetUserById(ctx context.Context, userId string) (*model.LoginUserRes, error)
+	// GetSessionUser 会话身份回查（JWTAuth 每请求用：档案 + 岗位，isAdmin/状态以库内为准）
+	GetSessionUser(ctx context.Context, userId string) (*model.LoginUserRes, error)
 	UpdateLoginInfo(ctx context.Context, userId string, ip string) error
 	InsertLoginLog(ctx context.Context, params *model.LoginLogParams)
 	InsertUserOnline(ctx context.Context, params *model.UserOnlineParams)
@@ -21,7 +23,9 @@ type IUserRepository interface {
 	List(ctx context.Context, deptId, mobile, status, keyWords string, pageNum, pageSize int) (list []*entity.User, total int64, err error)
 	EnrichUsers(ctx context.Context, users []*entity.User) ([]*model.UserRoleDeptRes, error)
 	Add(ctx context.Context, u *entity.User, roleIds, postIds []string) (string, error)
-	Edit(ctx context.Context, u *entity.User, roleIds, postIds []string) error
+	// Edit 更新档案；setAdmin 指针语义：nil=请求体未携带 isAdmin（不写该列），
+	// 非 nil=显式落库（含收权 0）。合法取值由服务层闸门保证。
+	Edit(ctx context.Context, u *entity.User, roleIds, postIds []string, setAdmin *int) error
 	Delete(ctx context.Context, userIds []string) error
 	ResetPwd(ctx context.Context, userId string, pwd, salt string) error
 	ChangeStatus(ctx context.Context, userId string, status uint) error

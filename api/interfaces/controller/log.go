@@ -148,3 +148,18 @@ func (h *UserOnlineController) Delete(c *gin.Context) {
 	}
 	middleware.Success(c, struct{}{})
 }
+
+// Kick 吊销某用户的全部会话  DELETE /api/v1/system/online/kick?userId=
+// 与 Delete 的区别：Delete 只删在线表展示行，令牌仍有效；Kick 让令牌立即失效。
+func (h *UserOnlineController) Kick(c *gin.Context) {
+	userId := c.Query("userId")
+	if userId == "" {
+		middleware.Fail(c, "参数错误")
+		return
+	}
+	if err := h.svc.Kick(c, middleware.GetUserId(c), userId); err != nil {
+		middleware.Fail(c, err.Error())
+		return
+	}
+	middleware.Success(c, struct{}{})
+}
