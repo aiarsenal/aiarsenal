@@ -411,6 +411,8 @@ func main() {
 	roleCtl := controller.NewRoleController(roleSvc)
 	permGroupCtl := controller.NewPermGroupController(permGroupSvc)
 	userCtl := controller.NewUserController(userSvc)
+	totpSvc := service.NewTOTPService(userRepo)
+	totpCtl := controller.NewTOTPController(totpSvc)
 	loginLogCtl := controller.NewLoginLogController(loginLogSvc)
 	operLogCtl := controller.NewOperLogController(operLogSvc)
 	onlineCtl := controller.NewUserOnlineController(onlineSvc)
@@ -527,6 +529,7 @@ func main() {
 		MenuRepo:       menuRepo,
 		DeptRepo:       deptRepo,
 		UserRepo:       userRepo,
+		TOTP:           totpCtl,
 		AuditMeta:      auditMeta,
 		OperLogRepo:    operLogRepo,
 		LLMConfig:      llmConfigCtl,

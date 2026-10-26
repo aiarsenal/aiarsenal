@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"strings"
 	"time"
@@ -16,6 +17,7 @@ import (
 	"aiarsenal/domain/repository"
 	"aiarsenal/domain/types"
 	"aiarsenal/infrastructure/auth"
+	"aiarsenal/infrastructure/crypto"
 	"aiarsenal/infrastructure/grantmeta"
 )
 
@@ -82,6 +84,32 @@ func (s *AuthService) Login(ctx context.Context, username, password, totpCode, v
 	// enforced 开启后未绑定账号拒绝登录（等保三级 d 项的强制口径）。
 	// 判定收口在 totpLoginCheck（纯函数，表驱动双向测试），这里只做编排：
 	// 解密失败属服务错误（不计数、不泄露口令对错），验码失败才计锁定。
+	// 解密在判定之前单独做：解密失败是服务端错误（密钥丢失/换值），不计入
+	// 登录失败锁定、也不向用户伪装成「动态验证码错误」。
+	verify := func(string) bool { return false }
+	if user.TOTPEnabled == 1 {
+		secret, decErr := crypto.Decrypt(user.TOTPSecret, config.Get().Jwt.EncryptKey)
+		if decErr != nil {
+			slog.Error("totp 密钥解密失败", "err", decErr, "username", username)
+			s.userRepo.InsertLoginLog(ctx, &model.LoginLogParams{
+				Status: 0, Username: username, Ip: ip, UserAgent: userAgent,
+				Msg: "登录失败，后端服务出现错误", Module: "系统后台",
+			})
+			return nil, "", nil, nil, errors.New("登录失败，后端服务出现错误")
+		}
+		verify = func(code string) bool { return auth.VerifyTOTP(secret, code, time.Now()) }
+	}
+	totpErr := totpLoginCheck(user.TOTPEnabled, config.Get().Totp.Enforced, totpCode, verify)
+	if totpErr != nil {
+		s.userRepo.InsertLoginLog(ctx, &model.LoginLogParams{
+			Status: 0, Username: username, Ip: ip, UserAgent: userAgent,
+			Msg: totpErr.Error(), Module: "系统后台",
+		})
+		if totpErr.Error() == "动态验证码错误" {
+			auth.RecordLoginFailure(username)
+		}
+		return nil, "", nil, nil, totpErr
+	}
 	if passwordExpired(user.PasswordChangedAt, config.Get().Password.Policy.RotationDays, time.Now()) {
 		s.userRepo.InsertLoginLog(ctx, &model.LoginLogParams{
 			Status: 0, Username: username, Ip: ip, UserAgent: userAgent,

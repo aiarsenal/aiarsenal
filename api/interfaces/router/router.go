@@ -77,6 +77,7 @@ type Deps struct {
 	AgentUsage          *controller.AgentUsageController
 	AgentOpenclawConfig *controller.AgentOpenclawConfigController
 	AgentUser           *controller.AgentUserController
+	TOTP                *controller.TOTPController
 	// Client 模块（桌面客户端 Win/Mac：device-code 登录中转 + 客户端规格 + 运行情况上报 + 设备管理）
 	Client    *controller.ClientController
 	ClientSvc *service.ClientService
@@ -287,6 +288,7 @@ func Register(r *gin.Engine, d Deps) {
 	user.PUT("/edit", d.User.Edit)
 	user.GET("/getEdit", d.User.GetEdit)
 	user.PUT("/resetPwd", d.User.ResetPwd)
+	user.PUT("/totp/reset", d.TOTP.Reset)
 	user.PUT("/setStatus", d.User.SetStatus)
 	user.DELETE("/delete", d.User.Delete)
 	user.GET("/getUsers", d.User.GetUsers)
@@ -319,6 +321,9 @@ func Register(r *gin.Engine, d Deps) {
 	personal.GET("/getPersonalInfo", d.Personal.GetPersonalInfo)
 	personal.PUT("/edit", d.Personal.Edit)
 	personal.PUT("/resetPwd", d.Personal.ResetPwd)
+	personal.POST("/totp/setup", d.TOTP.Setup)
+	personal.POST("/totp/activate", d.TOTP.Activate)
+	personal.POST("/totp/disable", d.TOTP.Disable)
 
 	// 个人消息通知
 	notice := protected.Group("/notice")

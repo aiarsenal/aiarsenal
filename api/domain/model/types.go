@@ -19,9 +19,9 @@ type LoginUserRes struct {
 	// PasswordChangedAt 供登录口令过期判定（rotationDays>0 时）
 	PasswordChangedAt *types.Time `json:"-"`
 	// TOTPEnabled/TOTPSecret 登录时判定是否需要动态码并验码（secret 响应前必须清空）
-	TOTPEnabled uint   `json:"-"`
-	TOTPSecret  string `json:"-"`
-	DeviceId    string `json:"deviceId,omitempty"` // 桌面 App 登录携带；web 端为空
+	TOTPEnabled uint        `json:"-"`
+	TOTPSecret  string      `json:"-"`
+	DeviceId          string      `json:"deviceId,omitempty"` // 桌面 App 登录携带；web 端为空
 }
 
 // MenuInfoRes 菜单/规则投影（对应旧 model.MenuInfoRes）

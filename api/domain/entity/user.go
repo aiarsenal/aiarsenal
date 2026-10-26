@@ -32,10 +32,10 @@ type User struct {
 	// TOTPSecret 双因子密钥（AES-256-GCM 密文 hex，json 不出网）；空=未绑定/已解绑
 	TOTPSecret string `gorm:"column:totp_secret" json:"-"`
 	// TOTPEnabled 双因子是否已激活（绑定确认一次有效动态码后置 1）
-	TOTPEnabled uint        `gorm:"column:totp_enabled" json:"-"`
-	CreatedAt   *types.Time `gorm:"column:created_at" json:"createdAt"`
-	UpdatedAt   *types.Time `gorm:"column:updated_at" json:"updatedAt"`
-	DeletedAt   *types.Time `gorm:"column:deleted_at" json:"deletedAt"`
+	TOTPEnabled uint `gorm:"column:totp_enabled" json:"-"`
+	CreatedAt         *types.Time `gorm:"column:created_at" json:"createdAt"`
+	UpdatedAt         *types.Time `gorm:"column:updated_at" json:"updatedAt"`
+	DeletedAt         *types.Time `gorm:"column:deleted_at" json:"deletedAt"`
 }
 
 func (User) TableName() string { return "aa_user" }
