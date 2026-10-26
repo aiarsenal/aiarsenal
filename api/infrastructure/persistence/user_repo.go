@@ -46,6 +46,17 @@ func (r *UserRepository) GetUserById(ctx context.Context, userId string) (*model
 	return entityToLogin(&u), nil
 }
 
+// GetSessionUser 会话身份回查：档案 + 岗位 ids，供 JWTAuth 每请求取库内最新身份。
+// 角色维不经此查询（casbin g 表实时解析，本来就不走 claims）。
+func (r *UserRepository) GetSessionUser(ctx context.Context, userId string) (*model.LoginUserRes, error) {
+	u, err := r.GetUserById(ctx, userId)
+	if err != nil {
+		return nil, err
+	}
+	u.PostIds = r.userPostIds(userId)
+	return u, nil
+}
+
 func (r *UserRepository) UpdateLoginInfo(ctx context.Context, userId string, ip string) error {
 	return r.db.WithContext(ctx).Model(&entity.User{}).Unscoped().
 		Where("user_id = ?", userId).Updates(map[string]interface{}{
@@ -181,7 +192,19 @@ func (r *UserRepository) Add(ctx context.Context, u *entity.User, roleIds, postI
 	return u.UserId, nil
 }
 
-func (r *UserRepository) Edit(ctx context.Context, u *entity.User, roleIds, postIds []string) error {
+// Edit 更新档案 + 替换角色/岗位。
+//
+// setAdmin 为 nil（请求体没带 isAdmin，如 UI 编辑表单）时不写 is_admin 列；
+// 非 nil 才单列显式落库——GORM Updates 跳过零值会让「收权 1→0」静默失效，
+// 而把缺省当 0 写库又会把 UI 编辑变成静默降级。能落进来的取值已由服务层
+// 闸门保证，这里只负责如实执行两种意图。
+func (r *UserRepository) Edit(ctx context.Context, u *entity.User, roleIds, postIds []string, setAdmin *int) error {
+	if setAdmin != nil {
+		if err := r.db.WithContext(ctx).Model(&entity.User{}).Where("user_id = ?", u.UserId).
+			Update("is_admin", *setAdmin).Error; err != nil {
+			return err
+		}
+	}
 	if err := r.db.WithContext(ctx).Model(&entity.User{}).Where("user_id = ?", u.UserId).Updates(u).Error; err != nil {
 		return err
 	}

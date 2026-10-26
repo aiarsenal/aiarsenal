@@ -200,7 +200,7 @@ func main() {
 	userSvc := service.NewUserService(userRepo, roleRepo, postRepo)
 	loginLogSvc := service.NewLoginLogService(loginLogRepo)
 	operLogSvc := service.NewOperLogService(operLogRepo)
-	onlineSvc := service.NewUserOnlineService(onlineRepo)
+	onlineSvc := service.NewUserOnlineService(onlineRepo, userRepo)
 	monitorSvc := service.NewMonitorService()
 	cacheSvc := service.NewCacheService(c)
 	personalSvc := service.NewPersonalService(userRepo, deptRepo, roleRepo)
@@ -526,6 +526,7 @@ func main() {
 		SkillMarket:    skillMarketCtl,
 		MenuRepo:       menuRepo,
 		DeptRepo:       deptRepo,
+		UserRepo:       userRepo,
 		AuditMeta:      auditMeta,
 		OperLogRepo:    operLogRepo,
 		LLMConfig:      llmConfigCtl,

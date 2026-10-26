@@ -35,6 +35,7 @@ type Deps struct {
 	SkillMarket *controller.SkillMarketController
 	MenuRepo    repository.IMenuRepository
 	DeptRepo    repository.IDeptRepository
+	UserRepo    repository.IUserRepository
 	OperLogRepo repository.IOperLogRepository
 	AuditMeta   *middleware.AuditMeta
 	// LLM 网关模块（llm 库，跨库软引用 aa_user）
@@ -142,9 +143,8 @@ func Register(r *gin.Engine, d Deps) {
 
 	// system 分组
 	sys := v1.Group("/system")
-	// 公开：登录 / 退出
+	// 公开：登录。退出需要登录态（吊销当前会话的 jti），挂 protected 组
 	sys.POST("/login", d.Login.Login)
-	sys.GET("/logout", d.Login.Logout)
 
 	// Client 模块：device-code 登录中转 + 可安装 agent 列表 + 运行情况上报 + 设备管理
 	// exchange 公开（App 用 deviceCode 换 JWT）；其余 JWTAuth + ClientDeviceAuth
@@ -153,7 +153,7 @@ func Register(r *gin.Engine, d Deps) {
 	clientPub.POST("/exchange", d.Client.Exchange)
 	// 安装包下载（公开，无鉴权——安装包公开分发，client/管理员/浏览器凭 agent+version+platform 直下）
 	clientPub.GET("/packages/:agent/:version/:platform", d.Client.DownloadPackage)
-	clientAuth := sys.Group("/client", middleware.JWTAuth(), middleware.ClientDeviceAuth(d.ClientSvc))
+	clientAuth := sys.Group("/client", middleware.JWTAuth(d.UserRepo), middleware.ClientDeviceAuth(d.ClientSvc))
 	clientAuth.POST("/bind", d.Client.Bind)
 	clientAuth.GET("/agents", d.Client.GetAgents)
 	// 心跳合一：状态+日志+配置变更+命令进度+命令下发（App 5s 调一次）
@@ -168,7 +168,7 @@ func Register(r *gin.Engine, d Deps) {
 	// 安装包下载已移至 clientPub（公开，无鉴权）
 
 	// Client 管理后台（JWTAuth + CasbinAuth；菜单 id 125~137，见 client.sql Part B）
-	clientAdmin := sys.Group("/client/admin", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	clientAdmin := sys.Group("/client/admin", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 	clientAdmin.GET("/agent/list", d.Client.AdminListAgents)
 	clientAdmin.PUT("/agent/save", d.Client.AdminSaveAgent)
 	clientAdmin.DELETE("/agent/delete", d.Client.AdminDeleteAgent)
@@ -216,7 +216,8 @@ func Register(r *gin.Engine, d Deps) {
 	clientAdmin.DELETE("/package/delete", d.Client.AdminDeletePackage)
 
 	// 受保护：JWT + casbin
-	protected := sys.Group("", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	protected := sys.Group("", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
+	protected.GET("/logout", d.Login.Logout)
 
 	// 用户菜单（当前登录用户）
 	protected.GET("/user/getUserMenus", d.Login.GetUserMenus)
@@ -307,6 +308,7 @@ func Register(r *gin.Engine, d Deps) {
 	online := protected.Group("/online")
 	online.GET("/list", d.Online.List)
 	online.DELETE("/delete", d.Online.Delete)
+	online.DELETE("/kick", d.Online.Kick)
 
 	// 服务监控 / 缓存
 	protected.GET("/monitor/server", d.Monitor.Server)
@@ -327,7 +329,7 @@ func Register(r *gin.Engine, d Deps) {
 	notice.DELETE("/delete", d.Notice.Delete)
 
 	// ===== Skill 模块（aa_skill 库，跨库软引用 aa_user） =====
-	skillGrp := v1.Group("/skill", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	skillGrp := v1.Group("/skill", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 
 	// 命名空间管理
 	skillNS := skillGrp.Group("/namespace")
@@ -394,7 +396,7 @@ func Register(r *gin.Engine, d Deps) {
 	sec.POST("/rescan", d.SkillSec.Rescan)
 
 	// ===== LLM 网关模块（llm 库，跨库软引用 aa_user） =====
-	llmGrp := v1.Group("/llm", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	llmGrp := v1.Group("/llm", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 
 	// 凭据
 	cred := llmGrp.Group("/credential")
@@ -484,7 +486,7 @@ func Register(r *gin.Engine, d Deps) {
 	llmGrp.POST("/prompt/add", d.LLMMonitor.AddPrompt)
 
 	// ===== 数据看板（LLM 用量 / 技能资产；只读聚合） =====
-	statsGrp := v1.Group("/stats", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	statsGrp := v1.Group("/stats", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 	{
 		llmStats := statsGrp.Group("/llm")
 		llmStats.GET("/overview", d.Stats.LlmOverview)
@@ -498,7 +500,7 @@ func Register(r *gin.Engine, d Deps) {
 	// ===== 统一审核工单（主库 aa_review_order；审核系统「我的提交/我的审核」） =====
 	// 自助端点：菜单行只是导航（/review/mine、/review/todo），本组路径无 aa_rule 行时 casbin 放行，
 	// 真实授权在 service（提交=本人，审批=部门负责人或超管）。
-	reviewGrp := v1.Group("/review", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	reviewGrp := v1.Group("/review", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 	ro := reviewGrp.Group("/order")
 	ro.POST("/create", d.ReviewOrder.Create)
 	ro.GET("/mine", d.ReviewOrder.Mine)
@@ -508,7 +510,7 @@ func Register(r *gin.Engine, d Deps) {
 
 	// ===== MCP 聚合模块（mcp 库，跨库软引用 aa_user） =====
 	// 管理后台：JWT + casbin（协议端点在独立 mcp/ 服务）
-	mcpGrp := v1.Group("/mcp", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	mcpGrp := v1.Group("/mcp", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 
 	srv := mcpGrp.Group("/server")
 	srv.GET("/list", d.McpServer.List)
@@ -574,7 +576,7 @@ func Register(r *gin.Engine, d Deps) {
 	mcpCfg.PUT("/user/edit", d.McpConfig.SaveUserConfig)
 
 	// ===== Agent 模块（agent 库；跨库软引用 aa_user） =====
-	agentGrp := v1.Group("/agent", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	agentGrp := v1.Group("/agent", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 
 	// 配置中心：resource / bundle / bundle-item / bundle-skill
 	agCfg := agentGrp.Group("/config")
@@ -780,7 +782,7 @@ func Register(r *gin.Engine, d Deps) {
 
 	// ===== 文档管理模块（aa_doc 库，跨库软引用 aa_user） =====
 	// 上传即抽取→分块→嵌入；更新原件/改标题摘要自动重嵌；MCP 读写入口在 mcp-ops 服务
-	docGrp := v1.Group("/doc", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	docGrp := v1.Group("/doc", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 	dc := docGrp.Group("/document")
 	dc.GET("/list", d.Doc.List)
 	dc.GET("/get", d.Doc.Get)
@@ -807,7 +809,7 @@ func Register(r *gin.Engine, d Deps) {
 
 	// ===== 知识库管理模块（aa_kb 库，跨库软引用 aa_user） =====
 	// 与文档管理同构的独立实现：上传即抽取→分块→嵌入；MCP 读写入口在 mcp-ops 服务
-	kbGrp := v1.Group("/kb", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	kbGrp := v1.Group("/kb", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 	kc := kbGrp.Group("/document")
 	kc.GET("/list", d.Kb.List)
 	kc.GET("/get", d.Kb.Get)
@@ -844,7 +846,7 @@ func Register(r *gin.Engine, d Deps) {
 
 	// ===== 项目管理模块（aa_project 库，跨库软引用 aa_user） =====
 	// 注意：/api/v1/llm/project/* 是 LLM 预算「项目」，与这里的业务项目无关。
-	pmGrp := v1.Group("/project", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	pmGrp := v1.Group("/project", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 
 	// 项目（顶层资源容器）
 	pm := pmGrp.Group("")
@@ -917,7 +919,7 @@ func Register(r *gin.Engine, d Deps) {
 	pmGrp.GET("/timeline/list", d.ProjectTL.List)
 
 	// 日程模块（aa_schedule 库，跨库软引用 aa_user）
-	scGrp := v1.Group("/schedule", middleware.JWTAuth(), middleware.CasbinAuth(d.MenuRepo))
+	scGrp := v1.Group("/schedule", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 	sc := scGrp.Group("")
 	sc.GET("/event/list", d.Schedule.List)
 	sc.GET("/event/detail", d.Schedule.Detail)

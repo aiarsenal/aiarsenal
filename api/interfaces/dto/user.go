@@ -43,6 +43,11 @@ type UserAddReq struct {
 type UserEditReq struct {
 	*SetUserReq
 	UserId string `json:"userId" form:"userId" binding:"required"`
+	// IsAdmin 影子字段（深度 0，JSON 绑定时覆盖 SetUserReq 的值类型）：
+	// 指针语义区分「请求体没带」和「显式传值」。UI 编辑表单的回填白名单不含
+	// isAdmin，请求体永远缺省——仓储层对 nil 绝不写该列，否则超管在界面上
+	// 改个手机号就会把管理员静默降级为 0。显式传值才落库（超管收权必须传 0）。
+	IsAdmin *int `json:"isAdmin" form:"isAdmin"`
 }
 type UserGetEditReq struct {
 	Id string `json:"id" form:"id"`

@@ -585,7 +585,7 @@ ALTER SEQUENCE public.aa_user_id_seq OWNED BY public.aa_user.id;
 CREATE TABLE public.aa_user_online (
     id bigint NOT NULL,
     uuid character(32) DEFAULT ''::bpchar NOT NULL,
-    token character varying(255) DEFAULT ''::character varying NOT NULL,
+    token character varying(1024) DEFAULT ''::character varying NOT NULL,
     create_time timestamp without time zone,
     user_name character varying(255) NOT NULL,
     ip character varying(120) DEFAULT ''::character varying NOT NULL,

@@ -263,8 +263,13 @@ cd /home/ubuntu/aiarsenal && git pull && sudo bash deploy.sh prod
 
 ## 🛡️ Auth & Security
 
-- Sessions are JWT-based (HS256), 30-day default validity, configurable.
-- Permissions are Casbin RBAC: super admin (`is_admin`) bypasses all; regular users are authorized per menu policy, down to button level.
+- Sessions are JWT-based (HS256), 30-day default validity, configurable. Every login token carries a `jti` registered in a server-side session store: logout and admin-forced sign-off (online users → kick) invalidate the token immediately instead of relying on the client discarding it.
+- Every request re-reads the user's current identity (`is_admin` / department / posts / status) from the database: permission changes and account freezes take effect on the next request. The token proves who you are; it no longer carries a 30-day authorization snapshot.
+- Permissions are Casbin RBAC: super admin (`is_admin`) bypasses all; regular users are authorized per menu policy, down to button level. Three role-independent server-side gates apply on top:
+  - **The super-admin flag can only be granted or revoked by a super admin** (user create/edit included);
+  - **No one can change their own admin flag, roles or posts through the user-edit API**; accounts whose target is a super admin can only be edited / disabled / deleted by a super admin;
+  - **Agent instance APIs are restricted to the instance owner and super admins** (exec / logs / start / stop / restart / status / detail / key rotation / delete).
+- Admin-side password reset only allows a super admin to reset others and anyone to reset themselves; every change is recorded by the operation-log middleware. Self-service password change lives in the personal center.
 - LLM credentials and Agent `api_key`s are AES-256-GCM encrypted at rest.
 - Business IDs are 32-char strings (`biz_id`) — stable across environments, non-enumerable.
 
