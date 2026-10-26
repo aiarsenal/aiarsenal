@@ -2023,7 +2023,7 @@ CREATE TABLE public.aa_agent_user (
     instance_ids jsonb DEFAULT '[]'::jsonb,
     is_enabled smallint DEFAULT 1 NOT NULL,
     password_salt character varying(64) DEFAULT ''::character varying NOT NULL,
-    password_hash character varying(64) DEFAULT ''::character varying NOT NULL,
+    password_hash character varying(255) DEFAULT ''::character varying NOT NULL,
     remark character varying(500) DEFAULT ''::character varying NOT NULL,
     created_by character varying(32) DEFAULT ''::character varying NOT NULL,
     created_at timestamp without time zone,

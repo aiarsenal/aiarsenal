@@ -117,7 +117,7 @@ func TestAddAllowsGrantsFromEditor(t *testing.T) {
 	svc := newTestUserService(repo)
 
 	if err := svc.Add(context.Background(),
-		&entity.User{UserName: "newbie"}, "pwd", []string{"role-1"}, []string{"post-1"}, "u-1"); err != nil {
+		&entity.User{UserName: "newbie"}, "Str0ng-pass", []string{"role-1"}, []string{"post-1"}, "u-1"); err != nil {
 		t.Fatalf("编辑权限者建档并分配角色被误拦: %v", err)
 	}
 	if repo.added == nil {
@@ -131,7 +131,7 @@ func TestAddAllowsAdminFlagFromAdmin(t *testing.T) {
 	svc := newTestUserService(repo)
 
 	err := svc.Add(context.Background(),
-		&entity.User{UserName: "newadmin", IsAdmin: 1}, "pwd", []string{"role-1"}, []string{"post-1"}, "u-9")
+		&entity.User{UserName: "newadmin", IsAdmin: 1}, "Str0ng-pass", []string{"role-1"}, []string{"post-1"}, "u-9")
 
 	if err != nil {
 		t.Fatalf("超管设置 isAdmin=1 并分配角色应当通过，实际 %v", err)
@@ -366,7 +366,7 @@ func TestResetPwdRejectsResettingOthersFromNonSuper(t *testing.T) {
 	repo := &fakeUserRepo{curUsers: map[string]*entity.User{"u-1": ordinaryUser("u-1")}}
 	svc := newTestUserService(repo)
 
-	err := svc.ResetPwd(context.Background(), "u-1", "u-2", "new-pwd")
+	err := svc.ResetPwd(context.Background(), "u-1", "u-2", "Str0ng-pass")
 
 	if err == nil {
 		t.Fatal("非超管重置他人口令应当被拒，实际通过")
@@ -382,7 +382,7 @@ func TestResetPwdAllowsSelfForNonSuper(t *testing.T) {
 	repo := &fakeUserRepo{curUsers: map[string]*entity.User{"u-1": ordinaryUser("u-1")}}
 	svc := newTestUserService(repo)
 
-	if err := svc.ResetPwd(context.Background(), "u-1", "u-1", "new-pwd"); err != nil {
+	if err := svc.ResetPwd(context.Background(), "u-1", "u-1", "Str0ng-pass"); err != nil {
 		t.Fatalf("非超管重置本人密码被误拦: %v", err)
 	}
 	if repo.resetTarget != "u-1" {
@@ -392,10 +392,14 @@ func TestResetPwdAllowsSelfForNonSuper(t *testing.T) {
 
 // TestResetPwdAllowsSuperResettingOthers 超管重置他人口令照旧可用（忘记密码的运维场景）。
 func TestResetPwdAllowsSuperResettingOthers(t *testing.T) {
-	repo := &fakeUserRepo{curUsers: map[string]*entity.User{"u-9": superUser("u-9")}}
+	// 目标账号须真实存在：ResetPwd 现在先回查目标（强度策略要用其账号名）
+	repo := &fakeUserRepo{curUsers: map[string]*entity.User{
+		"u-9": superUser("u-9"),
+		"u-2": ordinaryUser("u-2"),
+	}}
 	svc := newTestUserService(repo)
 
-	if err := svc.ResetPwd(context.Background(), "u-9", "u-2", "new-pwd"); err != nil {
+	if err := svc.ResetPwd(context.Background(), "u-9", "u-2", "Str0ng-pass"); err != nil {
 		t.Fatalf("超管重置他人口令被误拦: %v", err)
 	}
 	if repo.resetTarget != "u-2" {
@@ -438,4 +442,32 @@ func TestSameStringSet(t *testing.T) {
 			}
 		})
 	}
+}
+
+// UpdateTOTP/GetTOTP：双因子状态的内存实现（键不存在按 not found 语义报错）。
+func (f *fakeUserRepo) UpdateTOTP(ctx context.Context, userId, secretEnc string, enabled int) error {
+	u, ok := f.curUsers[userId]
+	if !ok {
+		return errors.New("record not found")
+	}
+	u.TOTPSecret = secretEnc
+	u.TOTPEnabled = uint(enabled)
+	return nil
+}
+
+func (f *fakeUserRepo) GetTOTP(ctx context.Context, userId string) (string, int, error) {
+	u, ok := f.curUsers[userId]
+	if !ok {
+		return "", 0, errors.New("record not found")
+	}
+	return u.TOTPSecret, int(u.TOTPEnabled), nil
+}
+
+// GetUserById：Setup（otpauth URI 需要账号名）等用例的读路径。
+func (f *fakeUserRepo) GetUserById(ctx context.Context, userId string) (*model.LoginUserRes, error) {
+	u, ok := f.curUsers[userId]
+	if !ok {
+		return nil, errors.New("record not found")
+	}
+	return &model.LoginUserRes{Id: u.UserId, UserName: u.UserName}, nil
 }

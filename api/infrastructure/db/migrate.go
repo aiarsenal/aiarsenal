@@ -59,8 +59,10 @@ func migrateDB(name string) error {
 		return nil
 	}
 
-	// 用专用 lib/pq 连接跑迁移（DSN 经 MigrateDSNFor 去掉 TimeZone，lib/pq 不认该关键字；
-	// 迁移只跑 DDL、不读写 timestamp，时区无影响）。不复用 gorm 连接池，跑完即关。
+	// 用专用 lib/pq 连接跑迁移（DSN 经 MigrateDSNFor 去掉 TimeZone，lib/pq 不认该关键字）。
+	// 迁移一般只跑 DDL；若涉及时间写入（如 000001 回填 password_changed_at），必须用
+	// (now() AT TIME ZONE 'Asia/Shanghai') 显式锚定——本会话无 TimeZone 参数，依赖服务
+	// 器默认时区会与应用侧读写错位。不复用 gorm 连接池，跑完即关。
 	dsn := config.Get().Database.Default.MigrateDSNFor(name)
 	sqlDB, err := sql.Open("postgres", dsn)
 	if err != nil {

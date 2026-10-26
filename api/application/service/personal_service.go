@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 
 	"aiarsenal/consts"
 	"aiarsenal/domain/entity"
@@ -74,6 +75,18 @@ func (s *PersonalService) Edit(ctx context.Context, userId string, p *entity.Use
 
 // ResetPwd 重置自己的密码
 func (s *PersonalService) ResetPwd(ctx context.Context, userId string, password string) error {
-	salt := persistence.GenerateSalt()
-	return s.userRepo.ResetPwd(ctx, userId, auth.EncryptPassword(password, salt), salt)
+	user, err := s.userRepo.GetEntityById(ctx, userId)
+	if err != nil || user == nil {
+		return errors.New("用户不存在或已被删除")
+	}
+	// 强度策略按本人账号名判（与自助改密的语义一致）
+	if err := auth.ValidatePasswordPolicy(password, user.UserName); err != nil {
+		return err
+	}
+	key, err := auth.HashPassword(password)
+	if err != nil {
+		return err
+	}
+	salt := persistence.GenerateSalt() // 占位盐（同 UserService.Add）
+	return s.userRepo.ResetPwd(ctx, userId, key, salt)
 }

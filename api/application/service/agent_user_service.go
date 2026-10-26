@@ -17,10 +17,11 @@ import (
 // agent_user_service.go — Agent 平台用户管理（v2 占位菜单：aa_agent_user 新表）。
 //
 // 与主库 aa_user 解耦的软引用模型：username 对应 aa_user.username（唯一索引防重复
-// 授权），本表自有 role（admin/operator/member）、口令哈希（md5(md5(pw)+md5(salt))，
-// 与 aa_user 同口径）与实例授权（instance_ids jsonb 数组，元素为 aa_agent_instance
-// .instance_id）。明文口令只在创建/重置时生成并一次性返回（前端弹窗展示），落库仅存
-// 哈希。增删改查仅本表，不触碰 aa_user。
+// 授权），本表自有 role（admin/operator/member）、口令哈希（与 aa_user 同口径：
+// $pbkdf2-<算法>$iter$salt$hash 自描述串，见 infrastructure/auth/password.go）与
+// 实例授权（instance_ids jsonb 数组，元素为 aa_agent_instance.instance_id）。明文
+// 口令只在创建/重置时生成并一次性返回（前端弹窗展示），落库仅存哈希。增删改查仅
+// 本表，不触碰 aa_user。
 
 // AgentUserUpsert 用户新建/编辑入参（controller 绑定后转 entity）。
 type AgentUserUpsert struct {
@@ -89,6 +90,15 @@ func (s *AgentUserService) Add(ctx context.Context, u AgentUserUpsert, createdBy
 	if err != nil {
 		return "", "", err
 	}
+	// 随机口令理论必过策略，仍走同一闸门：不为机器生成口令开豁免分支（防字符集
+	// 将来回退时静默产出策略拒绝的口令）
+	if err := auth.ValidatePasswordPolicy(password, u.Username); err != nil {
+		return "", "", err
+	}
+	key, err := auth.HashPassword(password)
+	if err != nil {
+		return "", "", err
+	}
 	id, err := s.repo.Add(ctx, &entity.AgentUser{
 		Username:     u.Username,
 		DisplayName:  u.DisplayName,
@@ -96,7 +106,7 @@ func (s *AgentUserService) Add(ctx context.Context, u AgentUserUpsert, createdBy
 		InstanceIds:  mustJSON(u.InstanceIds),
 		IsEnabled:    u.IsEnabled,
 		PasswordSalt: salt,
-		PasswordHash: auth.EncryptPassword(password, salt),
+		PasswordHash: key,
 		Remark:       u.Remark,
 		CreatedBy:    createdBy,
 	})
@@ -153,9 +163,16 @@ func (s *AgentUserService) ResetPassword(ctx context.Context, id string) (string
 	if err != nil {
 		return "", err
 	}
+	if err := auth.ValidatePasswordPolicy(password, old.Username); err != nil {
+		return "", err // 同 Add：与 aa_user 口令共用一道闸门
+	}
+	key, err := auth.HashPassword(password)
+	if err != nil {
+		return "", err
+	}
 	if err := s.repo.EditFields(ctx, old.AgentUserId, map[string]interface{}{
 		"password_salt": salt,
-		"password_hash": auth.EncryptPassword(password, salt),
+		"password_hash": key,
 		"updated_at":    time.Now(),
 	}); err != nil {
 		return "", err
@@ -168,9 +185,10 @@ func (s *AgentUserService) Delete(ctx context.Context, ids []string) error {
 	return s.repo.Delete(ctx, ids)
 }
 
-// randToken 生成 n 字节随机源映射的字母数字口令（≈6.6 bit/字符，16 字符 105 bit）。
+// randToken 生成 n 字节随机源映射的口令（含大小写/数字/安全符号，≈5.78 bit/字符，
+// 16 字符 ≈92 bit；四类字符齐，任何策略档位都可通过）。
 func randToken(n int) (string, error) {
-	const charset = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789" // 去易混字符
+	const charset = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789-_.~!@#%^*" // 去易混字符
 	out := make([]byte, n)
 	max := big.NewInt(int64(len(charset)))
 	for i := range out {

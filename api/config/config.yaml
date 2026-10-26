@@ -38,6 +38,34 @@ jwt:
   excludePaths:
     - "/api/v1/system/login"
 
+# 口令加固（部署时定档，无管理界面）。校验参数自描述在存量串内：换 algorithm/
+# iterations 只影响之后新产生的口令，存量照常校验。详见 README「鉴权与安全」。
+password:
+  hash:
+    algorithm: "pbkdf2-sm3" # pbkdf2-sm3（默认，国密 SM3）| pbkdf2-sha512；非法值回落默认并 WARN
+    iterations: 0           # PBKDF2 迭代次数；0=算法默认（sm3=60000 / sha512=220000）。
+                            # 部署时按目标机基准调到单次校验 50~100ms，实测值回写 README
+    pepper: ""              # 系统侧口令密钥（≥32 字节随机值；生产用环境变量
+                            # AIARSENAL_PWD_PEPPER 注入，多实例必须同值）。留空=不掺。
+                            # 非空时新口令落 *-peppered 档：拖库者缺这把密钥无法离线枚举；
+                            # 移除/换值会使全部 peppered 口令不可校验（等同强制全员重置）
+  policy:
+    level: standard         # loose | standard（默认，等保基线）| strict
+                            # loose    ≥8 位
+                            # standard ≥8 位 + 大小写/数字/特殊字符至少三类 + 不含账号名 + 禁弱口令黑名单
+                            # strict   ≥12 位 + 四类全含 + 不含账号名 + 禁弱口令黑名单
+    rotationDays: 0         # 口令定期更换天数（等保 a 项「定期更换」可选落地）；0=不启用。
+                            # >0 时过期口令登录被拒（管理员重置解除；存量库与全新安装都回填
+                            # 当前时间=所有账号获得完整窗口，不自动过期任何账号）。等保三级建议 90
+  lockout:
+    maxFailures: 5          # 连续登录失败锁定阈值；<=0 取默认 5
+    lockMinutes: 30         # 锁定时长（分钟，到期自动解锁）；<=0 取默认 30
+# 双因子（TOTP 动态码，验证器 App）。enforced=true 后未绑定账号登录被拒
+# （等保三级 d 项强制口径）；默认 false=自愿绑定（登录后 /personal/totp/setup）。
+totp:
+  enforced: false
+  issuer: "AI Arsenal"    # otpauth 绑定 URI 的发行方名（App 里展示）
+
 # 系统配置
 actor:
   # 令牌交换签名密钥（网关→ops 身份透传 HMAC-SHA256；api 与 mcp 须同值）

@@ -63,3 +63,27 @@ func TestInsecureDefaults(t *testing.T) {
 		t.Fatalf("沿用仓库默认值时应上报 jwt.encryptKey，实际 %v", got)
 	}
 }
+
+// pepper 来源判定与 jwt 同判据但空值语义不同：默认留空是文档化的正常态，
+// 只有非空真值进了仓库 yaml 才值得告警。
+func TestPepperFromConfigFile(t *testing.T) {
+	const committedPepper = "committed-pepper-value"
+	cases := []struct {
+		name      string
+		effective string
+		fromFile  string
+		want      bool
+	}{
+		{"默认留空（功能关），不告警", "", "", false},
+		{"yaml 真值未走环境变量，应告警", committedPepper, committedPepper, true},
+		{"环境变量已覆盖 yaml 真值，不告警", "real-pepper-from-env-0123456789abcdef", committedPepper, false},
+		{"环境变量注入（yaml 本就为空），不告警", "real-pepper-from-env-0123456789abcdef", "", false},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if got := pepperFromConfigFile(c.effective, c.fromFile); got != c.want {
+				t.Fatalf("pepperFromConfigFile(%q, %q) = %v，期望 %v", c.effective, c.fromFile, got, c.want)
+			}
+		})
+	}
+}

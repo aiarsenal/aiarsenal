@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/casbin/casbin/v2"
@@ -13,9 +15,20 @@ import (
 // 且 GrantRow.CompileExpr 产物在 casbin 侧与 Go 侧 Match 语义一致。
 // matcher 波及全平台鉴权，此处是防回归底线。
 
+// modelPath 以本测试文件自身位置定位 model：测试对工作目录免疫
+// （auth 包的 TestMain 会 chdir 到 api/ 让 config 加载真实默认值）。
+func modelPath(t *testing.T) string {
+	t.Helper()
+	_, thisFile, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("无法定位测试文件路径")
+	}
+	return filepath.Join(filepath.Dir(thisFile), "..", "..", "resource", "casbin", "rbac_model.conf")
+}
+
 func newModelEnforcer(t *testing.T) *casbin.Enforcer {
 	t.Helper()
-	m, err := casbinmodel.NewModelFromFile("../../resource/casbin/rbac_model.conf")
+	m, err := casbinmodel.NewModelFromFile(modelPath(t))
 	if err != nil {
 		t.Fatalf("load model: %v", err)
 	}

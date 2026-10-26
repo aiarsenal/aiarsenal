@@ -127,13 +127,21 @@ func (s *UserService) Add(ctx context.Context, u *entity.User, password string, 
 	if password == "" {
 		return errors.New("密码不能为空")
 	}
+	// 口令强度（等保 a 项；档位与报错见 auth.ValidatePasswordPolicy）
+	if err := auth.ValidatePasswordPolicy(password, u.UserName); err != nil {
+		return err
+	}
 	// 用户名/手机号唯一
 	existing, _ := s.repo.GetUserByUsername(ctx, u.UserName)
 	if existing != nil {
 		return errors.New("用户名已存在")
 	}
-	u.UserSalt = persistence.GenerateSalt()
-	u.UserPassword = auth.EncryptPassword(password, u.UserSalt)
+	key, err := auth.HashPassword(password)
+	if err != nil {
+		return err
+	}
+	u.UserSalt = persistence.GenerateSalt() // 占位盐：列 NOT NULL，校验不再读它（见 auth/password.go 头注）
+	u.UserPassword = key
 	uid, err := s.repo.Add(ctx, u, roleIds, postIds)
 	if err != nil {
 		return err
@@ -209,8 +217,20 @@ func (s *UserService) ResetPwd(ctx context.Context, operatorId, id, password str
 	if op.IsAdmin != 1 && operatorId != id {
 		return errors.New("没有访问权限：只能重置本人密码")
 	}
-	salt := persistence.GenerateSalt()
-	return s.repo.ResetPwd(ctx, id, auth.EncryptPassword(password, salt), salt)
+	// 强度策略按目标用户的账号名判（含账号名检查要对准被改的账号）
+	target, err := s.repo.GetEntityById(ctx, id)
+	if err != nil || target == nil {
+		return errors.New("用户不存在或已被删除")
+	}
+	if err := auth.ValidatePasswordPolicy(password, target.UserName); err != nil {
+		return err
+	}
+	key, err := auth.HashPassword(password)
+	if err != nil {
+		return err
+	}
+	salt := persistence.GenerateSalt() // 占位盐（同 Add）
+	return s.repo.ResetPwd(ctx, id, key, salt)
 }
 
 func (s *UserService) ChangeStatus(ctx context.Context, callerId, id string, status uint) error {

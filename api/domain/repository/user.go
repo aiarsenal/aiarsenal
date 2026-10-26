@@ -27,6 +27,8 @@ type IUserRepository interface {
 	// 非 nil=显式落库（含收权 0）。合法取值由服务层闸门保证。
 	Edit(ctx context.Context, u *entity.User, roleIds, postIds []string, setAdmin *int) error
 	Delete(ctx context.Context, userIds []string) error
+	UpdateTOTP(ctx context.Context, userId, secretEnc string, enabled int) error
+	GetTOTP(ctx context.Context, userId string) (secretEnc string, enabled int, err error)
 	ResetPwd(ctx context.Context, userId string, pwd, salt string) error
 	ChangeStatus(ctx context.Context, userId string, status uint) error
 	GetEditUser(ctx context.Context, userId string) (user *entity.User, roleIds []string, postIds []string, err error)

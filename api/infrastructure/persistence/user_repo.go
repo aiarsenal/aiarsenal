@@ -13,6 +13,7 @@ import (
 	"aiarsenal/consts"
 	"aiarsenal/domain/entity"
 	"aiarsenal/domain/model"
+	"aiarsenal/domain/types"
 	"aiarsenal/infrastructure/auth"
 	"aiarsenal/infrastructure/db"
 	"aiarsenal/infrastructure/idgen"
@@ -27,7 +28,7 @@ func NewUserRepository() *UserRepository { return &UserRepository{db: db.DB()} }
 func (r *UserRepository) GetUserByUsername(ctx context.Context, userName string) (*model.LoginUserRes, error) {
 	var u entity.User
 	err := r.db.WithContext(ctx).
-		Select("user_id, user_name, employee_no, name, user_nickname, user_password, user_salt, user_status, is_admin, avatar, dept_id").
+		Select("user_id, user_name, employee_no, name, user_nickname, user_password, user_salt, user_status, is_admin, avatar, dept_id, password_changed_at, totp_secret, totp_enabled").
 		Where("user_name = ?", userName).First(&u).Error
 	if err != nil {
 		return nil, err
@@ -38,7 +39,7 @@ func (r *UserRepository) GetUserByUsername(ctx context.Context, userName string)
 func (r *UserRepository) GetUserById(ctx context.Context, userId string) (*model.LoginUserRes, error) {
 	var u entity.User
 	err := r.db.WithContext(ctx).
-		Select("user_id, user_name, employee_no, name, user_nickname, user_password, user_salt, user_status, is_admin, avatar, dept_id").
+		Select("user_id, user_name, employee_no, name, user_nickname, user_password, user_salt, user_status, is_admin, avatar, dept_id, password_changed_at, totp_secret, totp_enabled").
 		Where("user_id = ?", userId).First(&u).Error
 	if err != nil {
 		return nil, err
@@ -180,6 +181,8 @@ func (r *UserRepository) EnrichUsers(ctx context.Context, users []*entity.User) 
 
 func (r *UserRepository) Add(ctx context.Context, u *entity.User, roleIds, postIds []string) (string, error) {
 	u.UserId = idgen.New()
+	t := types.Time(time.Now())
+	u.PasswordChangedAt = &t // 新口令从现在起算定期更换窗口
 	if err := r.db.WithContext(ctx).Create(u).Error; err != nil {
 		return "", err
 	}
@@ -233,9 +236,35 @@ func (r *UserRepository) Delete(ctx context.Context, userIds []string) error {
 	return r.db.WithContext(ctx).Where("user_id in ?", userIds).Delete(&entity.User{}).Error
 }
 
+// UpdateTOTP 写双因子状态：secretEnc 为空串时置 NULL（解绑语义）。
+func (r *UserRepository) UpdateTOTP(ctx context.Context, userId, secretEnc string, enabled int) error {
+	values := map[string]interface{}{"totp_enabled": enabled, "updated_at": time.Now()}
+	if secretEnc == "" {
+		values["totp_secret"] = nil
+	} else {
+		values["totp_secret"] = secretEnc
+	}
+	return r.db.WithContext(ctx).Model(&entity.User{}).Where("user_id = ?", userId).
+		Updates(values).Error
+}
+
+// GetTOTP 读双因子状态（密文 + 是否激活）。
+func (r *UserRepository) GetTOTP(ctx context.Context, userId string) (secretEnc string, enabled int, err error) {
+	var row struct {
+		TOTPSecret  string
+		TOTPEnabled uint
+	}
+	err = r.db.WithContext(ctx).Model(&entity.User{}).
+		Select("totp_secret, totp_enabled").Where("user_id = ?", userId).First(&row).Error
+	if err != nil {
+		return "", 0, err
+	}
+	return row.TOTPSecret, int(row.TOTPEnabled), nil
+}
+
 func (r *UserRepository) ResetPwd(ctx context.Context, userId string, pwd, salt string) error {
 	return r.db.WithContext(ctx).Model(&entity.User{}).Where("user_id = ?", userId).
-		Updates(map[string]interface{}{"user_password": pwd, "user_salt": salt}).Error
+		Updates(map[string]interface{}{"user_password": pwd, "user_salt": salt, "password_changed_at": time.Now()}).Error
 }
 
 func (r *UserRepository) ChangeStatus(ctx context.Context, userId string, status uint) error {
@@ -468,17 +497,20 @@ func (r *UserRepository) deptPaths(ctx context.Context) map[string]string {
 
 func entityToLogin(u *entity.User) *model.LoginUserRes {
 	return &model.LoginUserRes{
-		Id:           u.UserId,
-		UserName:     u.UserName,
-		EmployeeNo:   u.EmployeeNo,
-		Name:         u.Name,
-		UserNickname: u.UserNickname,
-		UserPassword: u.UserPassword,
-		UserSalt:     u.UserSalt,
-		UserStatus:   u.UserStatus,
-		IsAdmin:      u.IsAdmin,
-		Avatar:       u.Avatar,
-		DeptId:       u.DeptId,
+		Id:                u.UserId,
+		UserName:          u.UserName,
+		EmployeeNo:        u.EmployeeNo,
+		Name:              u.Name,
+		UserNickname:      u.UserNickname,
+		UserPassword:      u.UserPassword,
+		UserSalt:          u.UserSalt,
+		UserStatus:        u.UserStatus,
+		IsAdmin:           u.IsAdmin,
+		Avatar:            u.Avatar,
+		DeptId:            u.DeptId,
+		PasswordChangedAt: u.PasswordChangedAt,
+		TOTPEnabled:       u.TOTPEnabled,
+		TOTPSecret:        u.TOTPSecret,
 	}
 }
 

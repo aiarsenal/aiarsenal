@@ -57,6 +57,23 @@ type UserGetEditRes struct {
 	CheckedRoleIds []string     `json:"checkedRoleIds"`
 	CheckedPosts   []string     `json:"checkedPosts"`
 }
+
+// TotpActivateReq 双因子绑定确认/停用（body {code}）。
+type TotpActivateReq struct {
+	Code string `json:"code" form:"code" binding:"required"`
+}
+
+// TotpResetReq 管理员重置双因子（body {userId}）。
+type TotpResetReq struct {
+	UserId string `json:"userId" form:"userId" binding:"required"`
+}
+
+// TotpSetupRes 绑定密钥与 otpauth URI（明文密钥仅本次返回）。
+type TotpSetupRes struct {
+	Secret string `json:"secret"`
+	URI    string `json:"uri"`
+}
+
 type UserResetPwdReq struct {
 	UserId   string `json:"userId" form:"userId" binding:"required"`
 	Password string `json:"password" form:"password" binding:"required"`

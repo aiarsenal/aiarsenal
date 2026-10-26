@@ -18,8 +18,8 @@ type AgentUser struct {
 	Role         string      `gorm:"column:role" json:"role"`                     // admin / operator / member
 	InstanceIds  string      `gorm:"column:instance_ids;type:jsonb" json:"instanceIds"`
 	IsEnabled    uint        `gorm:"column:is_enabled" json:"isEnabled"`
-	PasswordSalt string      `gorm:"column:password_salt" json:"-"` // 口令盐（md5(md5(pw)+md5(salt))，同 aa_user 口径；明文仅创建/重置时一次性返回）
-	PasswordHash string      `gorm:"column:password_hash" json:"-"`
+	PasswordSalt string      `gorm:"column:password_salt" json:"-"` // 占位盐：列保留但校验不读它（与 aa_user 同口径，见 infrastructure/auth/password.go；明文仅创建/重置时一次性返回）
+	PasswordHash string      `gorm:"column:password_hash" json:"-"` // 口令存储串 $pbkdf2-<算法>$iter$salt$hash（同 aa_user 口径）
 	Remark       string      `gorm:"column:remark" json:"remark"`
 	CreatedBy    string      `gorm:"column:created_by" json:"createdBy"`
 	CreatedAt    *types.Time `gorm:"column:created_at" json:"createdAt"`

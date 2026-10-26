@@ -26,7 +26,7 @@ func (h *LoginController) Login(c *gin.Context) {
 	}
 	ip := c.ClientIP()
 	ua := c.Request.UserAgent()
-	user, token, menus, perms, err := h.svc.Login(c, req.Username, req.Password, req.VerifyKey, req.VerifyCode, ip, ua)
+	user, token, menus, perms, err := h.svc.Login(c, req.Username, req.Password, req.TOTPCode, req.VerifyKey, req.VerifyCode, ip, ua)
 	if err != nil {
 		middleware.Fail(c, err.Error())
 		return

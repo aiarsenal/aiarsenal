@@ -203,13 +203,13 @@ sudo bash deploy.sh prod         # 生产环境：HTTPS + 通配符证书
 
 | 环境变量 | 用途 |
 | --- | --- |
-| `AIARSENAL_JWT_ENCRYPT_KEY` | JWT 签名 + **LLM 凭据 / Agent api_key 的 AES-256-GCM 密钥**（换值会使库内既有密文失效） |
+| `AIARSENAL_JWT_ENCRYPT_KEY` | JWT 签名 + **LLM 凭据 / Agent api_key / 双因子 TOTP 密钥的 AES-256-GCM 密钥**（换值会使库内既有密文失效，已绑定双因子的账号全部无法登录，需超管逐个重置双因子） |
 | `AIARSENAL_ACTOR_SIGN_KEY` | 网关 → ops 令牌交换 HMAC 签名（api 与 mcp 同值） |
 | `SECRET_KEY` | llm 网关自身 JWT 密钥 |
 
 供应商 API Key（阿里云 / OpenAI 等）不落 git、不入种子 SQL——部署后在管理后台「LLM 管理 → 凭据」录入（AES-256-GCM 加密落库）。轮换密钥：改 `/etc/aiarsenal/env` 后 `systemctl restart aiarsenal-api aiarsenal-mcp aiarsenal-llm`。
 
-启动时 api / mcp / ops 会各自检查 `jwt.encryptKey` 是否仍取自 `config.yaml`：是则各输出一条 `level=WARN` 日志（带 `insecureDefaults` 字段，当前值为 `[jwt.encryptKey]`），**不阻断启动**。出现这条日志说明该实例的密钥写在随源码提交的 `config.yaml` 里（默认值即公开占位值），公网可达时该密钥等同公开，存在被冒用签发 token 的风险。处理顺序要注意：换密钥会使库内既有 LLM 凭据 / Agent api_key 无法解密，存量部署应先把**当前正在用的**密钥原值写入 `/etc/aiarsenal/env` 再重启，待后台重录凭据后才轮换成随机值——`deploy.sh` 对这一步有同样的提醒。同一台机同时跑三个进程时会看到三条相同的 WARN，属正常。
+启动时 api / mcp / ops 会各自检查 `jwt.encryptKey` 是否仍取自 `config.yaml`：是则各输出一条 `level=WARN` 日志（带 `insecureDefaults` 字段，当前值为 `[jwt.encryptKey]`），**不阻断启动**。出现这条日志说明该实例的密钥写在随源码提交的 `config.yaml` 里（默认值即公开占位值），公网可达时该密钥等同公开，存在被冒用签发 token 的风险。处理顺序要注意：换密钥会使库内既有 LLM 凭据 / Agent api_key / 双因子 TOTP 密钥无法解密（后者意味着已绑定双因子的账号全部无法登录，恢复需超管逐个重置双因子），存量部署应先把**当前正在用的**密钥原值写入 `/etc/aiarsenal/env` 再重启，待后台重录凭据后才轮换成随机值——`deploy.sh` 对这一步有同样的提醒。同一台机同时跑三个进程时会看到三条相同的 WARN，属正常。
 
 ## 🗃️ 数据库与迁移
 
@@ -270,12 +270,21 @@ cd /home/ubuntu/aiarsenal && git pull && sudo bash deploy.sh prod
   - **不得借用户编辑接口修改自己的管理员标志、角色与岗位**；目标是超管的账号仅超管可编辑 / 停用 / 删除；
   - **Agent 实例接口仅归属人与超管可操作**（exec / logs / start / stop / restart / status / 详情 / 密钥轮换 / 删除）。
 - 密码重置（管理端入口）仅允许超管重置他人、任何人重置本人；每次口令变更经操作日志中间件留痕。个人自助改密走个人中心。
+- **口令存储与强度**：
+  - 存储：PBKDF2 框架，串格式 `$pbkdf2-<算法>$<迭代>$<盐>$<派生键>` 自描述——调整 `password.hash.algorithm / iterations` 只影响之后新产生的口令，存量按串内参数照常校验。SM3 为按 GB/T 32905-2016 的本地实现（国标官方测试向量锁定单测，未引入第三方国密库），整个功能零新增依赖；默认档 `pbkdf2-sm3@60000`（单次派生实测 ≈90ms，Apple M1 Pro），`pbkdf2-sha512@220000` 对齐 OWASP 口令存储速查表。这是登录延迟与爆破成本的显式权衡：离线爆破者用自己的优化实现（约快 3.5 倍），60000 迭代的每猜测成本约为 210000 的三成——如需对齐 OWASP 迭代量级，上调到 210000（本机 ≈300ms/次）即可，即时生效且不影响存量校验。
+  - 目标部署机复测定档：`go test ./infrastructure/auth/ -bench=HashPasswordSM3 -benchtime=5x`，单次落在 50~100ms 即可；偏低就上调 `password.hash.iterations` 并把实测值回填本节。
+  - 强度三档（`password.policy.level`）：`loose` 仅限长度 ≥8；`standard`（默认，等保基线）≥8 位 + 大小写/数字/特殊字符至少三类 + 不含账号名 + 禁弱口令黑名单（内嵌 SecLists Top-1000）；`strict` ≥12 位 + 四类全含。后端强制，拒绝文案逐条给出所缺项。
+  - 口令 pepper（可选，防拖库的最后一块板）：配置 `AIARSENAL_PWD_PEPPER`（≥32 字节随机值，多实例必须同值）后，新口令在派生前先与该密钥做 HMAC 混合（串内算法 id 变为 `*-peppered`，存量串不受开关影响）。只拖数据库的攻击者缺这把密钥**无法离线枚举**任何口令——迭代数强弱不再影响这个最常见的场景；只有连应用服务器一起失守才退回拼迭代数。移除/换值会使全部 peppered 口令不可校验（等同强制全员重置），启动时对短值 WARN、对真值误提交进 yaml 也会告警。误配窗口内的登录失败会计入锁定：恢复/换 pepper 后账号若报「已锁定」，清除 redis 键 `pwd:fail:*` 或等锁窗过期即可。
+  - 双因子（TOTP 动态码，可选/可强制）：登录后 `/personal/totp/setup` 获取密钥与 otpauth 绑定 URI（验证器 App 手动录入）→ `/personal/totp/activate` 验一次动态码激活；停用需动态码；丢手机由超管 `PUT /system/user/totp/reset` 重置。密钥 AES-256-GCM 加密落库，动态码错误计入登录失败锁定。`totp.enforced: true` 后未绑定账号登录被拒——与口令组合即满足等保三级鉴别 d 项（两种鉴别技术、其一为密码技术）。
+  - 口令定期更换（可选）：`password.policy.rotationDays`（0=不启用，默认；等保三级建议 90）。启用后过期口令登录被拒（提示联系管理员重置，管理员重置即解除）；存量库升级与全新安装都会把起算点回填为当前时间——所有账号（含种子演示账号）统一获得完整更换窗口，不自动过期任何账号；种子口令仍是公开值，靠「首次部署立即修改」纪律与强度策略兜底。
+  - 登录失败锁定（`password.lockout.*`）：连续 5 次失败锁定 30 分钟（锁定时长自达到阈值时满额起算，到期自动解锁），成功登录清零，阈值/时长可配。Redis **运行中断连**时锁定层放行以保登录可用——与会话注册表的 fail-closed 是两处有意为之的不同取舍（前者是加固层，后者是鉴权本体）；注意 redis 在服务启动时不可达则进程无法启动，属既有启动语义，与本层取舍无关。
+  - **硬切换**：md5 旧口令路径已删除。md5 时代的存量账号升级后将无法登录，升级前必须重置全部账号口令：普通账号由超管在管理端逐个重置，超管本人口令丢失时在库内将其 `user_password` 换成新格式串（用新版本代码对期望口令调用 `auth.HashPassword` 生成）。
 - LLM 凭据、Agent 模型 `api_key` 走 AES-256-GCM 加密落库。
 - 业务 ID 采用 32 位字符串（`biz_id`），跨环境稳定、不可枚举。
 
 ## 👤 默认账号
 
-基线种子内置管理员与演示账号（密码均为 `aiarsenal123`）：**`hi` / `aiarsenal123`**（超管）、`user001` ~ `user100`（演示用户）。**首次部署后请立即修改默认密码**。演示数据（部门树 / 用户 / 日志）均为虚构，与任何真实组织无关。
+基线种子内置管理员与演示账号（密码均为 `aiarsenal123`）：**`hi` / `aiarsenal123`**（超管）、`user001` ~ `user100`（演示用户）。**首次部署后请立即修改默认密码**。种子口令是公开的夹具值，有意不经强度策略（策略只约束改密接口）——也正因此，改密之后 `aiarsenal123` 无法再被设回。演示数据（部门树 / 用户 / 日志）均为虚构，与任何真实组织无关。
 
 首页落地页为纯项目介绍（无控制台入口），登录地址 `<域名>/#/auth/login`。
 
