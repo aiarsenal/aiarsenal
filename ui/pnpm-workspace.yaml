@@ -162,7 +162,7 @@ catalog:
   qrcode: ^1.5.4
   qs: ^6.15.2
   reka-ui: ^2.9.10
-  resolve.exports: ^2.0.3
+  resolve.exports: ^2.0.4
   rimraf: ^6.1.3
   rollup-plugin-visualizer: ^7.0.1
   sass: ^1.101.0
