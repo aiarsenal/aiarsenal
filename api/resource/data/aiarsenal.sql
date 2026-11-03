@@ -2033,7 +2033,7 @@ CREATE UNIQUE INDEX idx_aa_menu_menu_id ON public.aa_menu USING btree (menu_id);
 -- Name: idx_aa_menu_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX idx_aa_menu_name ON public.aa_menu USING btree (name);
+CREATE INDEX idx_aa_menu_name ON public.aa_menu USING btree (name);
 
 
 --
