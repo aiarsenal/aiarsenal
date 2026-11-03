@@ -39,22 +39,12 @@ func CasbinAuth(repo repository.IMenuRepository) gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		var menu *model.MenuInfoRes
-		for _, m := range menus {
-			ms := m.Name
-			if i := strings.Index(m.Name, "?"); i >= 0 {
-				ms = m.Name[:i]
-			}
-			if m.Name == url || ms == url {
-				menu = m
-				break
-			}
-		}
+		menu := menuFor(url, menus)
 
 		if menu != nil {
 			// 白名单（无需登录可访问）
 			for _, p := range cfg.Jwt.ExcludePaths {
-				if strings.EqualFold(menu.Name, strings.TrimLeft(p, "/")) {
+				if strings.EqualFold(strings.TrimLeft(menu.Name, "/"), strings.TrimLeft(p, "/")) {
 					c.Next()
 					return
 				}
@@ -91,4 +81,22 @@ func CasbinAuth(repo repository.IMenuRepository) gin.HandlerFunc {
 		}
 		c.Next()
 	}
+}
+
+// menuFor URL→菜单映射：比对前对请求路径与菜单名做斜杠归一（手册 F-14）。
+// 种子数据里 /api/v1/system/role/edit、/api/v1/system/role/delete 两条按钮记录
+// 带斜杠前缀，而请求路径先 TrimLeft——旧比对「去斜杠路径 == 原始菜单名」对这两条
+// 永不成立，路由对非超管实际无闸门（casbin 直接放行）。归一双端后既有库无需
+// 数据迁移即恢复匹配；首个命中即返回（repo 列表序， weighing 由数据侧保证）。
+func menuFor(url string, menus []*model.MenuInfoRes) *model.MenuInfoRes {
+	for _, m := range menus {
+		ms := strings.TrimLeft(m.Name, "/")
+		if j := strings.Index(ms, "?"); j >= 0 {
+			ms = ms[:j]
+		}
+		if ms == url {
+			return m
+		}
+	}
+	return nil
 }
