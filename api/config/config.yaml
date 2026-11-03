@@ -13,6 +13,13 @@ public:
   scheme: https        # http | https
   domain: aiarsenal.cc # 对外根域名；api./mcp./llm. 子域据此推导
 
+# 跨域来源白名单（手册 F-11）：仅对清单内来源精确回显 Access-Control-Allow-Origin，
+# 不再反射任意 Origin、不再发 Allow-Credentials（鉴权走 Authorization 头，无 cookie 消费者）。
+# 本部署 UI 源（public.scheme://public.domain，如 https://aiarsenal.cc）自动放行无需列出。
+cors:
+  allowedOrigins:
+    - "http://localhost:5666"   # 开发前端（vite VITE_PORT）；生产如 UI 与 public 域不一致，在此追加
+
 # 数据库：pgsql link 经 config.parseLink 转 gorm postgres DSN
 database:
   default:

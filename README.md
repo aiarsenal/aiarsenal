@@ -283,6 +283,7 @@ cd /home/ubuntu/aiarsenal && git pull && sudo bash deploy.sh prod
 - **审计日志保护（等保三级 8.1.4.3c「防未预期删除、修改、覆盖」）**：登录/操作日志的删除与清空端点受 `audit.protection` 档位管制——`strict`（**默认**，等保合规态）服务层直接拒绝（端点保留、行为可解释，前端不发版即可收紧）；`flexible`（部署方自担风险的放开态）仅超管可调（判定基于查库身份，非超管/身份不可得一律 fail-closed），等保测评时需向机构说明「超管闸门+动作全审计+告警」的补偿取舍。非法值回落 strict（配错=收紧）。两种档位下「留存 ≥180 天 + 删除/清空动作强审计」均不可关闭。前端日志页删除/清空按钮由后端下发的 `audit:log:manage` 权限码驱动（strict 不发码=按钮隐藏；flexible 仅超管可见）——前端只是体验层，真正的闸门在服务层。留存清理任务（每日自动，`audit.purge.enabled` 可关）只物理删除超过 `retentionDays`（硬下限 180，配置更低会被钳制+WARN）的历史行，动作本身写操作日志并触发 `log_cleanup` 告警——防磁盘膨胀的 sanctioned 通道，无任何绕开留存下限的其它删除面。
 - **安全事件告警（等保三级 8.1.5.4f「识别+报警」）**：四类事件恒写入 `aa_alert_record`（登录锁定触发 / insecureDefaults 配置态 / 审计日志被删或清空 / 服务异常 ERROR 白名单：redis 断连、迁移失败）——**落库不可关闭，表无删除端点，留存随库（≥180 天）**。外送（钉钉机器人加签 + shoutrrr 通道：飞书 `lark://`、企微 `wecom://`、SMTP `smtp://`、通用 webhook `generic://`）由 `alert.enabled` 控制，默认 `false`（零行为变化）；同事件+同业务键在 `throttleMinutes` 窗口内去重防刷爆通道，投递失败指数退避重试、启动时自动重投未送达记录。钉钉加签密钥生产走 `AIARSENAL_ALERT_DINGTALK_SECRET` 环境变量注入。
 - LLM 凭据、Agent 模型 `api_key` 走 AES-256-GCM 加密落库。
+- 跨域（CORS）按白名单精确放行：仅对 `cors.allowedOrigins` 清单与本部署 UI 源（`public.scheme://public.domain` 自动推导）回显 `Access-Control-Allow-Origin`——不反射任意来源、不发 `Allow-Credentials`（鉴权走 Authorization 头，无 cookie 消费者）。白名单外来源在浏览器侧等价于拒绝跨域；子域与根域视为不同来源（精确全串匹配）。
 - 业务 ID 采用 32 位字符串（`biz_id`），跨环境稳定、不可枚举。
 
 ## 👤 默认账号
