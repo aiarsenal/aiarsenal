@@ -206,6 +206,7 @@ sudo bash deploy.sh prod         # 生产环境：HTTPS + 通配符证书
 | `AIARSENAL_JWT_ENCRYPT_KEY` | JWT 签名 + **LLM 凭据 / Agent api_key / 双因子 TOTP 密钥的 AES-256-GCM 密钥**（换值会使库内既有密文失效，已绑定双因子的账号全部无法登录，需超管逐个重置双因子） |
 | `AIARSENAL_ACTOR_SIGN_KEY` | 网关 → ops 令牌交换 HMAC 签名（api 与 mcp 同值） |
 | `SECRET_KEY` | llm 网关自身 JWT 密钥 |
+| `AIARSENAL_ALERT_DINGTALK_SECRET` / `AIARSENAL_ALERT_DINGTALK_TOKEN` / `AIARSENAL_ALERT_CHANNELS` | 安全事件告警通道凭据：钉钉加签密钥 / 钉钉机器人 access_token / shoutrrr 通道 URL（逗号分隔）。三者同含凭据，经 `/etc/aiarsenal/env` 注入，勿提交进 git；语义见「鉴权与安全 → 安全事件告警」 |
 
 供应商 API Key（阿里云 / OpenAI 等）不落 git、不入种子 SQL——部署后在管理后台「LLM 管理 → 凭据」录入（AES-256-GCM 加密落库）。轮换密钥：改 `/etc/aiarsenal/env` 后 `systemctl restart aiarsenal-api aiarsenal-mcp aiarsenal-llm`。
 
@@ -279,6 +280,7 @@ cd /home/ubuntu/aiarsenal && git pull && sudo bash deploy.sh prod
   - 口令定期更换（可选）：`password.policy.rotationDays`（0=不启用，默认；等保三级建议 90）。启用后过期口令登录被拒（提示联系管理员重置，管理员重置即解除）；存量库升级与全新安装都会把起算点回填为当前时间——所有账号（含种子演示账号）统一获得完整更换窗口，不自动过期任何账号；种子口令仍是公开值，靠「首次部署立即修改」纪律与强度策略兜底。
   - 登录失败锁定（`password.lockout.*`）：连续 5 次失败锁定 30 分钟（锁定时长自达到阈值时满额起算，到期自动解锁），成功登录清零，阈值/时长可配。Redis **运行中断连**时锁定层放行以保登录可用——与会话注册表的 fail-closed 是两处有意为之的不同取舍（前者是加固层，后者是鉴权本体）；注意 redis 在服务启动时不可达则进程无法启动，属既有启动语义，与本层取舍无关。
   - **硬切换**：md5 旧口令路径已删除。md5 时代的存量账号升级后将无法登录，升级前必须重置全部账号口令：普通账号由超管在管理端逐个重置，超管本人口令丢失时在库内将其 `user_password` 换成新格式串（用新版本代码对期望口令调用 `auth.HashPassword` 生成）。
+- **安全事件告警（等保三级 8.1.5.4f「识别+报警」）**：四类事件恒写入 `aa_alert_record`（登录锁定触发 / insecureDefaults 配置态 / 审计日志被删或清空 / 服务异常 ERROR 白名单：redis 断连、迁移失败）——**落库不可关闭，表无删除端点，留存随库（≥180 天）**。外送（钉钉机器人加签 + shoutrrr 通道：飞书 `lark://`、企微 `wecom://`、SMTP `smtp://`、通用 webhook `generic://`）由 `alert.enabled` 控制，默认 `false`（零行为变化）；同事件+同业务键在 `throttleMinutes` 窗口内去重防刷爆通道，投递失败指数退避重试、启动时自动重投未送达记录。钉钉加签密钥生产走 `AIARSENAL_ALERT_DINGTALK_SECRET` 环境变量注入。
 - LLM 凭据、Agent 模型 `api_key` 走 AES-256-GCM 加密落库。
 - 业务 ID 采用 32 位字符串（`biz_id`），跨环境稳定、不可枚举。
 

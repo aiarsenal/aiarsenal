@@ -66,6 +66,31 @@ totp:
   enforced: false
   issuer: "AI Arsenal"    # otpauth 绑定 URI 的发行方名（App 里展示）
 
+# 安全事件告警（等保三级 8.1.5.4f「识别+报警」）。合规口径：**外送可关可节流，
+# 落库不可关**——事件恒写入 aa_alert_record（无删除端点，留存随库 ≥180 天）。
+# 事件范围：登录锁定触发 / insecureDefaults / 审计日志被删或清空 / 服务异常 ERROR 白名单。
+# 各通道的 SkipTLSVerify 类选项一律不开启（供应链审计条件④）。
+alert:
+  enabled: false          # 外送开关；false（默认）=只落库不外送（行为零变化）
+  channels: []            # shoutrrr 通道 URL 白名单：lark:// wecom:// smtp:// generic://
+                          # URL 内含 token/secret，生产建议经部署侧注入，勿提交进 git
+  dingtalkToken: ""       # 钉钉机器人 access_token（自实现 sender，加签见下）
+  dingtalkSecret: ""      # 钉钉加签密钥（HMAC-SHA256）；生产用环境变量
+                          # AIARSENAL_ALERT_DINGTALK_SECRET 注入；留空=机器人未开加签
+  queueSize: 64           # 投递队列容量；<=0 取默认 64
+  retryMax: 5             # 单条投递最大重试次数（指数退避）；<=0 取默认 5
+  throttleMinutes: 10     # 同事件+同业务键的外送节流窗（分钟）；0=不节流（落库除基建噪声外不受节流影响）
+audit:
+  protection: strict      # strict（默认，等保合规态）：登录/操作日志的删除/清空端点服务层直接拒绝
+                          # flexible（部署方自担风险）：仅超管可删/清（判定基于查库身份），
+                          #   等保测评时需向机构说明「超管闸门+动作全审计+告警」的补偿取舍
+                          # 非法值回落 strict（配错=收紧，绝不配错=放开）
+  purge:
+    enabled: true         # 留存清理任务（每日一次）：只清两表超过留存下限的历史行，
+                          # 动作本身写 aa_oper_log + 触发 log_cleanup 告警；false=完全不自动删
+    retentionDays: 180    # 留存天数硬下限 180（网安法 21 条 + 8.1.5.4d 留存≥6 个月）；
+                          # 配置 <180 按 180 执行并 WARN
+
 # 系统配置
 actor:
   # 令牌交换签名密钥（网关→ops 身份透传 HMAC-SHA256；api 与 mcp 须同值）
