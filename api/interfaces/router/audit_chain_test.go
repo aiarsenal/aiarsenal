@@ -1,6 +1,8 @@
 package router
 
 import (
+	"time"
+
 	"context"
 	"net/http"
 	"net/http/httptest"
@@ -33,6 +35,9 @@ func (f *fakeOperLogRepo) Insert(_ context.Context, log *entity.OperLog) error {
 }
 func (f *fakeOperLogRepo) Delete(context.Context, []string) error { return nil }
 func (f *fakeOperLogRepo) Clear(context.Context) error            { return nil }
+
+// PurgeBefore 满足 IOperLogRepository（留存清理接口；路由测试不触达）。
+func (f *fakeOperLogRepo) PurgeBefore(context.Context, time.Time) (int64, error) { return 0, nil }
 
 // 这条用例只做一件事：证明 v1 分组真的挂了审计中间件。
 // 删掉 auditChain 里的 OperLog（或整条 v1.Use），它必须变红。

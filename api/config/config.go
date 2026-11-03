@@ -26,6 +26,7 @@ type Config struct {
 	Password PasswordConfig `mapstructure:"password"`
 	Totp     TotpConfig     `mapstructure:"totp"`
 	Alert    AlertConfig    `mapstructure:"alert"`
+	Audit    AuditConfig    `mapstructure:"audit"`
 
 	// jwtKeyFromFile 标记 jwt.encryptKey 是否直接取自 config.yaml（未被环境变量覆盖）。
 	// 不导出、不参与反序列化，仅由 Load 填入，供 insecureDefaults 上报。
@@ -103,6 +104,30 @@ type AlertConfig struct {
 	RetryMax int `mapstructure:"retryMax"`
 	// ThrottleMinutes 同 eventType+业务键 的外送节流窗（分钟）；<0 归一为 0=不节流。
 	ThrottleMinutes int `mapstructure:"throttleMinutes"`
+}
+
+// AuditConfig 审计日志保护（等保三级 8.1.4.3c「防未预期删除、修改、覆盖」）。
+// 边界口径：留存≥180 天 + 删除/清空动作强审计两种档位下都不可关闭；可配置的
+// 只有「是否允许人工删除」这个动作本身。
+type AuditConfig struct {
+	// Protection 档位：strict（默认，等保合规态）| flexible（部署方自担风险的放开态）。
+	// strict：LoginLog/OperLog 的删除/清空端点服务层直接拒绝（端点保留、行为可解释，
+	// 前端无需发版即可收紧）；flexible：仅超管可调（判定基于查库身份）。
+	// 非法值回落 strict——配错=收紧，绝不「配错=放开」。
+	Protection string `mapstructure:"protection"`
+	// Purge 留存清理任务（防磁盘膨胀的 sanctioned 通道）：只清两表、动作写 oper_log
+	// 并触发 log_cleanup 告警。retentionDays 是硬下限：配置低于 180 一律按 180 执行
+	// 并 WARN（网安法 21 条 + 8.1.5.4d 留存 ≥6 个月不可协商）。
+	Purge AuditPurgeConfig `mapstructure:"purge"`
+}
+
+// AuditPurgeConfig 留存清理任务配置。
+type AuditPurgeConfig struct {
+	// Enabled 清理任务开关；true（默认）=每日一次清理超过留存下限的历史日志。
+	// false=完全不自动删（部署方自行承担磁盘增长与备份策略）。
+	Enabled bool `mapstructure:"enabled"`
+	// RetentionDays 留存天数硬下限 180；配置 <180 归一为 180 并 WARN。
+	RetentionDays int `mapstructure:"retentionDays"`
 }
 
 // AlertOpts 转 alert 包配置（归一后的生效值直传；两结构体字段一一对应）。
@@ -311,6 +336,7 @@ func Load() (*Config, error) {
 	}
 	c.applyPasswordDefaults()
 	c.applyAlertDefaults()
+	c.applyAuditDefaults()
 	c.jwtKeyFromFile = jwtKeyFromConfigFile(c.Jwt.EncryptKey, yamlJwtKey)
 	c.pepperFromFile = pepperFromConfigFile(c.Password.Hash.Pepper, yamlPepper)
 	c.warnInsecureDefaults()
@@ -351,6 +377,27 @@ func (c *Config) applyAlertDefaults() {
 	}
 	if a.Enabled && len(a.Channels) == 0 && a.DingTalkToken == "" {
 		slog.Warn("alert.enabled=true 但未配置任何通道（channels 与 dingtalkToken 均空），外送不会发生")
+	}
+}
+
+// applyAuditDefaults 在 Load 时一次性归一审计保护配置：非法值回落 strict 并 WARN
+// （不允许「配错=放开」）；retentionDays <180 归一为 180 并 WARN（留存硬下限）。
+func (c *Config) applyAuditDefaults() {
+	a := &c.Audit
+	switch a.Protection {
+	case "":
+		a.Protection = "strict"
+	case "strict", "flexible":
+	default:
+		slog.Warn("audit.protection 非法，回落 strict（配错=收紧）", "given", a.Protection)
+		a.Protection = "strict"
+	}
+	if a.Purge.RetentionDays < 180 {
+		if a.Purge.RetentionDays != 0 {
+			slog.Warn("audit.purge.retentionDays 低于 180 天硬下限（网安法 21 条/8.1.5.4d），按 180 执行",
+				"given", a.Purge.RetentionDays)
+		}
+		a.Purge.RetentionDays = 180
 	}
 }
 

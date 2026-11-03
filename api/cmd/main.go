@@ -206,8 +206,8 @@ func main() {
 	roleSvc := service.NewRoleService(roleRepo, menuRepo, c)
 	permGroupSvc := service.NewPermGroupService(permGroupRepo, empSetRepo, menuRepo, userRepo)
 	userSvc := service.NewUserService(userRepo, roleRepo, postRepo)
-	loginLogSvc := service.NewLoginLogService(loginLogRepo)
-	operLogSvc := service.NewOperLogService(operLogRepo)
+	loginLogSvc := service.NewLoginLogService(loginLogRepo, userRepo)
+	operLogSvc := service.NewOperLogService(operLogRepo, userRepo)
 	onlineSvc := service.NewUserOnlineService(onlineRepo, userRepo)
 	monitorSvc := service.NewMonitorService()
 	cacheSvc := service.NewCacheService(c)
@@ -362,6 +362,17 @@ func main() {
 	kbDsSvc := service.NewKbDatasourceService(kbDsRepo, kbRunRepo, kbDirRepo, kbGrantRepo, kbSvc)
 	kbSch := scheduler.New()
 	kbDsSvc.SetScheduler(kbSch)
+	// 审计日志留存清理（PR③）：每日 03:20 一轮，超过留存下限（≥180，config 归一）的
+	// 两表历史行物理删除，动作写 oper_log + log_cleanup 告警。仅 api 进程注册
+	// （mcp/ops 不跑，防多进程竞争）。保留天数取 config 归一值（<180 已被归一+WARN）。
+	logPurgeSvc := service.NewLogPurgeService(loginLogRepo, operLogRepo, cfg.Audit.Purge.RetentionDays)
+	if cfg.Audit.Purge.Enabled {
+		if err := kbSch.Register("audit-log-purge", "20 3 * * *", func(ctx context.Context) {
+			logPurgeSvc.PurgeOnce(ctx)
+		}); err != nil {
+			log.Printf("warn: register audit-log-purge schedule: %v", err)
+		}
+	}
 	kbSch.Start()
 	kbDsSvc.RegisterSchedules(context.Background())
 	kbSvc.SetExternalSearch(kbDsSvc)

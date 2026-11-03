@@ -5,6 +5,7 @@ import (
 	"errors"
 	"strconv"
 
+	"aiarsenal/config"
 	"aiarsenal/domain/entity"
 	"aiarsenal/domain/model"
 	"aiarsenal/domain/repository"
@@ -13,11 +14,12 @@ import (
 )
 
 type LoginLogService struct {
-	repo repository.ILoginLogRepository
+	repo     repository.ILoginLogRepository
+	userRepo repository.IUserRepository
 }
 
-func NewLoginLogService(r repository.ILoginLogRepository) *LoginLogService {
-	return &LoginLogService{repo: r}
+func NewLoginLogService(r repository.ILoginLogRepository, u repository.IUserRepository) *LoginLogService {
+	return &LoginLogService{repo: r, userRepo: u}
 }
 
 func (s *LoginLogService) List(ctx context.Context, loginName, status, ip, location string, pageNum, pageSize int) ([]*entity.LoginLog, int64, error) {
@@ -26,24 +28,44 @@ func (s *LoginLogService) List(ctx context.Context, loginName, status, ip, locat
 
 // Delete / Clear 删除/清空登录日志。
 //
-// operator 由 controller 从登录态取（middleware.GetClaims），用于告警埋点：审计日志
-// 的删除/清空是等保 8.1.4.3c 的敏感动作，操作者+行数必须进 aa_alert_record
-// （event=log_tamper_attempt）。此处只负责如实上报，不做授权判定。
-func (s *LoginLogService) Delete(ctx context.Context, operator string, ids []string) error {
+// callerId 由 controller 从登录态取（claims.UserId）。闸门：audit.protection 档位
+// （strict=一律拒绝；flexible=仅超管），判定基于**查库身份**（GetEntityById），不信
+// 请求体。被拒的尝试同样进告警（log_tamper_attempt）——strict 档下埋点仍在，
+// flexible 档下告警是主要可见面（PLAN PR③ 拍板）。
+func (s *LoginLogService) Delete(ctx context.Context, callerId string, ids []string) error {
+	callerName, gateErr := s.auditGate(ctx, callerId)
+	if gateErr != nil {
+		alertLogTamper(callerName, "登录日志", "删除", len(ids), gateErr)
+		return gateErr
+	}
 	err := s.repo.Delete(ctx, ids)
-	alertLogTamper(operator, "登录日志", "删除", len(ids), err)
+	alertLogTamper(callerName, "登录日志", "删除", len(ids), err)
 	return err
 }
-func (s *LoginLogService) Clear(ctx context.Context, operator string) error {
+func (s *LoginLogService) Clear(ctx context.Context, callerId string) error {
+	callerName, gateErr := s.auditGate(ctx, callerId)
+	if gateErr != nil {
+		alertLogTamper(callerName, "登录日志", "清空", -1, gateErr)
+		return gateErr
+	}
 	err := s.repo.Clear(ctx)
-	alertLogTamper(operator, "登录日志", "清空", -1, err)
+	alertLogTamper(callerName, "登录日志", "清空", -1, err)
 	return err
 }
 
-type OperLogService struct{ repo repository.IOperLogRepository }
+// auditGate 审计日志删除/清空的档位闸门（委托包级 auditGateFor，两 service 共享
+// 单一实现——防双份接线漂移，审计 P1）。
+func (s *LoginLogService) auditGate(ctx context.Context, callerId string) (string, error) {
+	return auditGateFor(ctx, s.userRepo, callerId)
+}
 
-func NewOperLogService(r repository.IOperLogRepository) *OperLogService {
-	return &OperLogService{repo: r}
+type OperLogService struct {
+	repo     repository.IOperLogRepository
+	userRepo repository.IUserRepository
+}
+
+func NewOperLogService(r repository.IOperLogRepository, u repository.IUserRepository) *OperLogService {
+	return &OperLogService{repo: r, userRepo: u}
 }
 
 func (s *OperLogService) List(ctx context.Context, title, method, operName string, pageNum, pageSize int) ([]*model.OperLogListRes, int64, error) {
@@ -55,21 +77,78 @@ func (s *OperLogService) Get(ctx context.Context, operId string) (*model.OperLog
 func (s *OperLogService) Insert(ctx context.Context, log *entity.OperLog) error {
 	return s.repo.Insert(ctx, log)
 }
-func (s *OperLogService) Delete(ctx context.Context, operator string, ids []string) error {
+func (s *OperLogService) Delete(ctx context.Context, callerId string, ids []string) error {
+	callerName, gateErr := s.auditGate(ctx, callerId)
+	if gateErr != nil {
+		alertLogTamper(callerName, "操作日志", "删除", len(ids), gateErr)
+		return gateErr
+	}
 	err := s.repo.Delete(ctx, ids)
-	alertLogTamper(operator, "操作日志", "删除", len(ids), err)
+	alertLogTamper(callerName, "操作日志", "删除", len(ids), err)
 	return err
 }
-func (s *OperLogService) Clear(ctx context.Context, operator string) error {
+func (s *OperLogService) Clear(ctx context.Context, callerId string) error {
+	callerName, gateErr := s.auditGate(ctx, callerId)
+	if gateErr != nil {
+		alertLogTamper(callerName, "操作日志", "清空", -1, gateErr)
+		return gateErr
+	}
 	err := s.repo.Clear(ctx)
-	alertLogTamper(operator, "操作日志", "清空", -1, err)
+	alertLogTamper(callerName, "操作日志", "清空", -1, err)
 	return err
+}
+
+func (s *OperLogService) auditGate(ctx context.Context, callerId string) (string, error) {
+	return auditGateFor(ctx, s.userRepo, callerId)
+}
+
+// auditGateFor 档位闸门唯一实现：查库身份（fail-closed）→ 纯函数判定。
+// 返回 (操作者名, 错误)：错误非 nil=拒绝（身份不可得时绝不放开删除权）。
+func auditGateFor(ctx context.Context, userRepo repository.IUserRepository, callerId string) (string, error) {
+	callerName, isAdmin := "", false
+	if callerId != "" && userRepo != nil {
+		caller, err := userRepo.GetEntityById(ctx, callerId)
+		callerName, isAdmin = resolveCaller(caller, err)
+	}
+	return callerName, auditProtectionCheck(config.Get().Audit.Protection, isAdmin)
+}
+
+// resolveCaller 查库结果→(操作者名, 是否超管) 的判定收口（变异 M3 补网）：
+// caller 为 nil 或查库出错一律 ("", false)——身份不可得绝不视作超管，
+// 与 auditProtectionCheck 的 flexible 档组合成完整 fail-closed 链。
+func resolveCaller(caller *entity.User, err error) (string, bool) {
+	if err != nil || caller == nil {
+		return "", false
+	}
+	return caller.UserName, caller.IsAdmin == 1
+}
+
+// 档位闸门哨兵错误（controller 据此返回 HTTP 403，其余错误走通用 Fail）。
+var (
+	ErrAuditProtection = errors.New("审计日志保护已开启（strict 档）：登录/操作日志不允许删除或清空")
+	ErrAuditNotAdmin   = errors.New("没有访问权限：只有超级管理员可以删除或清空审计日志（flexible 档）")
+)
+
+// auditProtectionCheck 审计日志删除/清空档位闸门的判定收口（表测五格钉住：
+// strict×flexible×超管×非超管×调用者身份缺失）。strict=等保合规态一律拒绝；
+// flexible=仅超管（删除权是补偿控制的核心，宁可错拒不可错放）；未知档位按 strict
+// （config 归一已保证不出现，防御性兜底=配错只会更紧）。
+func auditProtectionCheck(protection string, isCallerAdmin bool) error {
+	switch protection {
+	case "flexible":
+		if !isCallerAdmin {
+			return ErrAuditNotAdmin
+		}
+		return nil
+	default:
+		return ErrAuditProtection
+	}
 }
 
 // alertLogTamper 日志篡改告警：落库必达（等保 8.1.4.3c），外送受 alert.enabled 与节流控制。
 // 行数 -1 表示清空（全表）；操作者为空时如实标注「未知操作者」。repo 调用**之后**发出
 // 并带结果——「尝试」语义=请求已受理，成败如实入正文（失败尝试对审计更有价值），
-// 行数是提交数而非实际删除数（失败时不应留下既成事实的记录）。
+// 行数是提交数而非实际删除数（审计 B6：失败时不应留下既成事实的记录）。
 func alertLogTamper(operator, logKind, action string, rows int, opErr error) {
 	who := operator
 	if who == "" {

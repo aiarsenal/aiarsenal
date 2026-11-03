@@ -163,6 +163,13 @@ func (s *AuthService) GetAdminRules(ctx context.Context, userId string, isSuperA
 
 	if isSuperAdmin {
 		permissions := []string{"*/*/*"}
+		// P2-01（PR③）：审计日志删除/清空按钮的前端可见性码。strict 档不发——
+		// 前端按钮全隐藏且后端也拒绝（双层一致，前端不硬编码信任）；flexible 档
+		// 仅超管发（hasAccessByCodes 是精确集合匹配，通配 */*/* 不天然命中）。
+		// 非超管分支天然拿不到该码：flexible 档非超管本就无删除权，按钮不可见=不误导。
+		if config.Get().Audit.Protection == "flexible" {
+			permissions = append(permissions, "audit:log:manage")
+		}
 		menuList := buildMenuTree(allMenus)
 		return menuList, permissions, nil
 	}

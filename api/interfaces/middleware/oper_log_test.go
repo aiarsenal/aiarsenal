@@ -40,6 +40,9 @@ func (f *fakeOperLogRepo) Insert(ctx context.Context, log *entity.OperLog) error
 func (f *fakeOperLogRepo) Delete(context.Context, []string) error { return nil }
 func (f *fakeOperLogRepo) Clear(context.Context) error            { return nil }
 
+// PurgeBefore 满足 IOperLogRepository（留存清理接口；中间件测试不触达）。
+func (f *fakeOperLogRepo) PurgeBefore(context.Context, time.Time) (int64, error) { return 0, nil }
+
 // auditRouter 复刻真实挂载顺序：OperLog 在 v1 根分组，认证中间件在其后，
 // 因此入口处 context 里没有用户——这正是最容易写错的地方。
 func auditRouter(repo repository.IOperLogRepository, withUser bool, handler gin.HandlerFunc) *gin.Engine {

@@ -247,6 +247,7 @@ async function onView(row: any) {
           {{ $t('monitor.operLog_view') }}
         </Button>
         <Button
+          v-access:code="'audit:log:manage'"
           type="primary" ghost
           size="small"
           danger
