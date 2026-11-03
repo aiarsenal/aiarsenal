@@ -83,7 +83,8 @@ func (Budget) TableName() string { return "aa_llm_budget" }
 
 // 凭据值结构：credential_values 列在 api 端存的是 AES 加密后的 hex 字符串，
 // 解密后得到本结构（apiKey 等）。router 用自己的密钥解密——为避免两服务共享密钥的复杂性，
-// 这里约定 credential_values 直接存 {"api_key":"..."} 明文 json（生产可改回加密 + 共享 jwt.encryptKey）。
+// 这里约定 credential_values 直接存 {"api_key":"..."} 明文 json（生产可改回加密，
+// 与 api 共享数据加密密钥 security.dataKey，不要复用令牌签名密钥）。
 type CredentialValues struct {
 	APIKey string `json:"api_key"`
 }

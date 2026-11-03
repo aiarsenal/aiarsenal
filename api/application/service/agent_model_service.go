@@ -10,7 +10,8 @@ import (
 )
 
 // AgentModelService AI Gateway 治理配置：model（api_key 加密）/ risk-rule。
-// 凭据 api_key 走 AES-256-GCM 加密落库（密钥取 jwt.encryptKey，与 llm 模块一致）。
+// 凭据 api_key 走 AES-256-GCM 加密落库（密钥取 security.dataKey，与 llm 模块一致，
+// 留空回退 jwt.encryptKey）。
 type AgentModelService struct {
 	modelRepo repository.IAgentModelRepository
 	ruleRepo  repository.IAgentRiskRuleRepository
@@ -26,14 +27,14 @@ func (s *AgentModelService) GetModelAPIKey(ctx context.Context, id string) (stri
 	if err != nil {
 		return "", nil, err
 	}
-	pt, _ := crypto.Decrypt(m.ApiKey, config.Get().Jwt.EncryptKey)
+	pt, _ := crypto.Decrypt(m.ApiKey, config.Get().DataEncryptKey())
 	return pt, m, nil
 }
 
 // AddModel apiKey 明文 → 加密落库。
 func (s *AgentModelService) AddModel(ctx context.Context, e *entity.AgentModel, apiKey string) (string, error) {
 	if apiKey != "" {
-		enc, err := crypto.Encrypt(apiKey, config.Get().Jwt.EncryptKey)
+		enc, err := crypto.Encrypt(apiKey, config.Get().DataEncryptKey())
 		if err != nil {
 			return "", err
 		}
@@ -51,7 +52,7 @@ func (s *AgentModelService) AddModel(ctx context.Context, e *entity.AgentModel, 
 // EditModel 若提供新 apiKey 则加密更新；否则保留原密文（不传 apiKey 字段更新）。
 func (s *AgentModelService) EditModel(ctx context.Context, e *entity.AgentModel, apiKey string) error {
 	if apiKey != "" {
-		enc, err := crypto.Encrypt(apiKey, config.Get().Jwt.EncryptKey)
+		enc, err := crypto.Encrypt(apiKey, config.Get().DataEncryptKey())
 		if err != nil {
 			return err
 		}

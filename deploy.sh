@@ -131,21 +131,25 @@ SYSTEMD_SRC="${REPO}/deploy/systemd"
 
 # 密钥文件（api/mcp/llm 三个 unit 的 EnvironmentFile）：首次部署生成随机密钥，绝不进 git。
 # ⚠️ 存量部署升级到密钥外置版本前：先手工把【当前线上正在用的】encryptKey/signKey 值写入
-#    /etc/aiarsenal/env 再重启（AIARSENAL_JWT_ENCRYPT_KEY 同时是 LLM 凭据 AES 密钥，换值会导致
-#    库内既有凭据无法解密）；待后台重录凭据后再轮换成随机值。
+#    /etc/aiarsenal/env 再重启（未配置 AIARSENAL_SECURITY_DATA_KEY 时，AIARSENAL_JWT_ENCRYPT_KEY
+#    兼作库内数据加密密钥，换值会导致库内既有凭据无法解密）；待后台重录凭据后再轮换成随机值。
 if [ ! -f /etc/aiarsenal/env ]; then
   mkdir -p /etc/aiarsenal
   AA_ENC_KEY=$(openssl rand -hex 16)
+  AA_DATA_KEY=$(openssl rand -hex 32)
   cat > /etc/aiarsenal/env <<SECRETS
 # AI Arsenal 服务密钥（deploy.sh 首次部署生成；轮换后 systemctl restart aiarsenal-api aiarsenal-mcp aiarsenal-llm）
-# AIARSENAL_JWT_ENCRYPT_KEY：JWT 签名 + LLM 凭据/Agent api_key 的 AES-256-GCM 密钥（32 位 hex）
+# AIARSENAL_JWT_ENCRYPT_KEY：JWT 签名密钥（32 位 hex），只签发令牌
 AIARSENAL_JWT_ENCRYPT_KEY=${AA_ENC_KEY}
+# AIARSENAL_SECURITY_DATA_KEY：库内敏感数据（LLM 凭据/Agent api_key/TOTP 种子）的 AES-256-GCM
+#   加密密钥，与 JWT 签名密钥分离（api 与 llm 须同值，见 SECRET_KEY）
+AIARSENAL_SECURITY_DATA_KEY=${AA_DATA_KEY}
 # AIARSENAL_ACTOR_SIGN_KEY：网关→ops 令牌交换 HMAC-SHA256 签名（api 与 mcp 同值）
 AIARSENAL_ACTOR_SIGN_KEY=aa-actor-$(openssl rand -hex 16)
-# SECRET_KEY：llm 网关解密 provider 凭据——必须与 AIARSENAL_JWT_ENCRYPT_KEY 同值（api 加密、llm 解密）
-SECRET_KEY=${AA_ENC_KEY}
+# SECRET_KEY：llm 网关解密 provider 凭据——必须与 AIARSENAL_SECURITY_DATA_KEY 同值（api 加密、llm 解密）
+SECRET_KEY=${AA_DATA_KEY}
 SECRETS
-  unset AA_ENC_KEY
+  unset AA_ENC_KEY AA_DATA_KEY
   chown root:root /etc/aiarsenal/env && chmod 600 /etc/aiarsenal/env
   echo "==> 已生成 /etc/aiarsenal/env（随机密钥，权限 600）"
 else

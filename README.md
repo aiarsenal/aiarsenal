@@ -203,14 +203,17 @@ sudo bash deploy.sh prod         # 生产环境：HTTPS + 通配符证书
 
 | 环境变量 | 用途 |
 | --- | --- |
-| `AIARSENAL_JWT_ENCRYPT_KEY` | JWT 签名 + **LLM 凭据 / Agent api_key / 双因子 TOTP 密钥的 AES-256-GCM 密钥**（换值会使库内既有密文失效，已绑定双因子的账号全部无法登录，需超管逐个重置双因子） |
+| `AIARSENAL_JWT_ENCRYPT_KEY` | JWT 签名密钥（换值使已签发 token 失效）。**未配置 `AIARSENAL_SECURITY_DATA_KEY` 时**还兼作库内数据加密密钥，换值影响见下行 |
+| `AIARSENAL_SECURITY_DATA_KEY` | 库内敏感数据（LLM 凭据 / Agent api_key / 双因子 TOTP 种子）的 AES-256-GCM 加密密钥，与 JWT 签名密钥分离。留空（默认）回退用 JWT 密钥——存量部署零变化，启动 WARN 提示。**平滑启用：先设为当前 JWT 密钥的原值**（存量密文照常解密，此后轮换 JWT 密钥不再影响库内数据）；直接设全新值则旧密文不可解密，须重录凭据、超管重置 TOTP，**并同步更新 llm 网关的 `SECRET_KEY`（与 dataKey 同值，api 加密、llm 解密）** |
 | `AIARSENAL_ACTOR_SIGN_KEY` | 网关 → ops 令牌交换 HMAC 签名（api 与 mcp 同值） |
-| `SECRET_KEY` | llm 网关自身 JWT 密钥 |
+| `SECRET_KEY` | llm 网关解密 provider 凭据用的数据加密密钥——与 `AIARSENAL_SECURITY_DATA_KEY` 同值（api 加密、llm 解密） |
 | `AIARSENAL_ALERT_DINGTALK_SECRET` / `AIARSENAL_ALERT_DINGTALK_TOKEN` / `AIARSENAL_ALERT_CHANNELS` | 安全事件告警通道凭据：钉钉加签密钥 / 钉钉机器人 access_token / shoutrrr 通道 URL（逗号分隔）。三者同含凭据，经 `/etc/aiarsenal/env` 注入，勿提交进 git；语义见「鉴权与安全 → 安全事件告警」 |
 
 供应商 API Key（阿里云 / OpenAI 等）不落 git、不入种子 SQL——部署后在管理后台「LLM 管理 → 凭据」录入（AES-256-GCM 加密落库）。轮换密钥：改 `/etc/aiarsenal/env` 后 `systemctl restart aiarsenal-api aiarsenal-mcp aiarsenal-llm`。
 
-启动时 api / mcp / ops 会各自检查 `jwt.encryptKey` 是否仍取自 `config.yaml`：是则各输出一条 `level=WARN` 日志（带 `insecureDefaults` 字段，当前值为 `[jwt.encryptKey]`），**不阻断启动**。出现这条日志说明该实例的密钥写在随源码提交的 `config.yaml` 里（默认值即公开占位值），公网可达时该密钥等同公开，存在被冒用签发 token 的风险。处理顺序要注意：换密钥会使库内既有 LLM 凭据 / Agent api_key / 双因子 TOTP 密钥无法解密（后者意味着已绑定双因子的账号全部无法登录，恢复需超管逐个重置双因子），存量部署应先把**当前正在用的**密钥原值写入 `/etc/aiarsenal/env` 再重启，待后台重录凭据后才轮换成随机值——`deploy.sh` 对这一步有同样的提醒。同一台机同时跑三个进程时会看到三条相同的 WARN，属正常。
+启动时 api / mcp / ops 会各自检查 `jwt.encryptKey` 是否仍取自 `config.yaml`：是则各输出一条 `level=WARN` 日志（带 `insecureDefaults` 字段，当前值为 `[jwt.encryptKey]`），**不阻断启动**。出现这条日志说明该实例的密钥写在随源码提交的 `config.yaml` 里（默认值即公开占位值），公网可达时该密钥等同公开，存在被冒用签发 token 的风险。处理顺序要注意：**未配置 `AIARSENAL_SECURITY_DATA_KEY` 时**，换 jwt 密钥会使库内既有 LLM 凭据 / Agent api_key / 双因子 TOTP 密钥无法解密（后者意味着已绑定双因子的账号全部无法登录，恢复需超管逐个重置双因子），存量部署应先把**当前正在用的**密钥原值写入 `/etc/aiarsenal/env` 再重启，待后台重录凭据后才轮换成随机值——`deploy.sh` 对这一步有同样的提醒。同一台机同时跑三个进程时会看到三条相同的 WARN，属正常。
+
+此外，`security.dataKey` 未配置时，api / mcp / ops 各进程启动都会额外输出一条带 `insecureDefault=security.dataKey.fallback` 的 WARN：库内敏感数据（LLM 凭据 / Agent api_key / TOTP 种子）仍在复用 JWT 签名密钥加密——同一把密钥既签发 token 又解密凭据，签名密钥泄漏等于凭据库同步失守（密钥分离原则）。按上表「平滑启用」路径配置即可消除该 WARN，且不需要重录任何数据。
 
 ## 🗃️ 数据库与迁移
 

@@ -19,7 +19,7 @@ import (
 // 生命周期：Setup 生成密钥（密文落库、enabled=0 待激活，明文仅本次返回）→
 // Activate 验一次有效动态码激活 → 日常登录要求动态码 → Disable（验码后停用）；
 // 丢手机走 AdminReset（仅超管，清除绑定）。密钥落库走 AES-256-GCM（与 LLM 凭据
-// 同一把 jwt.encryptKey），明文不出现在任何响应的第二报里。
+// 同一把数据加密密钥 security.dataKey，留空回退 jwt.encryptKey），明文不出现在任何响应的第二报里。
 
 // TOTPService 双因子用例服务。
 //
@@ -55,7 +55,7 @@ func (s *TOTPService) Setup(ctx context.Context, userId string) (secret, uri str
 	if err != nil {
 		return "", "", err
 	}
-	enc, err := crypto.Encrypt(secret, config.Get().Jwt.EncryptKey)
+	enc, err := crypto.Encrypt(secret, config.Get().DataEncryptKey())
 	if err != nil {
 		return "", "", err
 	}
@@ -85,7 +85,7 @@ func (s *TOTPService) Activate(ctx context.Context, userId, code string) error {
 	if secretEnc == "" {
 		return errors.New("请先获取绑定密钥")
 	}
-	secret, err := crypto.Decrypt(secretEnc, config.Get().Jwt.EncryptKey)
+	secret, err := crypto.Decrypt(secretEnc, config.Get().DataEncryptKey())
 	if err != nil {
 		slog.Error("totp 密钥解密失败", "err", err, "userId", userId)
 		return errors.New("绑定失败，请重新获取密钥")
@@ -110,7 +110,7 @@ func (s *TOTPService) Disable(ctx context.Context, userId, code string) error {
 	if enabled != 1 {
 		return errors.New("未绑定双因子")
 	}
-	secret, err := crypto.Decrypt(secretEnc, config.Get().Jwt.EncryptKey)
+	secret, err := crypto.Decrypt(secretEnc, config.Get().DataEncryptKey())
 	if err != nil {
 		slog.Error("totp 密钥解密失败", "err", err, "userId", userId)
 		return errors.New("停用失败，后端服务出现错误")
@@ -145,7 +145,7 @@ func (s *TOTPService) AdminReset(ctx context.Context, operatorId, targetUserId s
 	if err != nil {
 		return "", "", err
 	}
-	enc, err := crypto.Encrypt(secret, config.Get().Jwt.EncryptKey)
+	enc, err := crypto.Encrypt(secret, config.Get().DataEncryptKey())
 	if err != nil {
 		return "", "", err
 	}

@@ -21,7 +21,8 @@ import (
 )
 
 // LLM 配置服务：凭据 / 模型 / 预算。
-// 凭据的 API key 走 AES-256-GCM 加密落库（密钥取 jwt.encryptKey）。
+// 凭据的 API key 走 AES-256-GCM 加密落库（密钥取 security.dataKey，留空回退
+// jwt.encryptKey；消费面统一走 config.DataEncryptKey()，与令牌签名密钥分离）。
 
 type LLMConfigService struct {
 	credRepo   repository.ILLMCredentialRepository
@@ -52,7 +53,7 @@ func (s *LLMConfigService) GetCredentialAPIKey(ctx context.Context, id string) (
 	if err != nil {
 		return "", nil, err
 	}
-	pt, err := crypto.Decrypt(c.CredentialValues, config.Get().Jwt.EncryptKey)
+	pt, err := crypto.Decrypt(c.CredentialValues, config.Get().DataEncryptKey())
 	if err != nil {
 		return "", nil, err
 	}
@@ -61,7 +62,7 @@ func (s *LLMConfigService) GetCredentialAPIKey(ctx context.Context, id string) (
 
 func (s *LLMConfigService) AddCredential(ctx context.Context, e *entity.LLMCredential, apiKey string) (string, error) {
 	if apiKey != "" {
-		enc, err := crypto.Encrypt(apiKey, config.Get().Jwt.EncryptKey)
+		enc, err := crypto.Encrypt(apiKey, config.Get().DataEncryptKey())
 		if err != nil {
 			return "", err
 		}
@@ -75,7 +76,7 @@ func (s *LLMConfigService) AddCredential(ctx context.Context, e *entity.LLMCrede
 
 func (s *LLMConfigService) EditCredential(ctx context.Context, e *entity.LLMCredential, apiKey string) error {
 	if apiKey != "" {
-		enc, err := crypto.Encrypt(apiKey, config.Get().Jwt.EncryptKey)
+		enc, err := crypto.Encrypt(apiKey, config.Get().DataEncryptKey())
 		if err != nil {
 			return err
 		}
