@@ -8,7 +8,6 @@ import { useRoute } from 'vue-router';
 import { AuthenticationLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 import { useAccessStore } from '@vben/stores';
-import { preferences } from '@vben/preferences';
 
 import { notification } from 'ant-design-vue';
 
@@ -122,7 +121,7 @@ onMounted(async () => {
 <template>
   <div class="client-login">
     <img
-      :src="preferences.logo.source"
+      src="/brand-dark.svg"
       alt="AI Arsenal"
       class="brand-logo"
       draggable="false"

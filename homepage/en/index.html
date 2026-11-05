@@ -43,16 +43,23 @@
         <span class="micro">Open source · Self-hosted · Apache-2.0</span>
         <span class="micro">Built end-to-end with GLM</span>
       </div>
-      <h1>Enterprise AI Applications<br />One Unified Platform</h1>
-      <p class="sub">
-        Skills, MCP, LLM, agents, and document knowledge bases — managed from a single admin console.
-        Ships with an OpenAI-compatible gateway and an MCP gateway, plus Mac / Windows desktop
-        clients, deployed on your own servers.
-      </p>
-      <p class="mod-index">SKILL · LLM · MCP · DOC · KB · PROJECT · AGENT · CLIENT</p>
-      <div class="hero-cta">
-        <a class="btn-solid" href="https://github.com/aiarsenal/aiarsenal" target="_blank" rel="noopener">GitHub Repository ↗</a>
-        <a class="btn-ghost" href="#quickstart">Self-hosting Guide</a>
+      <div class="hero-lockup">
+        <div class="hero-copy">
+          <h1>Enterprise AI Applications<br />One Unified Platform</h1>
+          <p class="sub">
+            Skills, MCP, LLM, agents, and document knowledge bases — managed from a single admin console.
+            Ships with an OpenAI-compatible gateway and an MCP gateway, plus Mac / Windows desktop
+            clients, deployed on your own servers.
+          </p>
+          <p class="mod-index">SKILL · LLM · MCP · DOC · KB · PROJECT · AGENT · CLIENT</p>
+          <div class="hero-cta">
+            <a class="btn-solid" href="https://github.com/aiarsenal/aiarsenal" target="_blank" rel="noopener">GitHub Repository ↗</a>
+            <a class="btn-ghost" href="#quickstart">Self-hosting Guide</a>
+          </div>
+        </div>
+        <div class="hero-mark" data-motion="../assets/brand-motion.svg">
+          <img src="../assets/brand-clean.svg" width="1170" height="610" alt="AI Arsenal">
+        </div>
       </div>
       <div class="stats">
         <div><div class="num">13</div><div class="label">Modules</div></div>
@@ -60,9 +67,6 @@
         <div><div class="num">200</div><div class="label">Button-level permissions</div></div>
         <div><div class="num">529</div><div class="label">API routes</div></div>
       </div>
-      <figure class="hero-video">
-        <video id="brandVideo" muted loop playsinline preload="none" poster="../assets/cover.png" src="../assets/brand.mp4"></video>
-      </figure>
     </div>
   </header>
 
@@ -240,16 +244,6 @@ sudo bash deploy.sh test         # test environment: plain HTTP + /etc/hosts</pr
   </footer>
 
   <script>
-    // 懒加载视频:进入视口再播放(preload=none,首屏不拉 5.9MB)
-    new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          var v = e.target;
-          v.play().catch(function () {});
-          obs.unobserve(v);
-        }
-      });
-    }, { rootMargin: '200px' }).observe(document.getElementById('brandVideo'));
     // 语言切换保留当前锚点
     document.querySelectorAll('a[data-lang]').forEach(function (a) {
       a.addEventListener('click', function (e) {
@@ -258,5 +252,7 @@ sudo bash deploy.sh test         # test environment: plain HTTP + /etc/hosts</pr
       });
     });
   </script>
+  <script defer src="../assets/gsap-3.15.0.min.js"></script>
+  <script defer src="../assets/brand-scroll.js"></script>
 </body>
 </html>

@@ -135,17 +135,6 @@ onMounted(() => {
           <div class="text-sm text-gray-500">{{ s.label }}</div>
         </div>
       </div>
-      <div class="mt-14 mx-auto max-w-3xl overflow-hidden rounded-2xl border border-gray-100 shadow-xl ring-1 ring-black/5 dark:border-gray-800">
-        <video
-          src="/brand.mp4"
-          alt="AI Arsenal cover"
-          class="w-full"
-          autoplay
-          loop
-          muted
-          playsinline
-        />
-      </div>
     </section>
 
     <!-- Features：已上线核心模块（彩色卡片，与 home 模块矩阵同款配色） -->

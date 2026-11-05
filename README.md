@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://aiarsenal.cc"><img src="docs/logo.png" alt="AI Arsenal Logo" width="320"></a>
+  <img src="docs/logo-eyebrow.svg" alt="AI Arsenal Logo" width="420">
 
   # AI Arsenal
 

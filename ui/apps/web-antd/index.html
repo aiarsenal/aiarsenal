@@ -13,25 +13,23 @@
     />
     <!-- 由 vite 注入 VITE_APP_TITLE 变量，在 .env 文件内配置 -->
     <title>%VITE_APP_TITLE%</title>
-    <!-- 浏览器标签 favicon：与侧边栏 logo 同一个机甲浣熊形象（裁自 logo.png，去掉小尺寸下糊掉的文字） -->
-    <link rel="icon" href="/favicon.ico?v=10" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=10" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=10" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=9" />
-    <link rel="mask-icon" href="/logo.png?v=9" color="#42b983" />
+    <!-- 浏览器标签 favicon：使用浣熊单标，保证小尺寸辨识 -->
+    <link rel="icon" href="/favicon.ico?v=11" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=11" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=11" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=11" />
+    <link rel="mask-icon" href="/logo.png?v=11" color="#42b983" />
   </head>
   <body>
-    <!-- AI Arsenal 启动叙事动画：冷启动全屏播放 8 帧，应用就绪（main.ts 置 __appReady）后淡出 -->
+    <!-- AI Arsenal 启动标识：冷启动时全屏展示，应用就绪（main.ts 置 __appReady）后淡出 -->
     <script src="/vendor/gsap.min.js"></script>
     <script src="/vendor/ai-splash.js"></script>
     <script>
       (function () {
         // 资源缺失（如 gsap 未加载）则静默跳过，绝不阻塞应用启动
         if (!window.gsap || !window.AISplash) return;
-        var frames = [
-          '/splash/frame-1.png', '/splash/frame-2.png', '/splash/frame-3.png', '/splash/frame-4.png',
-          '/splash/frame-5.png', '/splash/frame-6.png', '/splash/frame-7.png', '/splash/frame-8.png',
-        ];
+        // 沿用启动组件的 8 段时序，各段共用深色背景版标识。
+        var frames = Array(8).fill('/brand-dark.svg');
         window.__aiMinUntil = Date.now() + 1200; // 最短展示 ~1.2s，避免极快加载时动画一闪而过
         window.__appReady = false;
         function maybeHide() {
@@ -47,7 +45,6 @@
         try {
           window.__aiSplash = window.AISplash.create({
             frames: frames,
-            title: 'AI Arsenal',
           });
           window.__aiSplash.play();
         } catch (e) {
