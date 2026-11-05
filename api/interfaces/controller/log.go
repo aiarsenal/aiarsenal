@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"errors"
+
 	"github.com/gin-gonic/gin"
 
 	"aiarsenal/application/service"
@@ -32,12 +34,23 @@ func (h *LoginLogController) List(c *gin.Context) {
 	middleware.Success(c, dto.LoginLogSearchRes{List: list, ListRes: dto.ListRes{CurrentPage: pn, Total: total}})
 }
 
-// operator 登录态操作者（告警埋点取数用；未登录态传空）。
-func operator(c *gin.Context) string {
+// callerId 登录态用户主键（档位判定走查库身份；未登录态传空=按非超管 fail-closed）。
+func callerId(c *gin.Context) string {
 	if claims := middleware.GetClaims(c); claims != nil {
-		return claims.UserName
+		return claims.UserId
 	}
 	return ""
+}
+
+// failAuditOr 档位拒绝走 HTTP 403（Forbidden=有登录态但动作被策略禁止，文案由
+// 服务层哨兵错误给出），其余错误维持通用 Fail 语义。
+func failAuditOr(c *gin.Context, err error) {
+	if errors.Is(err, service.ErrAuditProtection) || errors.Is(err, service.ErrAuditNotAdmin) {
+		c.Header("Content-Type", "application/json")
+		c.JSON(403, gin.H{"code": -1, "data": nil, "message": err.Error()})
+		return
+	}
+	middleware.Fail(c, err.Error())
 }
 
 func (h *LoginLogController) Delete(c *gin.Context) {
@@ -46,16 +59,16 @@ func (h *LoginLogController) Delete(c *gin.Context) {
 		middleware.Fail(c, err.Error())
 		return
 	}
-	if err := h.svc.Delete(c, operator(c), req.Ids); err != nil {
-		middleware.Fail(c, err.Error())
+	if err := h.svc.Delete(c, callerId(c), req.Ids); err != nil {
+		failAuditOr(c, err)
 		return
 	}
 	middleware.Success(c, struct{}{})
 }
 
 func (h *LoginLogController) Clear(c *gin.Context) {
-	if err := h.svc.Clear(c, operator(c)); err != nil {
-		middleware.Fail(c, err.Error())
+	if err := h.svc.Clear(c, callerId(c)); err != nil {
+		failAuditOr(c, err)
 		return
 	}
 	middleware.Success(c, struct{}{})
@@ -105,16 +118,16 @@ func (h *OperLogController) Delete(c *gin.Context) {
 		middleware.Fail(c, err.Error())
 		return
 	}
-	if err := h.svc.Delete(c, operator(c), req.OperIds); err != nil {
-		middleware.Fail(c, err.Error())
+	if err := h.svc.Delete(c, callerId(c), req.OperIds); err != nil {
+		failAuditOr(c, err)
 		return
 	}
 	middleware.Success(c, struct{}{})
 }
 
 func (h *OperLogController) Clear(c *gin.Context) {
-	if err := h.svc.Clear(c, operator(c)); err != nil {
-		middleware.Fail(c, err.Error())
+	if err := h.svc.Clear(c, callerId(c)); err != nil {
+		failAuditOr(c, err)
 		return
 	}
 	middleware.Success(c, struct{}{})

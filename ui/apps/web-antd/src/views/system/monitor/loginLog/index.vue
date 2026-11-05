@@ -205,10 +205,19 @@ async function onClear() {
   <Page :auto-content-height="true">
     <Grid>
       <template #toolbar-actions>
-        <Button type="primary" :loading="deleting" @click="onDeleteBatch">
+        <!-- P2-01（PR③）：删除/清空按钮由后端下发的 audit:log:manage 权限码驱动——
+             strict 档后端不发码（按钮隐藏+接口拒绝双层一致）；flexible 档仅超管可见。
+             前端不硬编码信任：隐藏只是体验层，真正的闸门在服务层。 -->
+        <Button
+          v-access:code="'audit:log:manage'"
+          type="primary" :loading="deleting" @click="onDeleteBatch"
+        >
           {{ $t('monitor.loginLog_batchDelete') }}
         </Button>
-        <Button danger class="ml-2" @click="onClear">
+        <Button
+          v-access:code="'audit:log:manage'"
+          danger class="ml-2" @click="onClear"
+        >
           {{ $t('monitor.loginLog_clearLog') }}
         </Button>
       </template>
@@ -219,6 +228,7 @@ async function onClear() {
       </template>
       <template #action="{ row }">
         <Button
+          v-access:code="'audit:log:manage'"
           type="primary" ghost
           size="small"
           danger

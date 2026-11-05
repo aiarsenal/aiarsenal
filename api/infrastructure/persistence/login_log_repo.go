@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	"time"
 
 	"gorm.io/gorm"
 
@@ -49,4 +50,10 @@ func (r *LoginLogRepository) Delete(ctx context.Context, infoIds []string) error
 
 func (r *LoginLogRepository) Clear(ctx context.Context) error {
 	return r.db.WithContext(ctx).Where("1=1").Delete(&entity.LoginLog{}).Error
+}
+
+// PurgeBefore 留存清理专用：物理删除 login_time 早于 cutoff 的行（PR③ 留存任务）。
+func (r *LoginLogRepository) PurgeBefore(ctx context.Context, cutoff time.Time) (int64, error) {
+	q := r.db.WithContext(ctx).Where("login_time < ?", cutoff).Delete(&entity.LoginLog{})
+	return q.RowsAffected, q.Error
 }

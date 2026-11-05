@@ -46,6 +46,13 @@ func (r *pgOperLogRepo) Insert(ctx context.Context, log *entity.OperLog) error {
 func (r *pgOperLogRepo) Delete(context.Context, []string) error { return nil }
 func (r *pgOperLogRepo) Clear(context.Context) error            { return nil }
 
+// PurgeBefore 与 persistence.OperLogRepository.PurgeBefore 同语义（集成测试在真库上
+// 验证留存清理的 SQL 边界）。
+func (r *pgOperLogRepo) PurgeBefore(ctx context.Context, cutoff time.Time) (int64, error) {
+	q := r.db.WithContext(ctx).Where("oper_time < ?", cutoff).Delete(&entity.OperLog{})
+	return q.RowsAffected, q.Error
+}
+
 func TestIntegrationOperLogWritesToPostgres(t *testing.T) {
 	dsn := os.Getenv("AUDIT_TEST_DSN")
 	if dsn == "" {

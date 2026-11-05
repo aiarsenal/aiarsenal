@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"time"
+
 	"context"
 
 	"aiarsenal/domain/entity"
@@ -32,6 +34,9 @@ type ILoginLogRepository interface {
 	List(ctx context.Context, loginName, status, ip, location string, pageNum, pageSize int) (list []*entity.LoginLog, total int64, err error)
 	Delete(ctx context.Context, infoIds []string) error
 	Clear(ctx context.Context) error
+	// PurgeBefore 留存清理专用：删除 login_time 早于 cutoff 的行，返回实际删除数。
+	// 仅审计留存清理任务调用（PR③），不做软删——超留存下限的数据按合规口径物理清除。
+	PurgeBefore(ctx context.Context, cutoff time.Time) (int64, error)
 }
 
 // ===== 操作日志 =====
@@ -41,6 +46,9 @@ type IOperLogRepository interface {
 	Insert(ctx context.Context, log *entity.OperLog) error
 	Delete(ctx context.Context, operIds []string) error
 	Clear(ctx context.Context) error
+	// PurgeBefore 留存清理专用：删除 oper_time 早于 cutoff 的行，返回实际删除数。
+	// 与 aa_oper_log 自身的写入路径同规则（不允许绕开留存下限的其它删除面）。
+	PurgeBefore(ctx context.Context, cutoff time.Time) (int64, error)
 }
 
 // ===== 在线用户 =====

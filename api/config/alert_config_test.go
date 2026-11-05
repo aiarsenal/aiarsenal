@@ -61,3 +61,30 @@ func TestAlertSchemeWhitelistAligned(t *testing.T) {
 	}
 }
 
+// ---- PR③：audit 段归一（strict 默认/非法回落/留存硬下限）----
+
+func TestApplyAuditDefaults(t *testing.T) {
+	cases := []struct {
+		name string
+		in   AuditConfig
+		want AuditConfig
+	}{
+		{"空值=strict 默认", AuditConfig{}, AuditConfig{Protection: "strict", Purge: AuditPurgeConfig{RetentionDays: 180}}},
+		{"非法值回落 strict（配错=收紧）", AuditConfig{Protection: "off", Purge: AuditPurgeConfig{RetentionDays: 180}}, AuditConfig{Protection: "strict", Purge: AuditPurgeConfig{RetentionDays: 180}}},
+		{"flexible 合法保留", AuditConfig{Protection: "flexible"}, AuditConfig{Protection: "flexible", Purge: AuditPurgeConfig{RetentionDays: 180}}},
+		{"retentionDays<180 硬下限钳制", AuditConfig{Protection: "strict", Purge: AuditPurgeConfig{RetentionDays: 30}}, AuditConfig{Protection: "strict", Purge: AuditPurgeConfig{RetentionDays: 180}}},
+		{"retentionDays=365 保留（更久允许）", AuditConfig{Purge: AuditPurgeConfig{RetentionDays: 365}}, AuditConfig{Protection: "strict", Purge: AuditPurgeConfig{RetentionDays: 365}}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			c := &Config{Audit: tc.in}
+			c.applyAuditDefaults()
+			if c.Audit.Protection != tc.want.Protection {
+				t.Fatalf("protection=%q want %q", c.Audit.Protection, tc.want.Protection)
+			}
+			if c.Audit.Purge.RetentionDays != tc.want.Purge.RetentionDays {
+				t.Fatalf("retentionDays=%d want %d", c.Audit.Purge.RetentionDays, tc.want.Purge.RetentionDays)
+			}
+		})
+	}
+}

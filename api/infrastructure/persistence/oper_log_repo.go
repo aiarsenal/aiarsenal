@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	"time"
 
 	"gorm.io/gorm"
 
@@ -86,4 +87,11 @@ func operTimeStr(t *types.Time) string {
 		return ""
 	}
 	return timeToStr(*t)
+}
+
+// PurgeBefore 留存清理专用：物理删除 oper_time 早于 cutoff 的行（PR③ 留存任务，
+// aa_oper_log 自身同规则——无绕开留存下限的其它删除面）。
+func (r *OperLogRepository) PurgeBefore(ctx context.Context, cutoff time.Time) (int64, error) {
+	q := r.db.WithContext(ctx).Where("oper_time < ?", cutoff).Delete(&entity.OperLog{})
+	return q.RowsAffected, q.Error
 }
