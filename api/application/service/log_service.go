@@ -3,10 +3,12 @@ package service
 import (
 	"context"
 	"errors"
+	"strconv"
 
 	"aiarsenal/domain/entity"
 	"aiarsenal/domain/model"
 	"aiarsenal/domain/repository"
+	"aiarsenal/infrastructure/alert"
 	"aiarsenal/infrastructure/auth"
 )
 
@@ -21,10 +23,22 @@ func NewLoginLogService(r repository.ILoginLogRepository) *LoginLogService {
 func (s *LoginLogService) List(ctx context.Context, loginName, status, ip, location string, pageNum, pageSize int) ([]*entity.LoginLog, int64, error) {
 	return s.repo.List(ctx, loginName, status, ip, location, pageNum, pageSize)
 }
-func (s *LoginLogService) Delete(ctx context.Context, ids []string) error {
-	return s.repo.Delete(ctx, ids)
+
+// Delete / Clear 删除/清空登录日志。
+//
+// operator 由 controller 从登录态取（middleware.GetClaims），用于告警埋点：审计日志
+// 的删除/清空是等保 8.1.4.3c 的敏感动作，操作者+行数必须进 aa_alert_record
+// （event=log_tamper_attempt）。此处只负责如实上报，不做授权判定。
+func (s *LoginLogService) Delete(ctx context.Context, operator string, ids []string) error {
+	err := s.repo.Delete(ctx, ids)
+	alertLogTamper(operator, "登录日志", "删除", len(ids), err)
+	return err
 }
-func (s *LoginLogService) Clear(ctx context.Context) error { return s.repo.Clear(ctx) }
+func (s *LoginLogService) Clear(ctx context.Context, operator string) error {
+	err := s.repo.Clear(ctx)
+	alertLogTamper(operator, "登录日志", "清空", -1, err)
+	return err
+}
 
 type OperLogService struct{ repo repository.IOperLogRepository }
 
@@ -41,10 +55,39 @@ func (s *OperLogService) Get(ctx context.Context, operId string) (*model.OperLog
 func (s *OperLogService) Insert(ctx context.Context, log *entity.OperLog) error {
 	return s.repo.Insert(ctx, log)
 }
-func (s *OperLogService) Delete(ctx context.Context, ids []string) error {
-	return s.repo.Delete(ctx, ids)
+func (s *OperLogService) Delete(ctx context.Context, operator string, ids []string) error {
+	err := s.repo.Delete(ctx, ids)
+	alertLogTamper(operator, "操作日志", "删除", len(ids), err)
+	return err
 }
-func (s *OperLogService) Clear(ctx context.Context) error { return s.repo.Clear(ctx) }
+func (s *OperLogService) Clear(ctx context.Context, operator string) error {
+	err := s.repo.Clear(ctx)
+	alertLogTamper(operator, "操作日志", "清空", -1, err)
+	return err
+}
+
+// alertLogTamper 日志篡改告警：落库必达（等保 8.1.4.3c），外送受 alert.enabled 与节流控制。
+// 行数 -1 表示清空（全表）；操作者为空时如实标注「未知操作者」。repo 调用**之后**发出
+// 并带结果——「尝试」语义=请求已受理，成败如实入正文（失败尝试对审计更有价值），
+// 行数是提交数而非实际删除数（失败时不应留下既成事实的记录）。
+func alertLogTamper(operator, logKind, action string, rows int, opErr error) {
+	who := operator
+	if who == "" {
+		who = "未知操作者"
+	}
+	detail := who + " 提交" + action + logKind
+	if rows < 0 {
+		detail += "（全表清空）"
+	} else {
+		detail += " " + strconv.Itoa(rows) + " 行"
+	}
+	if opErr != nil {
+		detail += "：执行失败（" + opErr.Error() + "）"
+	} else {
+		detail += "：执行成功"
+	}
+	alert.Dispatch("log_tamper_attempt", "error", "审计日志"+action+"尝试", detail, "")
+}
 
 type UserOnlineService struct {
 	repo     repository.IUserOnlineRepository

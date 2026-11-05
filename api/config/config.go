@@ -7,6 +7,8 @@ import (
 	"strings"
 
 	"github.com/spf13/viper"
+
+	"aiarsenal/infrastructure/alert"
 )
 
 // Config 全局配置（对应 config.yaml 各段）
@@ -23,6 +25,7 @@ type Config struct {
 	Agent    AgentConfig    `mapstructure:"agent"`
 	Password PasswordConfig `mapstructure:"password"`
 	Totp     TotpConfig     `mapstructure:"totp"`
+	Alert    AlertConfig    `mapstructure:"alert"`
 
 	// jwtKeyFromFile 标记 jwt.encryptKey 是否直接取自 config.yaml（未被环境变量覆盖）。
 	// 不导出、不参与反序列化，仅由 Load 填入，供 insecureDefaults 上报。
@@ -79,6 +82,40 @@ type TotpConfig struct {
 	Enforced bool `mapstructure:"enforced"`
 	// Issuer otpauth 绑定 URI 中的发行方名（验证器 App 里展示）。
 	Issuer string `mapstructure:"issuer"`
+}
+
+// AlertConfig 安全事件告警（等保三级 8.1.5.4f）。四段在 Load 时经 applyAlertDefaults
+// 归一。合规口径：**外送可关可节流，落库不可关**（aa_alert_record 无删除端点）。
+type AlertConfig struct {
+	// Enabled 外送开关：false（默认）=只落库不外送（行为零变化）；true=落库+外送。
+	Enabled bool `mapstructure:"enabled"`
+	// Channels shoutrrr 通道 URL 列表（lark:// wecom:// smtp:// generic://，白名单见
+	// infrastructure/alert/shoutrrr.go）。URL 内含 token/secret——yaml 留空走默认，
+	// 真值建议部署侧注入，勿提交进 git。
+	Channels []string `mapstructure:"channels"`
+	// DingTalkToken 钉钉机器人 access_token（自实现 sender，加签见 DingTalkSecret）。
+	DingTalkToken string `mapstructure:"dingtalkToken"`
+	// DingTalkSecret 钉钉加签密钥；空=机器人未开加签（生产建议开启，env 覆盖优先）。
+	DingTalkSecret string `mapstructure:"dingtalkSecret"`
+	// QueueSize 投递队列容量；<=0 → 64。
+	QueueSize int `mapstructure:"queueSize"`
+	// RetryMax 单条投递最大重试次数（指数退避）；<=0 → 5。
+	RetryMax int `mapstructure:"retryMax"`
+	// ThrottleMinutes 同 eventType+业务键 的外送节流窗（分钟）；<0 归一为 0=不节流。
+	ThrottleMinutes int `mapstructure:"throttleMinutes"`
+}
+
+// AlertOpts 转 alert 包配置（归一后的生效值直传；两结构体字段一一对应）。
+func (a AlertConfig) AlertOpts() alert.Config {
+	return alert.Config{
+		Enabled:         a.Enabled,
+		Channels:        a.Channels,
+		DingTalkToken:   a.DingTalkToken,
+		DingTalkSecret:  a.DingTalkSecret,
+		QueueSize:       a.QueueSize,
+		RetryMax:        a.RetryMax,
+		ThrottleMinutes: a.ThrottleMinutes,
+	}
 }
 
 // defaultHashIterations 各算法默认迭代，以「单次派生 50~100ms 登录预算」定档
@@ -256,11 +293,24 @@ func Load() (*Config, error) {
 	if k := os.Getenv("AIARSENAL_PWD_PEPPER"); k != "" {
 		v.Set("password.hash.pepper", k)
 	}
+	// 钉钉加签密钥同级敏感：仓库 yaml 只允许留占位，真值走 env。
+	if k := os.Getenv("AIARSENAL_ALERT_DINGTALK_SECRET"); k != "" {
+		v.Set("alert.dingtalkSecret", k)
+	}
+	// 钉钉 token 与通道 URL 同含凭据：env 覆盖路径与 secret 同款（审计 B7——
+	// config 注释建议「勿提交进 git」就必须给得出注入口）。
+	if k := os.Getenv("AIARSENAL_ALERT_DINGTALK_TOKEN"); k != "" {
+		v.Set("alert.dingtalkToken", k)
+	}
+	if k := os.Getenv("AIARSENAL_ALERT_CHANNELS"); k != "" {
+		v.Set("alert.channels", strings.Split(k, ","))
+	}
 	c := &Config{}
 	if err := v.Unmarshal(c); err != nil {
 		return nil, fmt.Errorf("unmarshal config: %w", err)
 	}
 	c.applyPasswordDefaults()
+	c.applyAlertDefaults()
 	c.jwtKeyFromFile = jwtKeyFromConfigFile(c.Jwt.EncryptKey, yamlJwtKey)
 	c.pepperFromFile = pepperFromConfigFile(c.Password.Hash.Pepper, yamlPepper)
 	c.warnInsecureDefaults()
@@ -281,8 +331,32 @@ func pepperFromConfigFile(effective, fromConfigFile string) bool {
 	return effective != "" && effective == fromConfigFile
 }
 
-// insecureDefaults 返回仍取自仓库默认值的敏感配置项，目前只覆盖 jwt.encryptKey，
-// 新增检测项在这里追加即可。暂不导出：消费者只有本包的启动告警。
+// applyAlertDefaults 在 Load 时一次性归一告警配置：非法值回落默认并 WARN。
+func (c *Config) applyAlertDefaults() {
+	a := &c.Alert
+	if a.QueueSize <= 0 {
+		a.QueueSize = 64
+	}
+	if a.RetryMax <= 0 {
+		a.RetryMax = 5
+	}
+	if a.ThrottleMinutes < 0 {
+		a.ThrottleMinutes = 0
+	}
+	for _, raw := range a.Channels {
+		if scheme, _, ok := strings.Cut(raw, "://"); ok && !alert.SchemeSupported(scheme) {
+			slog.Warn("alert.channels 含白名单外 scheme，该通道将投递失败（白名单 lark/wecom/smtp/generic）",
+				"scheme", scheme)
+		}
+	}
+	if a.Enabled && len(a.Channels) == 0 && a.DingTalkToken == "" {
+		slog.Warn("alert.enabled=true 但未配置任何通道（channels 与 dingtalkToken 均空），外送不会发生")
+	}
+}
+
+// insecureDefaults 返回仍取自仓库默认值的敏感配置项，目前只覆盖 jwt.encryptKey 与
+// password.hash.pepper，新增检测项在这里追加即可。暂不导出：消费者只有本包的启动
+// 告警与 EmitInsecureDefaultAlerts。
 func (c *Config) insecureDefaults() []string {
 	var out []string
 	if c.jwtKeyFromFile {
@@ -294,6 +368,36 @@ func (c *Config) insecureDefaults() []string {
 	return out
 }
 
+// EmitInsecureDefaultAlerts 把 insecure-default 配置项作为安全事件外发（PR② 埋点之一）。
+// 不能在 Load 内联发：告警设施在 DB 初始化后才装配，Load 时 alert 尚未就绪——
+// 由 main 在装配完成后调用。bizKey 留空不节流：每次启动如实上报一次配置态。
+func (c *Config) EmitInsecureDefaultAlerts() {
+	for _, item := range c.insecureDefaults() {
+		title, body := insecureDefaultNotice(item)
+		alert.Dispatch("insecure_defaults", "warning", title, body, "")
+	}
+}
+
+// insecureDefaultNotice 各 insecure-default 项的告警标题与正文（warnInsecureDefaults 与
+// 告警埋点共用同一文案源，防两处漂移）。
+func insecureDefaultNotice(item string) (title, body string) {
+	switch item {
+	case "jwt.encryptKey":
+		return "不安全配置默认值：jwt.encryptKey",
+			"jwt.encryptKey 仍取自随源码提交的 config.yaml：若本实例对公网可达，" +
+				"该密钥等同公开，存在被冒用签发 token 的风险；" +
+				"更换方式见 README「密钥与凭据（部署必读）」一节" +
+				"（该键同时加密库内 LLM 凭据，换值会使既有密文失效）。"
+	case "password.hash.pepper":
+		return "不安全配置默认值：password.hash.pepper",
+			"口令 pepper 的真值已随源码提交的 config.yaml 公开：拖库免疫失效，" +
+				"等于未启用 pepper；处置：改经环境变量 AIARSENAL_PWD_PEPPER 注入" +
+				"（≥32 字节随机值，多实例同值），换值会使既有 peppered 口令失效" +
+				"（等同强制全员重置）。"
+	}
+	return item, item
+}
+
 // warnInsecureDefaults 在敏感配置仍取自 config.yaml 时输出 WARN 级告警。
 //
 // 用 WARN 不用 ERROR：进程照常启动、请求不受影响，不构成失败；ERROR 会被 oncall 分级
@@ -302,24 +406,8 @@ func (c *Config) insecureDefaults() []string {
 // 运维对错对象执行处置。
 func (c *Config) warnInsecureDefaults() {
 	for _, item := range c.insecureDefaults() {
-		switch item {
-		case "jwt.encryptKey":
-			slog.Warn(
-				"敏感配置仍取自随源码提交的 config.yaml：若本实例对公网可达，"+
-					"该密钥等同公开，存在被冒用签发 token 的风险；"+
-					"更换方式见 README「密钥与凭据（部署必读）」一节"+
-					"（该键同时加密库内 LLM 凭据，换值会使既有密文失效）。",
-				"insecureDefault", item,
-			)
-		case "password.hash.pepper":
-			slog.Warn(
-				"口令 pepper 的真值已随源码提交的 config.yaml 公开：拖库免疫失效，"+
-					"等于未启用 pepper；处置：改经环境变量 AIARSENAL_PWD_PEPPER 注入"+
-					"（≥32 字节随机值，多实例同值），换值会使既有 peppered 口令失效"+
-					"（等同强制全员重置）。",
-				"insecureDefault", item,
-			)
-		}
+		_, body := insecureDefaultNotice(item)
+		slog.Warn(body, "insecureDefault", item)
 	}
 }
 

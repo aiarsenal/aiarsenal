@@ -14,6 +14,7 @@ import (
 	_ "github.com/lib/pq" // 注册 database/sql 的 "postgres" 驱动，供迁移专用连接使用
 
 	"aiarsenal/config"
+	"aiarsenal/infrastructure/alert"
 )
 
 // migrations 嵌入各库的迁移 SQL：migrations/<db>/NNNNNN_<name>.{up,down}.sql。
@@ -36,6 +37,12 @@ var dbs = []string{"aiarsenal", "aa_skill", "aa_llm", "aa_mcp", "aa_agent", "aa_
 func RunMigrations() error {
 	for _, name := range dbs {
 		if err := migrateDB(name); err != nil {
+			// 服务异常 ERROR 白名单埋点（PR②）：迁移失败=启动将中止（fail-fast），
+			// 运维必须收到。首次部署时 aa_alert_record 可能尚不存在——落库失败仅记
+			// ERROR 日志，不掩盖迁移错误本身；bizKey=库名走外送节流窗。
+			alert.Dispatch("migration_failure", "error", "数据库迁移失败",
+				"库 "+name+" 迁移执行失败："+err.Error()+"；进程将按 fail-fast 语义退出。",
+				name)
 			return fmt.Errorf("migrate %s: %w", name, err)
 		}
 	}

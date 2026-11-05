@@ -15,6 +15,7 @@ import (
 	"aiarsenal/application/service"
 	"aiarsenal/config"
 	"aiarsenal/infrastructure/agentruntime"
+	"aiarsenal/infrastructure/alert"
 	"aiarsenal/infrastructure/auth"
 	"aiarsenal/infrastructure/cache"
 	"aiarsenal/infrastructure/db"
@@ -69,7 +70,10 @@ func main() {
 	if _, err := db.InitScheduleDB(); err != nil {
 		log.Fatalf("init schedule db: %v", err)
 	}
-	// 2.1 数据库迁移（golang-migrate，迁移 SQL 编进二进制）。migrations/<db>/ 下有 .sql 即自动
+	// 2.1 安全事件告警装配（PR② 等保 8.1.5.4f）。须在迁移**之前**——迁移失败本身要出
+	//     告警（migration_failure）；主库连接此刻已就绪，aa_alert_record 由迁移 000005 建。
+	alert.Init(db.DB(), cfg.Alert.AlertOpts())
+	// 2.2 数据库迁移（golang-migrate，迁移 SQL 编进二进制）。migrations/<db>/ 下有 .sql 即自动
 	//     执行（给存量库追平 base SQL 增量），无 .sql 的库静默跳过。失败则启动中止（fail-fast）。
 	if err := db.RunMigrations(); err != nil {
 		log.Fatalf("run migrations: %v", err)
@@ -87,6 +91,10 @@ func main() {
 	if _, err := auth.Enforcer(); err != nil {
 		log.Printf("warn: init casbin: %v (权限校验将不可用)", err)
 	}
+	// 2.3 告警投递 worker + 启动重投扫描（redis 就绪后；队列丢失的记录在此收敛），
+	//     随后把 insecureDefaults 配置态作为告警上报（Load 时告警设施未就绪，只能延后）。
+	alert.StartWorker(context.Background())
+	cfg.EmitInsecureDefaultAlerts()
 
 	// 3. 仓储
 	c := cache.New()

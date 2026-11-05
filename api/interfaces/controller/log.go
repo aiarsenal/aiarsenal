@@ -32,13 +32,21 @@ func (h *LoginLogController) List(c *gin.Context) {
 	middleware.Success(c, dto.LoginLogSearchRes{List: list, ListRes: dto.ListRes{CurrentPage: pn, Total: total}})
 }
 
+// operator 登录态操作者（告警埋点取数用；未登录态传空）。
+func operator(c *gin.Context) string {
+	if claims := middleware.GetClaims(c); claims != nil {
+		return claims.UserName
+	}
+	return ""
+}
+
 func (h *LoginLogController) Delete(c *gin.Context) {
 	var req dto.LoginLogDelReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		middleware.Fail(c, err.Error())
 		return
 	}
-	if err := h.svc.Delete(c, req.Ids); err != nil {
+	if err := h.svc.Delete(c, operator(c), req.Ids); err != nil {
 		middleware.Fail(c, err.Error())
 		return
 	}
@@ -46,7 +54,7 @@ func (h *LoginLogController) Delete(c *gin.Context) {
 }
 
 func (h *LoginLogController) Clear(c *gin.Context) {
-	if err := h.svc.Clear(c); err != nil {
+	if err := h.svc.Clear(c, operator(c)); err != nil {
 		middleware.Fail(c, err.Error())
 		return
 	}
@@ -97,7 +105,7 @@ func (h *OperLogController) Delete(c *gin.Context) {
 		middleware.Fail(c, err.Error())
 		return
 	}
-	if err := h.svc.Delete(c, req.OperIds); err != nil {
+	if err := h.svc.Delete(c, operator(c), req.OperIds); err != nil {
 		middleware.Fail(c, err.Error())
 		return
 	}
@@ -105,7 +113,7 @@ func (h *OperLogController) Delete(c *gin.Context) {
 }
 
 func (h *OperLogController) Clear(c *gin.Context) {
-	if err := h.svc.Clear(c); err != nil {
+	if err := h.svc.Clear(c, operator(c)); err != nil {
 		middleware.Fail(c, err.Error())
 		return
 	}

@@ -10,6 +10,7 @@ import (
 	"github.com/redis/go-redis/v9"
 
 	"aiarsenal/config"
+	"aiarsenal/infrastructure/alert"
 	"aiarsenal/infrastructure/db"
 )
 
@@ -45,6 +46,11 @@ func LoginLocked(username string) bool {
 		// 故障时告警——锁定层失效运维必须可见，否则防爆破只剩口令校验一层。
 		if !errors.Is(err, redis.Nil) {
 			slog.Warn("登录锁定检查失败，放行（fail-open）", "err", err, "username", username)
+			// 服务异常 ERROR 白名单埋点（PR②）：锁定层失效=防爆破退化。
+			// bizKey=redis 固定键走节流窗，redis 故障期间不重复外送；落库不受节流影响。
+			alert.Dispatch("redis_unavailable", "error", "登录锁定层失效（redis 不可用）",
+				"登录锁定检查读写 redis 失败，已按 fail-open 放行：防爆破仅剩口令校验与锁定阈值后的日志留痕。err="+err.Error(),
+				"redis")
 		}
 		return false
 	}
@@ -81,6 +87,12 @@ func RecordLoginFailure(username string) {
 		cl.Expire(ctx, key, lockTTL())
 	case int(n) == config.Get().Password.Lockout.MaxFailures:
 		cl.Expire(ctx, key, lockTTL()) // 达到阈值：锁定时长从现在起满额
+		// 告警埋点（PR② 等保 8.1.5.4f）：账号达到锁定阈值=正在被爆破或用户遗忘口令。
+		// body 只含用户名与锁定参数，不含口令；bizKey=用户名走外送节流窗防刷屏。
+		alert.Dispatch("login_lockout", "warning", "登录锁定触发",
+			"账号 "+username+" 连续登录失败达到阈值 "+strconv.Itoa(config.Get().Password.Lockout.MaxFailures)+
+				"，已锁定 "+strconv.Itoa(config.Get().Password.Lockout.LockMinutes)+" 分钟（到期自动解锁）。",
+			username)
 	default:
 		if ttl, err := cl.TTL(ctx, key).Result(); err != nil || ttl <= 0 {
 			cl.Expire(ctx, key, lockTTL())
