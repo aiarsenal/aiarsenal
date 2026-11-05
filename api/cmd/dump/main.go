@@ -133,7 +133,9 @@ func main() {
 	b.WriteString("DROP TABLE IF EXISTS aa_menu CASCADE;\n")
 	b.WriteString("CREATE TABLE aa_menu (\n  id bigserial,\n  menu_id varchar(32) NOT NULL DEFAULT '',\n  pid varchar(32) NOT NULL DEFAULT '0',\n  name varchar(100) NOT NULL DEFAULT '',\n  title varchar(50) NOT NULL DEFAULT '',\n  icon varchar(300) NOT NULL DEFAULT '',\n  condition varchar(255) NOT NULL DEFAULT '',\n  remark varchar(255) NOT NULL DEFAULT '',\n  menu_type smallint NOT NULL DEFAULT 0,\n  weigh integer NOT NULL DEFAULT 0,\n  is_hide smallint NOT NULL DEFAULT 0,\n  path varchar(100) NOT NULL DEFAULT '',\n  component varchar(100) NOT NULL DEFAULT '',\n  is_link smallint NOT NULL DEFAULT 0,\n  module_type varchar(30) NOT NULL DEFAULT '',\n  model_id integer NOT NULL DEFAULT 0,\n  is_iframe smallint NOT NULL DEFAULT 0,\n  is_cached smallint NOT NULL DEFAULT 0,\n  redirect varchar(255) NOT NULL DEFAULT '',\n  is_affix smallint NOT NULL DEFAULT 0,\n  link_url varchar(500) NOT NULL DEFAULT '',\n  created_at timestamp DEFAULT NULL,\n  updated_at timestamp DEFAULT NULL,\n  PRIMARY KEY (id)\n);\n")
 	b.WriteString("CREATE UNIQUE INDEX IF NOT EXISTS idx_aa_menu_menu_id ON aa_menu (menu_id);\n")
-	b.WriteString("CREATE UNIQUE INDEX IF NOT EXISTS idx_aa_menu_name ON aa_menu (name);\n")
+	// menu 目录与权限按钮合法共用同一 API 路径作 name（如 openclaw 目录+查看按钮），
+	// name 上不设唯一约束；鉴权与菜单定位走 menu_id 主键。
+	b.WriteString("CREATE INDEX IF NOT EXISTS idx_aa_menu_name ON aa_menu (name);\n")
 	b.WriteString("CREATE INDEX IF NOT EXISTS idx_aa_menu_pid ON aa_menu (pid);\n")
 	b.WriteString("CREATE INDEX IF NOT EXISTS idx_aa_menu_weigh ON aa_menu (weigh);\n")
 	for _, r := range menuRows {
