@@ -118,3 +118,17 @@ func Parse(tokenStr string) (*Claims, error) {
 	}
 	return claims, nil
 }
+
+// SessionIDOf 从已签发令牌解析 jti（会话标识）；解析失败（密钥不符/过期/垃圾串）返回空串。
+// F-025：aa_user_online.token 只存该标识、不存明文令牌——读库不再能重放劫持会话。
+// 复用 Parse（含签名算法与有效期校验），fresh 签发令牌必然可解析。
+func SessionIDOf(tokenStr string) string {
+	if tokenStr == "" {
+		return ""
+	}
+	claims, err := Parse(tokenStr)
+	if err != nil {
+		return ""
+	}
+	return claims.ID
+}
