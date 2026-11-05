@@ -264,6 +264,7 @@ cd /home/ubuntu/aiarsenal && git pull && sudo bash deploy.sh prod
 
 ## 🛡️ 鉴权与安全
 
+- **客户端 IP 只信可信边界（审计 F-022）**：api 与 llm 网关默认不信任任何代理——`X-Forwarded-For` / `X-Real-IP` 不能伪造登录审计、操作审计与网关用量记录里的 IP；挂反代的部署经 `AIARSENAL_SERVER_TRUSTED_PROXIES`（api/mcp，逗号分隔网段）与 `TRUSTED_PROXIES`（llm）显式声明可信代理，官方同机 nginx 拓扑由 deploy.sh 自动注入 `127.0.0.1`（nginx 为追加型 `X-Forwarded-For`，伪造的链头条目天然被丢弃）。纯直连部署保持信任 none 即可。
 - 登录态基于 JWT（HS256），默认有效期 30 天，可配置。每个登录令牌带 `jti` 并登记进服务端会话注册表：退出登录、管理员吊销（在线用户 → 强制下线）后令牌立即失效，不再依赖前端丢弃。
 - 每个请求按 `userId` 回查库内最新身份（`is_admin` / 部门 / 岗位 / 状态）：改权限、封号在下一跳即生效，token 只证明"你是谁"，不携带 30 天不变的授权。
 - 权限基于 Casbin RBAC：超管（`is_admin`）全通，普通用户按菜单策略授权，细至按钮级。服务端另有三条与角色无关的硬闸门：
