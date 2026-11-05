@@ -38,8 +38,8 @@ func (s *AuthService) isDebug() bool {
 
 // Login 登录：验证码 → 密码 → 签发 JWT → 菜单/权限
 func (s *AuthService) Login(ctx context.Context, username, password, totpCode, verifyKey, verifyCode, ip, userAgent string) (*model.LoginUserRes, string, []*model.UserMenus, []string, error) {
-	// 1. 验证码（debug 模式跳过，对应旧 gmode.IsDevelop）
-	if !s.isDebug() {
+	// 1. 验证码（debug 且来源为回环才跳过——F-007：debug 曾是远程绕过闸门的钥匙）
+	if captchaGate(s.isDebug(), ip) {
 		if !s.captcha.VerifyString(verifyKey, verifyCode) {
 			s.userRepo.InsertLoginLog(ctx, &model.LoginLogParams{
 				Status: 0, Username: username, Ip: ip, UserAgent: userAgent, Msg: "验证码输入错误", Module: "系统后台",
