@@ -81,11 +81,24 @@ nav {
 @media (min-width: 720px) { .stats { grid-template-columns: repeat(4, 1fr); } }
 .stats .num { font-family: var(--mono); font-size: 34px; font-weight: 500; line-height: 1; }
 .stats .label { margin-top: 8px; font-size: 13px; color: var(--faint); }
-.hero-video {
-  margin-top: 72px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
-  box-shadow: 0 32px 64px -32px rgba(27, 25, 20, 0.28);
+/* Keep the transparent logo in the same layout as the hero copy. */
+.hero-lockup {
+  display: grid; align-items: center;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  column-gap: clamp(32px, 5vw, 76px); margin-top: 48px;
 }
-.hero-video video { display: block; width: 100%; }
+.hero-copy { min-width: 0; }
+.hero-lockup h1 { margin-top: 0; font-size: clamp(46px, 5.25vw, 75px); }
+.hero-mark { width: 100%; max-width: 420px; margin: 0 auto; }
+.hero-mark img, .hero-mark svg { display: block; width: 100%; height: auto; }
+[lang="en"] .hero-lockup h1 { font-size: clamp(42px, 4.65vw, 67px); }
+
+@media (max-width: 760px) {
+  .hero-lockup { grid-template-columns: 1fr; row-gap: 34px; margin-top: 34px; }
+  .hero-lockup h1, [lang="en"] .hero-lockup h1 { font-size: clamp(38px, 8.6vw, 58px); }
+  .hero-mark { width: min(77%, 320px); margin-inline: 0; }
+  .stats { margin-top: 32px; }
+}
 
 /* ── Sections ── */
 section { padding: 88px 0; }

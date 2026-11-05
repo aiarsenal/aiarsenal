@@ -48,11 +48,11 @@ export const overridesPreferences = defineOverridesPreferences({
   logo: {
     // 侧边栏顶部显示 logo + 站点标题（basic/layout.vue 的 sidebar-logo-visible + VbenLogo 都看 enable）
     enable: true,
-    // 方形徽标：透明圆角图标（logo.png 由 cover.png 裁成正方形 RGBA，四角透明，亮/暗底均浮起干净）
-    // 全站单一来源——landing/桌面登录/登录页/后台都走此 source，杜绝多文件不一致
+    // 方形徽标：新浣熊单标，透明方形画布，供导航等小尺寸位置使用
+    // 落地页、登录页导航和后台侧栏共用此单标
     // icon 模式：徽标图 + 单独的「AI Arsenal」文字 span（文字走主题色，亮暗都可见）
-    source: '/logo.png?v=9',
-    sourceDark: '/logo.png?v=9',
+    source: '/logo.png?v=11',
+    sourceDark: '/logo.png?v=11',
     logoMode: 'icon',
     showText: true,
   },

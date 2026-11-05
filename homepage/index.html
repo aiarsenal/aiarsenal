@@ -43,15 +43,22 @@
         <span class="micro">开源 · 自部署 · Apache-2.0</span>
         <span class="micro">GLM 参与编写</span>
       </div>
-      <h1>企业级 AI 应用<br />一体化管理平台</h1>
-      <p class="sub">
-        Skill、MCP、LLM、Agent 和文档知识库，一个后台统一管理。自带 OpenAI 兼容网关与 MCP
-        网关，配套 Mac / Windows 桌面客户端，部署在你自己的服务器上。
-      </p>
-      <p class="mod-index">SKILL · LLM · MCP · DOC · KB · PROJECT · AGENT · CLIENT</p>
-      <div class="hero-cta">
-        <a class="btn-solid" href="https://github.com/aiarsenal/aiarsenal" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
-        <a class="btn-ghost" href="#quickstart">自部署指南</a>
+      <div class="hero-lockup">
+        <div class="hero-copy">
+          <h1>企业级 AI 应用<br />一体化管理平台</h1>
+          <p class="sub">
+            Skill、MCP、LLM、Agent 和文档知识库，一个后台统一管理。自带 OpenAI 兼容网关与 MCP
+            网关，配套 Mac / Windows 桌面客户端，部署在你自己的服务器上。
+          </p>
+          <p class="mod-index">SKILL · LLM · MCP · DOC · KB · PROJECT · AGENT · CLIENT</p>
+          <div class="hero-cta">
+            <a class="btn-solid" href="https://github.com/aiarsenal/aiarsenal" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+            <a class="btn-ghost" href="#quickstart">自部署指南</a>
+          </div>
+        </div>
+        <div class="hero-mark" data-motion="assets/brand-motion.svg">
+          <img src="assets/brand-clean.svg" width="1170" height="610" alt="AI Arsenal">
+        </div>
       </div>
       <div class="stats">
         <div><div class="num">13</div><div class="label">功能目录</div></div>
@@ -59,9 +66,6 @@
         <div><div class="num">200</div><div class="label">按钮级权限</div></div>
         <div><div class="num">529</div><div class="label">后端路由</div></div>
       </div>
-      <figure class="hero-video">
-        <video id="brandVideo" muted loop playsinline preload="none" poster="assets/cover.png" src="assets/brand.mp4"></video>
-      </figure>
     </div>
   </header>
 
@@ -239,16 +243,6 @@ sudo bash deploy.sh test         # 测试环境：纯 HTTP + /etc/hosts</pre>
   </footer>
 
   <script>
-    // 视频懒播放：进入视口再加载播放（preload=none，首屏不拉 5.9MB）
-    new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          var v = e.target;
-          v.play().catch(function () {});
-          obs.unobserve(v);
-        }
-      });
-    }, { rootMargin: '200px' }).observe(document.getElementById('brandVideo'));
     // 语言切换保留当前锚点
     document.querySelectorAll('a[data-lang]').forEach(function (a) {
       a.addEventListener('click', function (e) {
@@ -257,5 +251,7 @@ sudo bash deploy.sh test         # 测试环境：纯 HTTP + /etc/hosts</pre>
       });
     });
   </script>
+  <script defer src="assets/gsap-3.15.0.min.js"></script>
+  <script defer src="assets/brand-scroll.js"></script>
 </body>
 </html>

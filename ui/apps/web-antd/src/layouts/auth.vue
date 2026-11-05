@@ -18,7 +18,8 @@ const logoDark = computed(() => preferences.logo.sourceDark);
     :logo-dark="logoDark"
     :page-description="$t('authentication.pageDesc')"
     :page-title="$t('authentication.pageTitle')"
-    slogan-image="/brand.mp4"
+    slogan-image="/brand-clean.svg"
+    slogan-image-dark="/brand-dark.svg"
     :toolbar-list="['language']"
   >
     <!-- 自定义工具栏 -->

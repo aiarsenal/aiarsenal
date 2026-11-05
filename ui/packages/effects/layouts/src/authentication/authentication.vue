@@ -17,6 +17,7 @@ interface Props {
   pageTitle?: string;
   pageDescription?: string;
   sloganImage?: string;
+  sloganImageDark?: string;
   toolbar?: boolean;
   copyright?: boolean;
   toolbarList?: ToolbarType[];
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   pageDescription: '',
   pageTitle: '',
   sloganImage: '',
+  sloganImageDark: '',
   toolbar: true,
   toolbarList: () => ['color', 'language', 'layout', 'theme'],
   clickLogo: () => {},
@@ -38,6 +40,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { authPanelCenter, authPanelLeft, authPanelRight, isDark } =
   usePreferences();
+
+const sloganSrc = computed(() =>
+  isDark.value && props.sloganImageDark ? props.sloganImageDark : props.sloganImage,
+);
 
 /**
  * @zh_CN 根据主题选择合适的 logo 图标
@@ -117,22 +123,23 @@ const logoSrc = computed(() => {
             '-enter-x': authPanelRight,
           }"
         >
-          <template v-if="sloganImage">
+          <template v-if="sloganSrc">
             <video
-              v-if="/\.(mp4|webm|ogg)$/i.test(sloganImage)"
+              v-if="/\.(mp4|webm|ogg)$/i.test(sloganSrc)"
               autoplay
               loop
               muted
               playsinline
               :alt="appName"
-              :src="sloganImage"
+              :src="sloganSrc"
               class="h-64 w-2/5 animate-float object-contain"
             />
             <img
               v-else
               :alt="appName"
-              :src="sloganImage"
-              class="h-64 w-2/5 animate-float"
+              :src="sloganSrc"
+              class="h-64 w-2/5 object-contain"
+              :class="{ 'animate-float': !sloganImageDark }"
             />
           </template>
           <SloganIcon v-else :alt="appName" class="h-64 w-2/5 animate-float" />
