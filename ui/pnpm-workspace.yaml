@@ -155,7 +155,7 @@ catalog:
   pinia-plugin-persistedstate: ^4.7.1
   pkg-types: ^2.3.1
   playwright: ^1.61.0
-  postcss: ^8.5.15
+  postcss: ^8.5.32
   postcss-html: ^1.8.1
   postcss-scss: ^4.0.9
   publint: ^0.3.21
