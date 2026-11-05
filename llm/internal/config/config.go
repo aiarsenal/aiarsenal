@@ -17,7 +17,7 @@ type Config struct {
 	IAMDB     DBConfig // aiarsenal 库只读连接：预算适用范围判定要解析用户身份（aa_user/aa_rule/aa_perm_group/aa_emp_set）
 	Redis     RedisConfig
 	Server    ServerConfig
-	SecretKey string // 与 api 的 jwt.encryptKey 一致，用于解密 provider 凭据
+	SecretKey string // 与 api 的 security.dataKey 同值（数据加密密钥，api 加密、llm 解密；deploy.sh 生成时保证同值）
 }
 
 // IsProd 是否生产环境。
