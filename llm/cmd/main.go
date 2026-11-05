@@ -64,6 +64,9 @@ func main() {
 	// 后台部署健康探测：结果落 aa_llm_health_check 并联动路由（连续失败跳过、恢复解除）。
 	go health.New(st, reg, strat).Run(context.Background())
 
+	// F-027：订阅 api 侧密钥失效通知（封禁/删除/编辑即时生效，兜底 5s 缓存 TTL）
+	auth.StartKeyBustSubscriber(context.Background(), rdb)
+
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	// F-022：默认不信任任何代理——用量/计费记录的 ClientIP 取 TCP 对端；

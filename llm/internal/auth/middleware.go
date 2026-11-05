@@ -162,6 +162,7 @@ func sharedBudgetOk(c *gin.Context, st *store.Store, rdb *redis.Client, budgetID
 //   - userId 空（纯团队/项目 key）：无用户主体，不受圈人预算约束，放行
 //   - 命中空集：用户不在任何圈人预算范围内，放行
 //   - max_budget NULL=不限额；命中预算周期到期先懒滚存再比额度
+//
 // 身份/预算解析失败放行 + 记日志（fail-open，与 sharedBudgetOk「配置缺失不打死」同语义）。
 // 命中集合（含未超额与已超额的，只要放行就全额计）经 c.Set 传给计费路径。
 func userBudgetsOk(c *gin.Context, st *store.Store, rdb *redis.Client, userId string) bool {
@@ -269,6 +270,29 @@ func bustKeyCache(ctx context.Context, rdb *redis.Client, hash string) {
 	if rdb != nil {
 		_ = rdb.Del(ctx, "vkey:"+hash).Err()
 	}
+}
+
+// VKeyBustChannel 缓存失效通道，与 api 侧 application/service/llm_key_service.go 两处须同步。
+// 库号对齐：本侧 REDIS_DB（默认 2），api 发侧 AIARSENAL_LLM_REDIS_DB（默认 2）——
+// 两个不同名的变量，改其一必须同步另一个。
+const VKeyBustChannel = "vkey-bust"
+
+// StartKeyBustSubscriber 订阅 api 侧的密钥失效通知（F-027）：封禁/删除/编辑后立即
+// 失效本进程 5s 虚拟密钥缓存，拒绝生效延迟从最长 5s 降到 0。通道丢失或 api 未发时
+// 兜底为缓存 TTL 自然过期；订阅断连由 redis 客户端自动重连（go-redis 默认行为）。
+func StartKeyBustSubscriber(ctx context.Context, rdb *redis.Client) {
+	if rdb == nil {
+		return
+	}
+	go func() {
+		sub := rdb.Subscribe(ctx, VKeyBustChannel)
+		defer sub.Close()
+		for msg := range sub.Channel() {
+			if msg.Payload != "" {
+				bustKeyCache(context.Background(), rdb, msg.Payload)
+			}
+		}
+	}()
 }
 
 func bustBudgetCache(ctx context.Context, rdb *redis.Client, id string) {

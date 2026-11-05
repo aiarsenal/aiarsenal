@@ -129,12 +129,12 @@ func (h *Handler) attemptMessages(c *gin.Context, m *model.Model, raw []byte, st
 	if err != nil {
 		if resp == nil {
 			h.recordError(c, m, k, hash, reqID, start, "chat", baseURL, "upstream_error", err.Error(), "502", capStr(string(raw)))
-			return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error()), rawUpstream: true}
+			return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 		}
 		// 首字节没等到（超时/零字节空流）：不伪装成成功空流，按上游失败走 failover。
 		h.recordError(c, m, k, hash, reqID, start, "chat", baseURL, "upstream_no_data", err.Error(), "502", capStr(string(raw)))
 		h.bill(c, m, k, hash, reqID, start, "chat", baseURL, 0, 0, 0, "failed", capStr(string(raw)), "")
-		return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error())}
+		return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 	}
 	defer cancelUpstream()
 	defer resp.Body.Close()
@@ -316,8 +316,11 @@ func (h *Handler) proxyChat(c *gin.Context, callType string) {
 }
 
 // attemptResult 一次上游尝试的结果。committed=true 表示已向客户端写完响应（成功），调用方停止重试；
-// 否则 failStatus/failBody 供 failover 最终回写——rawUpstream=true 时 failBody 是上游原始响应体（直传，
-// 保留真实 429 错误体），false 时为内部错误（包成 JSON error 回写）。
+// 否则 failStatus/failBody 供 failover 最终回写。rawUpstream=true 表示 failBody
+// 原样直写——两种来源：上游自身的 4xx/5xx 错误体（保留真实 429 语义），以及
+// upstreamFailBody() 归一化的 OpenAI 形态错误 JSON（传输层失败；细节在 recordError
+// 审计行，客户端只拿通用语义）。false 仅用于纯文本内部错误（包成 envelope 回写）。
+// 十个归一化站点必须全部带 true：裸 JSON 进包裹分支会被二次编码成字符串。
 type attemptResult struct {
 	committed   bool
 	failStatus  int
@@ -344,13 +347,21 @@ func (h *Handler) attemptChat(c *gin.Context, m *model.Model, body []byte, strea
 	url, method, headers, upBody, err := p.BuildUpstream(c, provReq)
 	if err != nil {
 		h.recordError(c, m, k.VirtualKey, hash, reqID, start, callType, baseURL, "build_upstream_error", err.Error(), "500", capStr(string(body)))
-		return attemptResult{failStatus: http.StatusInternalServerError, failBody: []byte(err.Error())}
+		return attemptResult{failStatus: http.StatusInternalServerError, failBody: upstreamFailBody(), rawUpstream: true}
 	}
 	auth.TouchActive(h.st, hash)
 	if stream {
 		return h.attemptStream(c, p, provReq, method, url, headers, upBody, m, k.VirtualKey, hash, reqID, start, callType, baseURL)
 	}
 	return h.attemptNonStream(c, p, provReq, method, url, headers, upBody, m, k.VirtualKey, hash, reqID, start, callType, baseURL)
+}
+
+// upstreamFailBody 归一化的上游失败响应体（F-031）：网络层 *url.Error 的文本内嵌
+// 完整上游 URL（host/端口/路径），直传即向客户端泄露内部上游拓扑。细节已逐站点
+// 进 recordError 审计留档，客户端只拿通用语义；上游自身的 4xx/5xx 响应体
+// （rawUpstream 直传路径）不受影响。
+func upstreamFailBody() []byte {
+	return []byte(`{"error":{"message":"upstream request failed","type":"api_error","code":"upstream_error"}}`)
 }
 
 // attemptNonStream 非流式单次尝试。成功写响应并计费；上游 4xx/5xx 或网络错时不写客户端，返回失败供 failover。
@@ -360,12 +371,12 @@ func (h *Handler) attemptNonStream(c *gin.Context, p provider.Provider, provReq 
 	if err != nil {
 		if resp == nil {
 			h.recordError(c, m, k, hash, reqID, start, callType, apiBase, "upstream_error", err.Error(), "502", capStr(string(body)))
-			return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error()), rawUpstream: true}
+			return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 		}
 		// 首字节没等到（超时/零字节空体）：不伪装成成功空响应，按上游失败走 failover。
 		h.recordError(c, m, k, hash, reqID, start, callType, apiBase, "upstream_no_data", err.Error(), "502", capStr(string(body)))
 		h.bill(c, m, k, hash, reqID, start, callType, apiBase, 0, 0, 0, "failed", capStr(string(provReq.Body)), "")
-		return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error())}
+		return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 	}
 	defer cancelUpstream()
 	defer resp.Body.Close()
@@ -399,12 +410,12 @@ func (h *Handler) attemptStream(c *gin.Context, p provider.Provider, provReq pro
 	if err != nil {
 		if resp == nil {
 			h.recordError(c, m, k, hash, reqID, start, callType, apiBase, "upstream_error", err.Error(), "502", capStr(string(body)))
-			return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error()), rawUpstream: true}
+			return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 		}
 		// 首字节没等到（超时/零字节空流）：不伪装成成功空流，按上游失败走 failover。
 		h.recordError(c, m, k, hash, reqID, start, callType, apiBase, "upstream_no_data", err.Error(), "502", capStr(string(body)))
 		h.bill(c, m, k, hash, reqID, start, callType, apiBase, 0, 0, 0, "failed", capStr(string(provReq.Body)), "")
-		return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error())}
+		return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 	}
 	defer cancelUpstream()
 	defer resp.Body.Close()

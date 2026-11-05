@@ -5,9 +5,12 @@
 package gateway
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"sync"
@@ -17,6 +20,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"aiarsenal/application/service"
+	"aiarsenal/config"
 	"aiarsenal/domain/entity"
 	"aiarsenal/infrastructure/crypto"
 	"aiarsenal/infrastructure/mcpgateway/compression"
@@ -80,6 +84,14 @@ func (s *Service) handlerFor(scope string) *mcp.StreamableHTTPHandler {
 
 // Endpoint 处理 /mcp / /mcp/:scope（GET=SSE、POST=streamable-http、DELETE=shutdown）。
 func (s *Service) Endpoint(c *gin.Context) {
+	// F-032：JSON-RPC 批量请求子条数上限——超限整单拒绝（fail-closed），防止单请求
+	// 放大千倍成本。放在 scope 解析与会话建立之前，最便宜的位置先挡。
+	if n, ok := countJSONRPCBatch(c); ok && n > config.Get().Mcp.MaxBatchItems {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": fmt.Sprintf("batch of %d exceeds maxBatchItems %d", n, config.Get().Mcp.MaxBatchItems),
+		})
+		return
+	}
 	scope := c.Param("scope")
 	names, _, err := s.resolveScope(c.Request.Context(), scope)
 	if err != nil {
@@ -104,6 +116,29 @@ func (s *Service) Endpoint(c *gin.Context) {
 	}
 
 	s.handlerFor(scope).ServeHTTP(c.Writer, c.Request)
+}
+
+// countJSONRPCBatch 探测请求体是否为 JSON-RPC 批量（数组）并返回条数。
+// 读出的字节必须原样回填请求体，交给下游 streamable-http 处理器原样解析。
+// 非数组/空体/坏 JSON 返回 (0,false)——由下游按既有语义处理，本层不重复报错。
+func countJSONRPCBatch(c *gin.Context) (int, bool) {
+	if c.Request.Body == nil {
+		return 0, false
+	}
+	raw, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		return 0, false
+	}
+	c.Request.Body = io.NopCloser(bytes.NewReader(raw))
+	trimmed := bytes.TrimSpace(raw)
+	if len(trimmed) == 0 || trimmed[0] != '[' {
+		return 0, false
+	}
+	var items []json.RawMessage
+	if err := json.Unmarshal(trimmed, &items); err != nil {
+		return 0, false
+	}
+	return len(items), true
 }
 
 func (s *Service) Shutdown(c *gin.Context) {
