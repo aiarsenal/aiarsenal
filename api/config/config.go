@@ -27,6 +27,7 @@ type Config struct {
 	Totp     TotpConfig     `mapstructure:"totp"`
 	Alert    AlertConfig    `mapstructure:"alert"`
 	Audit    AuditConfig    `mapstructure:"audit"`
+	Cors     CorsConfig     `mapstructure:"cors"`
 
 	// jwtKeyFromFile 标记 jwt.encryptKey 是否直接取自 config.yaml（未被环境变量覆盖）。
 	// 不导出、不参与反序列化，仅由 Load 填入，供 insecureDefaults 上报。
@@ -141,6 +142,17 @@ func (a AlertConfig) AlertOpts() alert.Config {
 		RetryMax:        a.RetryMax,
 		ThrottleMinutes: a.ThrottleMinutes,
 	}
+}
+
+// CorsConfig 跨域来源白名单（手册 F-11：CORS 不再反射任意 Origin + 带凭据）。
+type CorsConfig struct {
+	// AllowedOrigins 额外放行的跨域来源精确清单（scheme://host[:port] 全串匹配，
+	// 子域不等于根域）。**按浏览器 Origin 头的序列化原文填**：不带尾斜杠、
+	// scheme 小写、IDN 域名写 punycode（xn-- 形态）、显式默认端口要写 :443/:80——
+	// 不匹配即静默不放行（fail-closed），排障先对着浏览器 Network 面板的 Origin 原文比对。
+	// 本部署 UI 源（public.scheme://public.domain）自动放行无需列出；
+	// 无 Origin 的请求（同源浏览、curl、服务间调用）不需要 CORS 头。
+	AllowedOrigins []string `mapstructure:"allowedOrigins"`
 }
 
 // defaultHashIterations 各算法默认迭代，以「单次派生 50~100ms 登录预算」定档
