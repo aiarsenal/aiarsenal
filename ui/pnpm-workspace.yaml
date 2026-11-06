@@ -72,7 +72,7 @@ catalog:
   '@tiptap/extension-placeholder': ^3.26.1
   '@tiptap/extension-text-align': ^3.26.1
   '@tiptap/extension-text-style': ^3.26.1
-  '@tiptap/extension-underline': ^3.26.1
+  '@tiptap/extension-underline': ^3.32.2
   '@tiptap/pm': ^3.26.1
   '@tiptap/starter-kit': ^3.26.1
   '@tiptap/vue-3': ^3.26.1
