@@ -50,6 +50,7 @@ function credLabel(id?: string) {
 // 凭据 providerType 可能是 openai/deepseek/moonshot/groq/openrouter/ollama 之一——都该可见。
 const OPENAI_COMPATIBLE = new Set([
   'openai',
+  'lmstudio',
   'deepseek',
   'moonshot',
   'groq',
@@ -92,16 +93,17 @@ function ensureGroupOption(name: string) {
 }
 
 const providerOptions = [
-  'openai',
-  'anthropic',
-  'gemini',
-  'deepseek',
-  'moonshot',
-  'groq',
-  'ollama',
-  'openrouter',
-  'bedrock',
-].map((v) => ({ value: v, label: v }));
+  { value: 'lmstudio', label: 'LM Studio（本机）' },
+  { value: 'openai', label: 'OpenAI' },
+  { value: 'anthropic', label: 'Anthropic' },
+  { value: 'gemini', label: 'Gemini' },
+  { value: 'deepseek', label: 'DeepSeek' },
+  { value: 'moonshot', label: 'Moonshot' },
+  { value: 'groq', label: 'Groq' },
+  { value: 'ollama', label: 'Ollama（本机）' },
+  { value: 'openrouter', label: 'OpenRouter' },
+  { value: 'bedrock', label: 'Bedrock' },
+];
 
 // ===== 搜索表单（computed：随语言切换实时变更 label/placeholder） =====
 const searchSchema = computed<VbenFormSchema[]>(() => [

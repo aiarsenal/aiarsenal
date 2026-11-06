@@ -1,6 +1,6 @@
 # AI Arsenal LLM Router
 
-OpenAI 兼容的 LLM 网关（gin），独立 go module。鉴权/路由/翻译/计费完整实现。
+OpenAI 兼容的 LLM 网关（gin），独立 go module。鉴权/路由/翻译/计费完整实现；内置 `lmstudio` provider，可直接接入本机 LM Studio 的免 Key OpenAI 兼容服务。
 
 ## 域名与环境
 

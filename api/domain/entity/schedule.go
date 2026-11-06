@@ -13,25 +13,27 @@ import "aiarsenal/domain/types"
 
 // ============ 事件/会议（series 母事件）============
 type ScheduleEvent struct {
-	Id             uint        `gorm:"column:id;primaryKey;autoIncrement" json:"-"`
-	EventId        string      `gorm:"column:event_id;uniqueIndex" json:"eventId"`
-	Title          string      `gorm:"column:title" json:"title"`
-	EventType      int         `gorm:"column:event_type" json:"eventType"` // 0普通日程 1线下会议 2线上会议 3线上+线下
-	StartAt        *types.Time `gorm:"column:start_at" json:"startAt"`     // 首场开始（锚点，本地时刻）
-	EndAt          *types.Time `gorm:"column:end_at" json:"endAt"`         // 首场结束（时长=End-Start）
-	IsRecurring    int         `gorm:"column:is_recurring" json:"isRecurring"`
-	RRule          string      `gorm:"column:rrule;type:jsonb" json:"rrule"` // {"freq":"WEEKLY","byday":["FR"],"interval":1,"until":"2026-12-31","count":20}
-	Tz             string      `gorm:"column:tz" json:"tz"`                  // 展开时区，默认 Asia/Shanghai
-	RoomId         string      `gorm:"column:room_id" json:"roomId"`         // 软引用 aa_meeting_room.room_id
-	OnlineProvider string      `gorm:"column:online_provider" json:"onlineProvider"`
-	OnlineUrl      string      `gorm:"column:online_url" json:"onlineUrl"`
-	Location       string      `gorm:"column:location" json:"location"` // 会议室之外的自定义地点
-	OrganizerId    string      `gorm:"column:organizer_id" json:"organizerId"`
-	Remark         string      `gorm:"column:remark" json:"remark"`
-	CreatedBy      string      `gorm:"column:created_by" json:"createdBy"`
-	CreatedAt      *types.Time `gorm:"column:created_at" json:"createdAt"`
-	UpdatedAt      *types.Time `gorm:"column:updated_at" json:"updatedAt"`
-	DeletedAt      *types.Time `gorm:"column:deleted_at" json:"deletedAt"`
+	Id              uint        `gorm:"column:id;primaryKey;autoIncrement" json:"-"`
+	EventId         string      `gorm:"column:event_id;uniqueIndex" json:"eventId"`
+	Title           string      `gorm:"column:title" json:"title"`
+	EventType       int         `gorm:"column:event_type" json:"eventType"` // 0普通日程 1线下会议 2线上会议 3线上+线下
+	StartAt         *types.Time `gorm:"column:start_at" json:"startAt"`     // 首场开始（锚点，本地时刻）
+	EndAt           *types.Time `gorm:"column:end_at" json:"endAt"`         // 首场结束（时长=End-Start）
+	IsRecurring     int         `gorm:"column:is_recurring" json:"isRecurring"`
+	RRule           string      `gorm:"column:rrule;type:jsonb" json:"rrule"` // {"freq":"WEEKLY","byday":["FR"],"interval":1,"until":"2026-12-31","count":20}
+	Tz              string      `gorm:"column:tz" json:"tz"`                  // 展开时区，默认 Asia/Shanghai
+	RoomId          string      `gorm:"column:room_id" json:"roomId"`         // 软引用 aa_meeting_room.room_id
+	OnlineProvider  string      `gorm:"column:online_provider" json:"onlineProvider"`
+	OnlineUrl       string      `gorm:"column:online_url" json:"onlineUrl"`
+	Location        string      `gorm:"column:location" json:"location"` // 会议室之外的自定义地点
+	OrganizerId     string      `gorm:"column:organizer_id" json:"organizerId"`
+	SourceAccountId string      `gorm:"column:source_account_id" json:"sourceAccountId"` // 空=本系统自有；非空=CalDAV 拉取
+	ExternalUid     string      `gorm:"column:external_uid" json:"externalUid"`          // iCalendar UID
+	Remark          string      `gorm:"column:remark" json:"remark"`
+	CreatedBy       string      `gorm:"column:created_by" json:"createdBy"`
+	CreatedAt       *types.Time `gorm:"column:created_at" json:"createdAt"`
+	UpdatedAt       *types.Time `gorm:"column:updated_at" json:"updatedAt"`
+	DeletedAt       *types.Time `gorm:"column:deleted_at" json:"deletedAt"`
 }
 
 func (ScheduleEvent) TableName() string { return "aa_schedule_event" }
@@ -43,7 +45,7 @@ type ScheduleAttendee struct {
 	EventId     string      `gorm:"column:event_id" json:"eventId"`
 	UserId      string      `gorm:"column:user_id" json:"userId"` // 软引用 aa_user.user_id
 	UserName    string      `gorm:"-" json:"userName"`            // 跨库回填 aa_user.name，展示用
-	Status      int         `gorm:"column:status" json:"status"` // 0待确认 1接受 2拒绝
+	Status      int         `gorm:"column:status" json:"status"`  // 0待确认 1接受 2拒绝
 	RespondedAt *types.Time `gorm:"column:responded_at" json:"respondedAt"`
 	CreatedAt   *types.Time `gorm:"column:created_at" json:"createdAt"`
 	UpdatedAt   *types.Time `gorm:"column:updated_at" json:"updatedAt"`

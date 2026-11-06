@@ -30,6 +30,7 @@
   "repeat_daily": "每天",
   "repeat_weekly": "每周",
   "repeat_monthly": "每月",
+  "repeat_yearly": "每年",
   "repeat_byday": "星期",
   "repeat_count": "总场数",
   "repeat_count_placeholder": "如 20（可选）",

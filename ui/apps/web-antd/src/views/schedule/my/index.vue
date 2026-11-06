@@ -28,6 +28,7 @@ import {
   type ScheduleApi,
 } from '#/api/system/schedule';
 import { $t } from '#/locales';
+import CalendarSyncDrawer from '../_shared/calendar-sync-drawer.vue';
 import EventModal from '../_shared/event-modal.vue';
 
 defineOptions({ name: 'ScheduleMy' });
@@ -40,6 +41,7 @@ const loading = ref(false);
 const occurrences = ref<ScheduleApi.Occurrence[]>([]);
 
 const eventModalRef = ref<InstanceType<typeof EventModal>>();
+const calendarSyncOpen = ref(false);
 
 // ===== 窗口与格子 =====
 function startOfWeek(d: Dayjs): Dayjs {
@@ -254,9 +256,12 @@ function onSaved() {
           <Button size="small" @click="shift(1)">›</Button>
           <Button size="small" @click="goToday">{{ $t('schedule.today') }}</Button>
         </div>
-        <Button type="primary" @click="eventModalRef?.open()">
-          {{ $t('schedule.add') }}
-        </Button>
+        <div class="flex items-center gap-2">
+          <Button @click="calendarSyncOpen = true">日历同步</Button>
+          <Button type="primary" @click="eventModalRef?.open()">
+            {{ $t('schedule.add') }}
+          </Button>
+        </div>
       </div>
 
       <!-- 图例 -->
@@ -470,6 +475,7 @@ function onSaved() {
     </Modal>
 
     <EventModal ref="eventModalRef" @saved="onSaved" />
+    <CalendarSyncDrawer v-model:open="calendarSyncOpen" />
   </Page>
 </template>
 

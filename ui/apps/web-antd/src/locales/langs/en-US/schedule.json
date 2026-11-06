@@ -30,6 +30,7 @@
   "repeat_daily": "Daily",
   "repeat_weekly": "Weekly",
   "repeat_monthly": "Monthly",
+  "repeat_yearly": "Yearly",
   "repeat_byday": "On days",
   "repeat_count": "Occurrences",
   "repeat_count_placeholder": "e.g. 20 (optional)",

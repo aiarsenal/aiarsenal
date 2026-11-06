@@ -14,17 +14,17 @@ import (
 )
 
 var (
-	gormDB    *gorm.DB
-	skillDB   *gorm.DB
-	llmDB     *gorm.DB
-	mcpDB     *gorm.DB
-	agentDB   *gorm.DB
-	clientDB  *gorm.DB
-	projectDB *gorm.DB
-	docDB     *gorm.DB
-	kbDB      *gorm.DB
+	gormDB     *gorm.DB
+	skillDB    *gorm.DB
+	llmDB      *gorm.DB
+	mcpDB      *gorm.DB
+	agentDB    *gorm.DB
+	clientDB   *gorm.DB
+	projectDB  *gorm.DB
+	docDB      *gorm.DB
+	kbDB       *gorm.DB
 	scheduleDB *gorm.DB
-	redisCl   *redis.Client
+	redisCl    *redis.Client
 )
 
 // InitDB 初始化 GORM（postgres），DSN 由 database.default.link 解析而来

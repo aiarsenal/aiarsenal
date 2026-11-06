@@ -28,8 +28,8 @@ func (AnthropicProvider) BuildUpstream(ctx context.Context, req Request) (string
 	}
 	url := AnthropicProvider{}.UpstreamURL(defaultBaseURL0("anthropic", req.BaseURL), "/v1/messages")
 	headers := map[string]string{
-		"Content-Type":    "application/json",
-		"x-api-key":       req.APIKey,
+		"Content-Type":      "application/json",
+		"x-api-key":         req.APIKey,
 		"anthropic-version": "2023-06-01",
 	}
 	for k, v := range req.ExtraHeaders {
@@ -41,17 +41,17 @@ func (AnthropicProvider) BuildUpstream(ctx context.Context, req Request) (string
 // openaiToAnthropic 转换请求体。
 func openaiToAnthropic(body []byte, providerModel string) ([]byte, error) {
 	var in struct {
-		Model     string `json:"model"`
-		Messages  []struct {
+		Model    string `json:"model"`
+		Messages []struct {
 			Role    string          `json:"role"`
 			Content json.RawMessage `json:"content"`
 		} `json:"messages"`
-		MaxTokens  *int     `json:"max_tokens"`
+		MaxTokens   *int     `json:"max_tokens"`
 		Temperature *float64 `json:"temperature"`
-		TopP       *float64 `json:"top_p"`
-		Stop       any      `json:"stop"`
-		Stream     bool     `json:"stream"`
-		System     string   `json:"system"`
+		TopP        *float64 `json:"top_p"`
+		Stop        any      `json:"stop"`
+		Stream      bool     `json:"stream"`
+		System      string   `json:"system"`
 	}
 	if err := json.Unmarshal(body, &in); err != nil {
 		return nil, err
@@ -149,9 +149,9 @@ func (AnthropicProvider) TransformResponse(upstreamBody []byte, req Request) ([]
 		} `json:"content"`
 		StopReason string `json:"stop_reason"`
 		Usage      struct {
-			InputTokens  int `json:"input_tokens"`
-			OutputTokens int `json:"output_tokens"`
-			CacheReadInputTokens int `json:"cache_read_input_tokens"`
+			InputTokens              int `json:"input_tokens"`
+			OutputTokens             int `json:"output_tokens"`
+			CacheReadInputTokens     int `json:"cache_read_input_tokens"`
 			CacheCreationInputTokens int `json:"cache_creation_input_tokens"`
 		} `json:"usage"`
 	}
@@ -210,21 +210,21 @@ func (AnthropicProvider) TransformStream(upstream io.Reader, w http.ResponseWrit
 			continue
 		}
 		var ev struct {
-			Type string `json:"type"`
+			Type    string `json:"type"`
 			Message struct {
 				Usage struct {
 					InputTokens int `json:"input_tokens"`
 				} `json:"usage"`
 			} `json:"message"`
 			Delta struct {
-				Type string `json:"type"`
-				Text string `json:"text"`
+				Type       string `json:"type"`
+				Text       string `json:"text"`
 				StopReason string `json:"stop_reason"`
 			} `json:"delta"`
 			Usage struct {
-				OutputTokens int `json:"output_tokens"`
-				InputTokens int `json:"input_tokens"`
-				CacheReadInputTokens int `json:"cache_read_input_tokens"`
+				OutputTokens             int `json:"output_tokens"`
+				InputTokens              int `json:"input_tokens"`
+				CacheReadInputTokens     int `json:"cache_read_input_tokens"`
 				CacheCreationInputTokens int `json:"cache_creation_input_tokens"`
 			} `json:"usage"`
 		}
@@ -279,7 +279,7 @@ func openAIChunk(id, model string, delta map[string]any, finishReason *string, c
 		chunk["usage"] = map[string]any{
 			"prompt_tokens":     usage[0].PromptTokens,
 			"completion_tokens": usage[0].CompletionTokens,
-			"total_tokens":       usage[0].PromptTokens + usage[0].CompletionTokens,
+			"total_tokens":      usage[0].PromptTokens + usage[0].CompletionTokens,
 		}
 	}
 	b, _ := json.Marshal(chunk)
@@ -329,6 +329,8 @@ func defaultBaseURL0(provider, base string) string {
 		return "https://api.anthropic.com"
 	case "gemini":
 		return "https://generativelanguage.googleapis.com"
+	case "lmstudio":
+		return "http://127.0.0.1:1234/v1"
 	}
 	return ""
 }
