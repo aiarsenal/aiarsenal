@@ -5,6 +5,9 @@
 
 server:
   address: ":43211"
+  # 可信代理网段（F-022）：默认不信任任何代理，ClientIP 取 TCP 对端（审计/登录 IP 不可伪造）。
+  # 挂反代的部署声明代理地址，如 ["127.0.0.1"]；生产经 AIARSENAL_SERVER_TRUSTED_PROXIES 注入。
+  trustedProxies: []
 
 # 对外公开访问（开源部署改成自己的域名/协议；亦可用环境变量覆盖，见 config.go PublicScheme/PublicDomain）。
 # scheme + domain 决定 api/mcp/llm 子域与对外协议：测试 http / 生产 https。

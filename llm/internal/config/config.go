@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // Config LLM 网关配置。默认值对齐本机测试环境（api.aiarsenal.cc 同实例），
@@ -41,6 +42,9 @@ type RedisConfig struct {
 
 type ServerConfig struct {
 	Port string
+	// TrustedProxies 可信代理网段（F-022）：空 = 信任 none，ClientIP 取 TCP 对端；
+	// 挂反代的部署经 TRUSTED_PROXIES（逗号分隔）显式声明。
+	TrustedProxies []string
 }
 
 func Load() *Config {
@@ -64,7 +68,7 @@ func Load() *Config {
 			Addr: env("REDIS_ADDR", "127.0.0.1:6379"), DB: envInt("REDIS_DB", 2),
 			Password: env("REDIS_PASSWORD", ""),
 		},
-		Server:    ServerConfig{Port: env("PORT", "43214")},
+		Server:    ServerConfig{Port: env("PORT", "43214"), TrustedProxies: splitTrustedProxies(os.Getenv("TRUSTED_PROXIES"))},
 		SecretKey: env("SECRET_KEY", "0606c02e01b634ee079ef01fb8ac09ef"), // 开发占位值；生产经 systemd 注入 SECRET_KEY（/etc/aiarsenal/env）
 	}
 }
@@ -90,6 +94,21 @@ func env(k, def string) string {
 		return v
 	}
 	return def
+}
+
+// splitTrustedProxies 解析逗号分隔的可信代理网段（F-022）；空串返回 nil（信任 none）。
+func splitTrustedProxies(s string) []string {
+	if s == "" {
+		return nil
+	}
+	parts := strings.Split(s, ",")
+	out := make([]string, 0, len(parts))
+	for _, p := range parts {
+		if p = strings.TrimSpace(p); p != "" {
+			out = append(out, p)
+		}
+	}
+	return out
 }
 
 func envInt(k string, def int) int {

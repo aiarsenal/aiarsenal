@@ -515,6 +515,12 @@ func main() {
 	// 6. gin 装配
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
+	// F-022：默认不信任任何代理——ClientIP 回落 TCP 对端，X-Forwarded-For/X-Real-IP
+	// 不再能伪造审计/登录 IP。挂反代的部署经 AIARSENAL_SERVER_TRUSTED_PROXIES 显式
+	// 声明可信网段（官方同机 nginx 拓扑由 deploy.sh 注入 127.0.0.1）。
+	if err := r.SetTrustedProxies(config.Get().Server.TrustedProxies); err != nil {
+		log.Fatalf("set trusted proxies: %v", err)
+	}
 	auditMeta := middleware.NewAuditMeta(menuRepo, deptRepo)
 	warmCtx, warmCancel := context.WithTimeout(context.Background(), 2*time.Second)
 	if err := auditMeta.Warm(warmCtx); err != nil {

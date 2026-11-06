@@ -7,16 +7,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"aiarsenal/llm/logx"
 	"aiarsenal/llm/internal/auth"
-	"aiarsenal/llm/internal/health"
 	"aiarsenal/llm/internal/config"
 	"aiarsenal/llm/internal/db"
+	"aiarsenal/llm/internal/health"
 	"aiarsenal/llm/internal/middleware"
 	"aiarsenal/llm/internal/provider"
 	"aiarsenal/llm/internal/proxy"
 	"aiarsenal/llm/internal/routing"
 	"aiarsenal/llm/internal/store"
+	"aiarsenal/llm/logx"
 )
 
 func main() {
@@ -51,6 +51,11 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
+	// F-022：默认不信任任何代理——用量/计费记录的 ClientIP 取 TCP 对端；
+	// 挂反代的部署经 TRUSTED_PROXIES（逗号分隔）显式声明可信网段。
+	if err := r.SetTrustedProxies(cfg.Server.TrustedProxies); err != nil {
+		log.Fatalf("set trusted proxies: %v", err)
+	}
 	r.Use(gin.Recovery())
 	r.Use(middleware.CORS(cfg.Origin()))
 
