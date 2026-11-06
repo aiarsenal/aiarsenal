@@ -3,15 +3,14 @@ package store
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"strings"
 	"time"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"aiarsenal/llm/internal/crypto"
 	"aiarsenal/llm/internal/config"
+	"aiarsenal/llm/internal/crypto"
 	"aiarsenal/llm/internal/grantx"
 	"aiarsenal/llm/internal/model"
 )
@@ -32,33 +31,33 @@ func (s *Store) DB() *gorm.DB { return s.db }
 
 // SpendRecord 计费日志入参（字段与 aa_llm_spend_log 对齐）。
 type SpendRecord struct {
-	RequestID        string
-	CallType         string
-	ApiKey           string
-	Spend            model.Milli
-	PromptTokens     int
-	CompletionTokens int
-	CacheReadTokens  int
+	RequestID         string
+	CallType          string
+	ApiKey            string
+	Spend             model.Milli
+	PromptTokens      int
+	CompletionTokens  int
+	CacheReadTokens   int
 	CacheCreateTokens int
-	StartTime        time.Time
-	EndTime          time.Time
-	DurationMs       int
-	Model            string
-	ModelID          string
-	ModelGroup       string
-	Provider         string
-	ApiBase          string
-	UserId           string
-	TeamId           string
-	OrgId            string
-	ProjectId        string
-	EndUser          string
-	SessionID        string
-	IP               string
-	CacheHit         string
-	Status           string
-	Messages         string // 请求输入（客户端原始 body，截断到 64KB）
-	Response         string // 响应输出（非流式：完整 body；流式：空，截断到 64KB）
+	StartTime         time.Time
+	EndTime           time.Time
+	DurationMs        int
+	Model             string
+	ModelID           string
+	ModelGroup        string
+	Provider          string
+	ApiBase           string
+	UserId            string
+	TeamId            string
+	OrgId             string
+	ProjectId         string
+	EndUser           string
+	SessionID         string
+	IP                string
+	CacheHit          string
+	Status            string
+	Messages          string // 请求输入（客户端原始 body，截断到 64KB）
+	Response          string // 响应输出（非流式：完整 body；流式：空，截断到 64KB）
 }
 
 // WriteSpendLog 写一条请求花费日志。
@@ -127,11 +126,13 @@ func (s *Store) GetKeyByHash(ctx context.Context, hash string) (*model.VirtualKe
 
 // ListModelsByGroup 按客户端传入的 id + 入口端点可路由的 provider 集合取可用部署。
 // id 形如 "group/model"（含 /）或裸 "group"；providers 由入口端点给出（见 proxy.Handler）：
-//   - /v1/chat/completions、/v1/embeddings → openai 兼容族（openai/deepseek/moonshot/groq/openrouter/ollama）
+//
+//   - /v1/chat/completions、/v1/embeddings → openai 兼容族（openai/lmstudio/deepseek/moonshot/groq/openrouter/ollama）
+//
 //   - /v1/messages                          → anthropic
 //
-//	"auto/glm-5.2" → model_group='auto' AND model_name='glm-5.2'（同 group+model+provider 族下多凭据负载）
-//	"auto"         → model_group='auto'（固定 provider 族下组内所有 model，多模型负载池）
+//     "auto/glm-5.2" → model_group='auto' AND model_name='glm-5.2'（同 group+model+provider 族下多凭据负载）
+//     "auto"         → model_group='auto'（固定 provider 族下组内所有 model，多模型负载池）
 //
 // credential_id 为空的部署不参与路由——网关上游 key 唯一来源是 credential_id，空则调用必 503。
 func (s *Store) ListModelsByGroup(ctx context.Context, id string, providers []string) ([]*model.Model, error) {
@@ -372,5 +373,7 @@ func (s *Store) GetCredentialAPIKey(ctx context.Context, credID string) (string,
 	if pt != "" {
 		return pt, &c, nil
 	}
-	return "", nil, errors.New("credential api_key empty")
+	// 本机 OpenAI 兼容服务（如 LM Studio）可以不要求 API Key；
+	// 是否接受空凭据由上游决定，不在网关侧提前拦截。
+	return "", &c, nil
 }

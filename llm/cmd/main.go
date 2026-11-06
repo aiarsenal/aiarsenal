@@ -7,16 +7,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"aiarsenal/llm/logx"
 	"aiarsenal/llm/internal/auth"
-	"aiarsenal/llm/internal/health"
 	"aiarsenal/llm/internal/config"
 	"aiarsenal/llm/internal/db"
+	"aiarsenal/llm/internal/health"
 	"aiarsenal/llm/internal/middleware"
 	"aiarsenal/llm/internal/provider"
 	"aiarsenal/llm/internal/proxy"
 	"aiarsenal/llm/internal/routing"
 	"aiarsenal/llm/internal/store"
+	"aiarsenal/llm/logx"
 )
 
 func main() {
@@ -41,6 +41,7 @@ func main() {
 	st := store.New(gdb, cfg)
 	reg := provider.NewRegistry()
 	reg.Register(provider.OpenAIProvider{})
+	reg.Register(provider.LMStudioProvider{})
 	reg.Register(provider.AnthropicProvider{})
 	reg.Register(provider.GeminiProvider{})
 	strat := routing.NewWeighted(rdb)

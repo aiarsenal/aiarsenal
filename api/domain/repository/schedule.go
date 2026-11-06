@@ -44,6 +44,7 @@ type IScheduleExceptionRepository interface {
 	GetByEventDate(ctx context.Context, eventID, date string) (*entity.ScheduleException, error)
 	// Upsert 单场例外按 (event_id, occurrence_date) 幂等覆盖
 	Upsert(ctx context.Context, e *entity.ScheduleException) (string, error)
+	DeleteByEvent(ctx context.Context, eventID string) error
 	DeleteByEventDate(ctx context.Context, eventID, date string) error
 }
 

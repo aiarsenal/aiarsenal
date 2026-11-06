@@ -11,10 +11,13 @@ func TestValidateRRuleAllowsSingleEvent(t *testing.T) {
 			t.Fatalf("单场规则 %+v 不应报错，got %v", r, err)
 		}
 	}
-	for _, r := range []RRule{{Freq: "abc"}, {Freq: "YEARLY"}, {Freq: "WEEKLY", ByDay: []string{"XX"}}} {
+	for _, r := range []RRule{{Freq: "abc"}, {Freq: "WEEKLY", ByDay: []string{"XX"}}} {
 		if err := validateRRule(r); err == nil {
 			t.Fatalf("非法规则 %+v 应报错", r)
 		}
+	}
+	if err := validateRRule(RRule{Freq: "YEARLY", Interval: 1}); err != nil {
+		t.Fatalf("YEARLY 规则应合法: %v", err)
 	}
 	// 空/{} 规则 roundtrip：canonical 落 "{}"，parse 回空 freq → expandEvent 单场分支
 	if got := canonicalRRule(RRule{}); got != "{}" {

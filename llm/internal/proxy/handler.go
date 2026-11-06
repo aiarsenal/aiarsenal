@@ -41,8 +41,8 @@ func New(st *store.Store, reg *provider.Registry, strat routing.Strategy) *Handl
 
 // openaiCompatibleProviders 共用 OpenAI 协议、经 /v1/chat/completions 入口可达的 provider 集合。
 // OpenAI 兼容族统一适配；其余原生协议需各自端点——gemini 走 /v1beta/models/{model}:generateContent
-//（gemini.go，入站 Gemini 请求同样翻成本族跑）、bedrock/vertex_ai 等暂未实现。
-var openaiCompatibleProviders = []string{"openai", "deepseek", "moonshot", "groq", "openrouter", "ollama"}
+// （gemini.go，入站 Gemini 请求同样翻成本族跑）、bedrock/vertex_ai 等暂未实现。
+var openaiCompatibleProviders = []string{"openai", "lmstudio", "deepseek", "moonshot", "groq", "openrouter", "ollama"}
 
 // ChatCompletions POST /v1/chat/completions。
 func (h *Handler) ChatCompletions(c *gin.Context) { h.proxyChat(c, "chat") }
@@ -629,6 +629,8 @@ func defaultBaseURL(provider string) string {
 		return "https://openrouter.ai/api"
 	case "ollama":
 		return "http://127.0.0.1:11434"
+	case "lmstudio":
+		return "http://127.0.0.1:1234/v1"
 	default:
 		return ""
 	}

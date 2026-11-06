@@ -115,6 +115,36 @@ export namespace ScheduleApi {
     ignoreConflicts?: boolean;
     dryRun?: boolean;
   }
+  export interface CalendarAccount {
+    accountId: string;
+    name: string;
+    provider: string;
+    serverUrl: string;
+    calendarUrl: string;
+    username: string;
+    enabled: number;
+    syncIntervalMinutes: number;
+    conflictPolicy: 'local' | 'manual' | 'remote';
+    lastSyncAt?: string;
+    lastSyncStatus: 'conflict' | 'error' | 'idle' | 'running' | 'success';
+    lastSyncError?: string;
+    conflictCount: number;
+    eventCount: number;
+  }
+  export interface DiscoveredCalendar {
+    url: string;
+    displayName: string;
+  }
+  export interface SyncResult {
+    pulled: number;
+    pushed: number;
+    skipped: number;
+    deletedLocal: number;
+    deletedRemote: number;
+    conflicts: number;
+    message: string;
+    warnings?: string[];
+  }
 }
 
 const BASE = '/api/v1/schedule';
@@ -176,4 +206,41 @@ export function editRoomApi(data: Recordable<any>) {
 }
 export function deleteRoomApi(ids: string[]) {
   return requestClient.delete(`${BASE}/room/delete`, { data: { ids } });
+}
+
+// ===== CalDAV 双向同步 =====
+export function getCalendarSyncAccountsApi() {
+  return requestClient.get<{ list: ScheduleApi.CalendarAccount[] }>(
+    `${BASE}/calendar-sync/list`,
+  );
+}
+export function discoverCalendarsApi(data: {
+  password: string;
+  serverUrl: string;
+  username: string;
+}) {
+  return requestClient.post<{ list: ScheduleApi.DiscoveredCalendar[] }>(
+    `${BASE}/calendar-sync/discover`,
+    data,
+  );
+}
+export function addCalendarSyncAccountApi(data: Recordable<any>) {
+  return requestClient.post<{ accountId: string }>(
+    `${BASE}/calendar-sync/add`,
+    data,
+  );
+}
+export function editCalendarSyncAccountApi(data: Recordable<any>) {
+  return requestClient.put(`${BASE}/calendar-sync/edit`, data);
+}
+export function deleteCalendarSyncAccountApi(accountId: string) {
+  return requestClient.delete(`${BASE}/calendar-sync/delete`, {
+    data: { accountId },
+  });
+}
+export function runCalendarSyncApi(accountId: string) {
+  return requestClient.post<ScheduleApi.SyncResult>(
+    `${BASE}/calendar-sync/run`,
+    { accountId },
+  );
 }
