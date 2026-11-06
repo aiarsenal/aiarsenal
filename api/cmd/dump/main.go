@@ -227,8 +227,15 @@ func main() {
 	b.WriteString("CREATE UNIQUE INDEX IF NOT EXISTS idx_aa_user_online_uni_token ON aa_user_online (token);\n")
 	b.WriteString("CREATE UNIQUE INDEX IF NOT EXISTS idx_aa_user_online_uni_uuid ON aa_user_online (uuid);\n")
 	for _, r := range onlineRows {
+		// F-025 卫生：dump 是对外流转的匿名化产物，token 列不再携带可重放令牌——
+		// 已是 jti 会话标识的行原样导出，仍是明文 JWT 的行（未跑 000006 迁移的库）
+		// 以 scrub-<uuid> 就地失焦（与迁移同一口径）。
+		token := r.cols[2]
+		if strings.HasPrefix(token, "eyJ") {
+			token = "scrub-" + r.cols[1]
+		}
 		b.WriteString(fmt.Sprintf("INSERT INTO aa_user_online (id,uuid,token,create_time,user_name,ip,explorer,os) VALUES (%s,%s,%s,%s,%s,%s,%s,%s);\n",
-			r.cols[0], q(r.cols[1]), q(r.cols[2]), q(r.cols[3]), q(r.cols[4]), q(r.cols[5]), q(r.cols[6]), q(r.cols[7])))
+			r.cols[0], q(r.cols[1]), q(token), q(r.cols[3]), q(r.cols[4]), q(r.cols[5]), q(r.cols[6]), q(r.cols[7])))
 	}
 	b.WriteString("\n")
 
