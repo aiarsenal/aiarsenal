@@ -207,6 +207,8 @@ sudo bash deploy.sh prod         # 生产环境：HTTPS + 通配符证书
 | `AIARSENAL_ACTOR_SIGN_KEY` | 网关 → ops 令牌交换 HMAC 签名（api 与 mcp 同值） |
 | `SECRET_KEY` | llm 网关自身 JWT 密钥 |
 | `AIARSENAL_ALERT_DINGTALK_SECRET` / `AIARSENAL_ALERT_DINGTALK_TOKEN` / `AIARSENAL_ALERT_CHANNELS` | 安全事件告警通道凭据：钉钉加签密钥 / 钉钉机器人 access_token / shoutrrr 通道 URL（逗号分隔）。三者同含凭据，经 `/etc/aiarsenal/env` 注入，勿提交进 git；语义见「鉴权与安全 → 安全事件告警」 |
+| `AIARSENAL_DATABASE_DEFAULT_LINK` / `DB_PASSWORD` | 数据库凭据（审计 F-004）：`deploy.sh` 生成随机口令、轮换 `aiarsenal` 角色并收回超级用户（NOSUPERUSER/NOCREATEDB/NOCREATEROLE）；api/mcp 读前者（整条连接串覆盖），llm 读后者（同一随机值）。启动时连接串仍为公开默认口令/账号同源口令会触发不安全默认值告警 |
+| `AIARSENAL_REDIS_PASSWORD` / `REDIS_PASSWORD` | Redis 访问口令（审计 F-003）：`deploy.sh` 对免认证实例自动 `CONFIG SET requirepass` 并尽量 `CONFIG REWRITE` 持久化；api/mcp 读前者，llm 读后者（同一随机值）。已手工设过密码的部署请把现有口令填入 env 再重跑（脚本不猜）；Redis 重启后 requirepass 必须已写入 redis.conf，否则 api 带 AUTH 连无密码实例会失败 |
 
 供应商 API Key（阿里云 / OpenAI 等）不落 git、不入种子 SQL——部署后在管理后台「LLM 管理 → 凭据」录入（AES-256-GCM 加密落库）。轮换密钥：改 `/etc/aiarsenal/env` 后 `systemctl restart aiarsenal-api aiarsenal-mcp aiarsenal-llm`。
 

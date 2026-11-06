@@ -7,22 +7,36 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"aiarsenal/llm/logx"
 	"aiarsenal/llm/internal/auth"
-	"aiarsenal/llm/internal/health"
 	"aiarsenal/llm/internal/config"
 	"aiarsenal/llm/internal/db"
+	"aiarsenal/llm/internal/health"
 	"aiarsenal/llm/internal/middleware"
 	"aiarsenal/llm/internal/provider"
 	"aiarsenal/llm/internal/proxy"
 	"aiarsenal/llm/internal/routing"
 	"aiarsenal/llm/internal/store"
+	"aiarsenal/llm/logx"
 )
 
 func main() {
 	logx.InitEnv("/var/log/aiarsenal/llm", "llm", slog.LevelInfo)
 
 	cfg := config.Load()
+
+	// F-004 运行时可见性（llm 侧）：api 的 insecureDefaults 告警覆盖不到独立配置的
+	// llm 网关——口令仍是仓库公开默认值或与账号同源时在此 WARN。只告警不阻断：
+	// 与 api 侧同口径（进程照常起，信号进日志由部署侧采集）。
+	if cfg.DB.Password == "aiarsenal123" || (cfg.DB.User != "" && cfg.DB.Password == cfg.DB.User) {
+		slog.Warn("数据库口令仍为公开默认值（或与账号同源）：拖库/接管数据库零门槛；"+
+			"处置：经 DB_PASSWORD 注入随机口令（deploy.sh 自动生成）",
+			"insecureDefault", "db.password")
+	}
+	if cfg.Redis.Password == "" {
+		slog.Warn("Redis 未设访问口令：本机任意进程可读写 llm 限流/预算缓存；"+
+			"处置：redis requirepass + REDIS_PASSWORD 注入（deploy.sh 自动完成）",
+			"insecureDefault", "redis.password")
+	}
 
 	gdb, err := db.InitDB(cfg)
 	if err != nil {

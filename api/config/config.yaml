@@ -16,6 +16,8 @@ public:
 # 数据库：pgsql link 经 config.parseLink 转 gorm postgres DSN
 database:
   default:
+    # 口令为开发占位值（随源码公开，启动会告警）：生产经 AIARSENAL_DATABASE_DEFAULT_LINK
+    # 覆盖整条连接串（deploy.sh 自动生成随机口令），勿把真值提交进 git
     link: "pgsql:aiarsenal:aiarsenal123@tcp(127.0.0.1:5432)/aiarsenal?sslmode=disable"
     maxIdle: 10        # 连接池最大闲置连接数
     maxOpen: 10        # 连接池最大打开连接数
@@ -26,6 +28,7 @@ redis:
   default:
     address: 127.0.0.1:6379
     db: 1
+    password: ""       # 开发本机可空（启动会告警）；生产必填随机口令，经 AIARSENAL_REDIS_PASSWORD 注入
 
 # JWT
 jwt:
