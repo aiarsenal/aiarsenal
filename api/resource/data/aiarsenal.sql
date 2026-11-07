@@ -847,8 +847,8 @@ COPY public.aa_menu (id, menu_id, pid, name, title, en_name, icon, condition, re
 10	uuj4xhr6fi4mg0t0fhd9a15dboklgk9z	jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr	api/v1/system/role/list	角色管理	Role Management	👥			1	0	0	/system/role/list	system/role/index	0		0	0	1		0		[]	2022-03-29 18:15:03	2022-03-30 10:25:34
 11	c999jlcifgwwk4be7cpak9vohng8suoo	t5w3n2zlz7hssio12g960kmw9mb0q6gp	api/v1/system/menu/delete	删除菜单	Delete Menu				2	0	0			0		0	0	1		0		[]	2022-04-06 14:49:10	2022-04-06 14:49:17
 12	q4n01yci6swfnrjt1azphn6z6wwnnbco	uuj4xhr6fi4mg0t0fhd9a15dboklgk9z	api/v1/system/role/add	添加角色	Add Role				2	0	0			0		0	0	1		0		[]	2022-04-06 14:49:46	2022-04-06 14:49:46
-13	oko5fv9off4dr4o4u3g9gxlvfh8780au	uuj4xhr6fi4mg0t0fhd9a15dboklgk9z	/api/v1/system/role/edit	修改角色	Edit Role				2	0	0			0		0	0	1		0		[]	2022-04-06 14:50:08	2022-04-06 14:50:08
-14	ywtex3edy9d0gfr5iyo9fmmvhgb7yz4r	uuj4xhr6fi4mg0t0fhd9a15dboklgk9z	/api/v1/system/role/delete	删除角色	Delete Role				2	0	0			0		0	0	1		0		[]	2022-04-06 14:50:22	2022-04-06 14:50:22
+13	oko5fv9off4dr4o4u3g9gxlvfh8780au	uuj4xhr6fi4mg0t0fhd9a15dboklgk9z	api/v1/system/role/edit	修改角色	Edit Role				2	0	0			0		0	0	1		0		[]	2022-04-06 14:50:08	2022-04-06 14:50:08
+14	ywtex3edy9d0gfr5iyo9fmmvhgb7yz4r	uuj4xhr6fi4mg0t0fhd9a15dboklgk9z	api/v1/system/role/delete	删除角色	Delete Role				2	0	0			0		0	0	1		0		[]	2022-04-06 14:50:22	2022-04-06 14:50:22
 15	xr83ya4kyxlnb3t1163puyimzs0awq1v	jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr	api/v1/system/dept/list	部门管理	Department	🏢			1	0	0	/system/dept/list	system/dept/index	0		0	0	1		0		[]	2022-04-06 14:52:23	2022-04-07 22:59:20
 19	vyzbuuux5wo6poqapcoet020d0efvtco	xr83ya4kyxlnb3t1163puyimzs0awq1v	api/v1/system/dept/add	添加部门	Add Department				2	0	0			0		0	0	1		0		[]	2022-04-07 22:56:39	2022-04-07 22:56:39
 20	hi4iu377mcuv3xoj48uh9bnq5tycn5ar	xr83ya4kyxlnb3t1163puyimzs0awq1v	api/v1/system/dept/edit	修改部门	Edit Department				2	0	0			0		0	0	1		0		[]	2022-04-07 22:57:00	2022-04-07 22:57:00
