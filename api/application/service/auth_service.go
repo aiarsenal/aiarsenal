@@ -142,11 +142,12 @@ func (s *AuthService) Login(ctx context.Context, username, password, totpCode, v
 	user.UserPassword = ""
 	user.TOTPSecret = ""
 
-	// 8. 在线状态（异步、容错）
+	// 8. 在线状态（异步、容错）。token 列只存 jti 会话标识不存明文令牌（F-025）：
+	// 该列曾存完整 JWT，读库即可重放劫持会话（aa_user_online 唯一索引经 uuid 保留）。
 	go s.userRepo.InsertUserOnline(context.Background(), &model.UserOnlineParams{
 		UserAgent: userAgent,
 		Uuid:      userSaltHash(token),
-		Token:     token,
+		Token:     auth.SessionIDOf(token),
 		Username:  user.UserName,
 		Ip:        ip,
 	})
