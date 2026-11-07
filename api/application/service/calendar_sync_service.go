@@ -113,7 +113,7 @@ func (s *CalendarSyncService) AddAccount(ctx context.Context, ownerUserId string
 	if err := caldav.NewClient(account.Username, in.Password).ProbeCalendar(ctx, account.CalendarUrl); err != nil {
 		return "", err
 	}
-	account.PasswordEnc, err = crypto.Encrypt(in.Password, config.Get().Jwt.EncryptKey)
+	account.PasswordEnc, err = crypto.Encrypt(in.Password, config.Get().DataEncryptKey())
 	if err != nil {
 		return "", err
 	}
@@ -142,7 +142,7 @@ func (s *CalendarSyncService) EditAccount(ctx context.Context, ownerUserId, acco
 			return errors.New("原凭据解密失败，请重新输入密码")
 		}
 	} else {
-		account.PasswordEnc, err = crypto.Encrypt(password, config.Get().Jwt.EncryptKey)
+		account.PasswordEnc, err = crypto.Encrypt(password, config.Get().DataEncryptKey())
 		if err != nil {
 			return err
 		}
@@ -276,7 +276,7 @@ func (s *CalendarSyncService) accountFromInput(in CalendarSyncAccountInput, owne
 }
 
 func decryptCalendarPassword(enc string) (string, error) {
-	return crypto.Decrypt(enc, config.Get().Jwt.EncryptKey)
+	return crypto.Decrypt(enc, config.Get().DataEncryptKey())
 }
 
 func (s *CalendarSyncService) syncAccount(ctx context.Context, account *entity.CalendarSyncAccount) (*CalendarSyncResult, error) {

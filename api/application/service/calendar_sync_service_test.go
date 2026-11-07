@@ -232,7 +232,7 @@ func TestCalendarSyncPullLocalPushAndConflict(t *testing.T) {
 	events := &eventRepoStub{store: store}
 	exceptions := &exceptionRepoStub{}
 	svc := NewCalendarSyncService(store, events, exceptions)
-	enc, err := crypto.Encrypt("secret", config.Get().Jwt.EncryptKey)
+	enc, err := crypto.Encrypt("secret", config.Get().DataEncryptKey())
 	if err != nil {
 		t.Fatal(err)
 	}
