@@ -55,6 +55,7 @@ func main() {
 	st := store.New(gdb, cfg)
 	reg := provider.NewRegistry()
 	reg.Register(provider.OpenAIProvider{})
+	reg.Register(provider.LMStudioProvider{})
 	reg.Register(provider.AnthropicProvider{})
 	reg.Register(provider.GeminiProvider{})
 	strat := routing.NewWeighted(rdb)

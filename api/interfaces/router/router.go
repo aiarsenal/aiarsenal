@@ -103,7 +103,8 @@ type Deps struct {
 	// 权限分组管理（分组/员工集合两字典）
 	PermGroup *controller.PermGroupController
 	// 日程模块（aa_schedule 库：我的日程/会议室预订/周期会议/忙闲）
-	Schedule *controller.ScheduleController
+	Schedule     *controller.ScheduleController
+	CalendarSync *controller.CalendarSyncController
 }
 
 // auditChain v1 根分组的公共中间件。
@@ -941,4 +942,11 @@ func Register(r *gin.Engine, d Deps) {
 	scRoom.POST("/add", d.Schedule.RoomAdd)
 	scRoom.PUT("/edit", d.Schedule.RoomEdit)
 	scRoom.DELETE("/delete", d.Schedule.RoomDelete)
+	calendarSync := scGrp.Group("/calendar-sync")
+	calendarSync.GET("/list", d.CalendarSync.List)
+	calendarSync.POST("/discover", d.CalendarSync.Discover)
+	calendarSync.POST("/add", d.CalendarSync.Add)
+	calendarSync.PUT("/edit", d.CalendarSync.Edit)
+	calendarSync.DELETE("/delete", d.CalendarSync.Delete)
+	calendarSync.POST("/run", d.CalendarSync.Run)
 }

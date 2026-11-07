@@ -112,19 +112,22 @@ func (r *ScheduleEventRepository) Add(ctx context.Context, e *entity.ScheduleEve
 func (r *ScheduleEventRepository) Edit(ctx context.Context, e *entity.ScheduleEvent) error {
 	e.UpdatedAt = nowPtr()
 	return r.db.WithContext(ctx).Model(&entity.ScheduleEvent{}).Where("event_id = ?", e.EventId).Updates(map[string]any{
-		"title":           e.Title,
-		"event_type":      e.EventType,
-		"start_at":        e.StartAt,
-		"end_at":          e.EndAt,
-		"is_recurring":    e.IsRecurring,
-		"rrule":           e.RRule,
-		"room_id":         e.RoomId,
-		"online_provider": e.OnlineProvider,
-		"online_url":      e.OnlineUrl,
-		"location":        e.Location,
-		"organizer_id":    e.OrganizerId,
-		"remark":          e.Remark,
-		"updated_at":      e.UpdatedAt,
+		"title":             e.Title,
+		"event_type":        e.EventType,
+		"start_at":          e.StartAt,
+		"end_at":            e.EndAt,
+		"is_recurring":      e.IsRecurring,
+		"rrule":             e.RRule,
+		"room_id":           e.RoomId,
+		"online_provider":   e.OnlineProvider,
+		"online_url":        e.OnlineUrl,
+		"location":          e.Location,
+		"organizer_id":      e.OrganizerId,
+		"source_account_id": e.SourceAccountId,
+		"external_uid":      e.ExternalUid,
+		"remark":            e.Remark,
+		"deleted_at":        e.DeletedAt,
+		"updated_at":        e.UpdatedAt,
 	}).Error
 }
 
@@ -255,6 +258,10 @@ func (r *ScheduleExceptionRepository) Upsert(ctx context.Context, e *entity.Sche
 	return e.ExceptionId, nil
 }
 
+func (r *ScheduleExceptionRepository) DeleteByEvent(ctx context.Context, eventID string) error {
+	return r.db.WithContext(ctx).Where("event_id = ?", eventID).Delete(&entity.ScheduleException{}).Error
+}
+
 func (r *ScheduleExceptionRepository) DeleteByEventDate(ctx context.Context, eventID, date string) error {
 	return r.db.WithContext(ctx).Where("event_id = ? and occurrence_date = ?", eventID, date).Delete(&entity.ScheduleException{}).Error
 }
@@ -310,12 +317,12 @@ func (r *MeetingRoomRepository) Add(ctx context.Context, e *entity.MeetingRoom) 
 func (r *MeetingRoomRepository) Edit(ctx context.Context, e *entity.MeetingRoom) error {
 	e.UpdatedAt = nowPtr()
 	return r.db.WithContext(ctx).Model(&entity.MeetingRoom{}).Where("room_id = ?", e.RoomId).Updates(map[string]any{
-		"name":      e.Name,
-		"location":  e.Location,
-		"capacity":  e.Capacity,
-		"equipment": e.Equipment,
-		"enabled":   e.Enabled,
-		"remark":    e.Remark,
+		"name":       e.Name,
+		"location":   e.Location,
+		"capacity":   e.Capacity,
+		"equipment":  e.Equipment,
+		"enabled":    e.Enabled,
+		"remark":     e.Remark,
 		"updated_at": e.UpdatedAt,
 	}).Error
 }

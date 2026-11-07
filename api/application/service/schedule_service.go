@@ -23,8 +23,8 @@ import (
 // 展开结果仍是该时区的钟表时刻，JSON 输出保持钟表时间不变。
 
 const (
-	scheduleDateLayout  = "2006-01-02"
-	scheduleTimeLayout  = "2006-01-02 15:04:05"
+	scheduleDateLayout   = "2006-01-02"
+	scheduleTimeLayout   = "2006-01-02 15:04:05"
 	scheduleMinuteLayout = "2006-01-02 15:04"
 
 	// 周期冲突检测视野：无限 series 只预检未来 180 天内的场次
@@ -45,7 +45,7 @@ const (
 // ===================== RRule =====================
 
 // RRule 周期规则（jsonb 子集，未上完整 RFC 5545）：
-// freq: DAILY/WEEKLY/MONTHLY；byday: MO..SU（WEEKLY 用，空=锚点星期）；
+// freq: DAILY/WEEKLY/MONTHLY/YEARLY；byday: MO..SU（WEEKLY 用，空=锚点星期）；
 // interval: 默认 1；until: YYYY-MM-DD 含当天；count: 总场数含首场（until/count 可并存，先到先停）。
 type RRule struct {
 	Freq     string   `json:"freq,omitempty"`
@@ -79,7 +79,7 @@ func validateRRule(r RRule) error {
 		return nil
 	}
 	switch strings.ToUpper(r.Freq) {
-	case "DAILY", "MONTHLY":
+	case "DAILY", "MONTHLY", "YEARLY":
 	case "WEEKLY":
 		for _, d := range r.ByDay {
 			if _, ok := rruleWeekdays[strings.ToUpper(d)]; !ok {
@@ -87,7 +87,7 @@ func validateRRule(r RRule) error {
 			}
 		}
 	default:
-		return fmt.Errorf("freq 取值：DAILY/WEEKLY/MONTHLY")
+		return fmt.Errorf("freq 取值：DAILY/WEEKLY/MONTHLY/YEARLY")
 	}
 	if r.Interval < 0 {
 		return errors.New("interval 须为正整数")
@@ -151,6 +151,11 @@ func describeRRule(rule RRule, anchor time.Time) string {
 		freq = fmt.Sprintf("每月 %d 日", anchor.Day())
 		if r.Interval > 1 {
 			freq = fmt.Sprintf("每 %d 月的 %d 日", r.Interval, anchor.Day())
+		}
+	case "YEARLY":
+		freq = fmt.Sprintf("每年 %d 月 %d 日", int(anchor.Month()), anchor.Day())
+		if r.Interval > 1 {
+			freq = fmt.Sprintf("每 %d 年的 %d 月 %d 日", r.Interval, int(anchor.Month()), anchor.Day())
 		}
 	}
 	if r.Count > 0 {
@@ -285,6 +290,12 @@ func matchRRuleDay(r RRule, anchor, day time.Time) bool {
 		}
 		months := (day.Year()-anchor.Year())*12 + int(day.Month()) - int(anchor.Month())
 		return months%interval == 0
+	case "YEARLY":
+		if day.Month() != anchor.Month() || day.Day() != anchor.Day() {
+			return false
+		}
+		years := day.Year() - anchor.Year()
+		return years >= 0 && years%interval == 0
 	}
 	return false
 }
@@ -1044,11 +1055,11 @@ func (s *ScheduleService) CancelEvent(ctx context.Context, operator, eventID str
 
 // ExceptionInput 单场例外入参。
 type ExceptionInput struct {
-	EventId   string
-	Date      string // YYYY-MM-DD 该场次日期
-	Status    int    // 0取消该场 1该场改期
+	EventId              string
+	Date                 string // YYYY-MM-DD 该场次日期
+	Status               int    // 0取消该场 1该场改期
 	NewStartAt, NewEndAt time.Time
-	NewRoomId string
+	NewRoomId            string
 }
 
 // AddException 单场取消/改期（周期事件专用）。
@@ -1309,7 +1320,7 @@ func (s *ScheduleService) buildPreview(ctx context.Context, e *entity.ScheduleEv
 		Title: e.Title, EventType: e.EventType,
 		StartAt: formatScheduleTime(anchor), EndAt: formatScheduleTime(end),
 		RepeatDesc: describeRRule(rule, anchor),
-		RoomId: e.RoomId, OnlineUrl: e.OnlineUrl, Location: e.Location,
+		RoomId:     e.RoomId, OnlineUrl: e.OnlineUrl, Location: e.Location,
 		Attendees: []AttendeeView{}, Conflicts: []ConflictView{},
 	}
 	ids := append([]string{e.OrganizerId}, attendeeIds...)

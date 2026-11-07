@@ -2,7 +2,7 @@
 /**
  * 日程/会议 新建·编辑弹窗（我的日程与会议室时间轴共用）。
  * 提交流程：预检 → 房间冲突时内嵌冲突明细 +「仍要预订」（ignoreConflicts 重提）→ 成功通知。
- * 周期子集与后端对齐：repeat none|daily|weekly|monthly + byday + count/until。
+ * 周期子集与后端对齐：repeat none|daily|weekly|monthly|yearly + byday + count/until。
  */
 import { computed, reactive, ref } from 'vue';
 import dayjs, { type Dayjs } from 'dayjs';
@@ -33,7 +33,7 @@ import { $t } from '#/locales';
 
 const emit = defineEmits<{ saved: [] }>();
 
-type Repeat = 'none' | 'daily' | 'weekly' | 'monthly';
+type Repeat = 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly';
 
 const visible = ref(false);
 const saving = ref(false);
@@ -342,6 +342,7 @@ defineExpose({ open });
               <Select.Option value="daily">{{ $t('schedule.repeat_daily') }}</Select.Option>
               <Select.Option value="weekly">{{ $t('schedule.repeat_weekly') }}</Select.Option>
               <Select.Option value="monthly">{{ $t('schedule.repeat_monthly') }}</Select.Option>
+              <Select.Option value="yearly">{{ $t('schedule.repeat_yearly') }}</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item

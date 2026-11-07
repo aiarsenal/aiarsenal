@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// OpenAIProvider 兼容所有暴露 OpenAI 风格 chat 接口的上游（OpenAI/DeepSeek/Moonshot/Groq/Together/Ollama/vLLM/OpenRouter）。
+// OpenAIProvider 兼容所有暴露 OpenAI 风格 chat 接口的上游（OpenAI/DeepSeek/Moonshot/Groq/Together/LM Studio/Ollama/vLLM/OpenRouter）。
 // 翻译：重写 model 字段后透传；响应（含 SSE）原样回传，仅解析用量计费。
 // 约定：base_url 已含 /v1（OpenAI SDK 约定，如 https://api.openai.com/v1 或
 // 阿里云 https://.../compatible-mode/v1），本层只追加 /chat/completions。

@@ -30,7 +30,7 @@ type LLMConfigService struct {
 	budgetRepo repository.ILLMBudgetRepository
 	groupRepo  repository.ILLMModelGroupRepository
 	dailyRepo  repository.ILLMDailySpendRepository // 我的预算·历史周期消费聚合
-	noticeSvc  *NoticeService                     // 预算低额/耗尽站内通知
+	noticeSvc  *NoticeService                      // 预算低额/耗尽站内通知
 }
 
 func NewLLMConfigService(c repository.ILLMCredentialRepository, m repository.ILLMModelRepository, b repository.ILLMBudgetRepository, g repository.ILLMModelGroupRepository, n *NoticeService, ds repository.ILLMDailySpendRepository) *LLMConfigService {
@@ -52,6 +52,10 @@ func (s *LLMConfigService) GetCredentialAPIKey(ctx context.Context, id string) (
 	c, err := s.credRepo.Get(ctx, id)
 	if err != nil {
 		return "", nil, err
+	}
+	// 本机 LM Studio 等服务可以不要求 API Key。
+	if c.CredentialValues == "" {
+		return "", c, nil
 	}
 	pt, err := crypto.Decrypt(c.CredentialValues, config.Get().DataEncryptKey())
 	if err != nil {
@@ -189,7 +193,7 @@ func (s *LLMConfigService) DiscoverModels(ctx context.Context, credentialId, mod
 // anthropic 用 x-api-key + anthropic-version；其余(openai 兼容族)用 Authorization: Bearer。
 // 两者响应都是 {data:[{id,...}]}，取 data[].id。
 func fetchUpstreamModels(ctx context.Context, baseURL, provider, apiKey string) ([]string, error) {
-	url := strings.TrimRight(baseURL, "/") + "/v1/models"
+	url := upstreamModelsURL(baseURL)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -197,7 +201,7 @@ func fetchUpstreamModels(ctx context.Context, baseURL, provider, apiKey string) 
 	if strings.EqualFold(provider, "anthropic") {
 		req.Header.Set("x-api-key", apiKey)
 		req.Header.Set("anthropic-version", "2023-06-01")
-	} else {
+	} else if apiKey != "" {
 		req.Header.Set("Authorization", "Bearer "+apiKey)
 	}
 	resp, err := (&http.Client{Timeout: 10 * time.Second}).Do(req)
@@ -233,6 +237,17 @@ func fetchUpstreamModels(ctx context.Context, baseURL, provider, apiKey string) 
 	return ids, nil
 }
 
+// upstreamModelsURL 兼容两种常见 base_url：
+//   - https://host（追加 /v1/models）
+//   - http://host:1234/v1（只追加 /models，避免 /v1/v1/models）
+func upstreamModelsURL(baseURL string) string {
+	base := strings.TrimRight(strings.TrimSpace(baseURL), "/")
+	if strings.HasSuffix(base, "/v1") {
+		return base + "/models"
+	}
+	return base + "/v1/models"
+}
+
 // defaultBaseURL 按 provider 给上游默认地址（base_url 空时兜底，取值对齐网关 handler.go）。
 func defaultBaseURL(provider string) string {
 	switch strings.ToLower(provider) {
@@ -250,6 +265,8 @@ func defaultBaseURL(provider string) string {
 		return "https://openrouter.ai/api"
 	case "ollama":
 		return "http://127.0.0.1:11434"
+	case "lmstudio":
+		return "http://127.0.0.1:1234/v1"
 	}
 	return ""
 }
@@ -504,7 +521,7 @@ func (s *LLMConfigService) MySpendHistory(ctx context.Context, userId, period st
 		days = 90
 	}
 	dateRange := []string{
-		time.Now().AddDate(0, 0, -days + 1).Format("2006-01-02"),
+		time.Now().AddDate(0, 0, -days+1).Format("2006-01-02"),
 		time.Now().Format("2006-01-02"),
 	}
 	rows, err := s.dailyRepo.SumScopeDaily(ctx, "user", userId, dateRange)

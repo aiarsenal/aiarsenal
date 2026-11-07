@@ -281,6 +281,8 @@ func main() {
 	scheduleSvc := service.NewScheduleService(scheduleEventRepo, scheduleAttendeeRepo, scheduleExceptionRepo, scheduleRoomRepo, userRepo)
 	scheduleSvc.SetChannelNotice(channelNotice)
 	scheduleSvc.Bootstrap(context.Background()) // 会议室全空时灌默认房（幂等 best-effort）
+	calendarSyncRepo := persistence.NewCalendarSyncRepository()
+	calendarSyncSvc := service.NewCalendarSyncService(calendarSyncRepo, scheduleEventRepo, scheduleExceptionRepo)
 	// 统一审核工单：依赖 agentRuntimeSvc（channel_notify 命令下发）与 noticeSvc（站内铃铛兜底）；
 	// llm_temp_budget 为首个类型 handler，后续类型（skill 等）照此注册
 	llmTempHandler := service.NewLLMTempBudgetHandler(llmBudgetRepo, llmDailyRepo, postRepo)
@@ -375,6 +377,8 @@ func main() {
 	}
 	kbSch.Start()
 	kbDsSvc.RegisterSchedules(context.Background())
+	calendarSyncSvc.SetScheduler(kbSch)
+	calendarSyncSvc.RegisterSchedules()
 	kbSvc.SetExternalSearch(kbDsSvc)
 
 	// KB 项目空间/个人空间：目录随项目/员工账号自动创建与对齐
@@ -511,6 +515,7 @@ func main() {
 	kbDirCtl := controller.NewKbDirController(kbDirSvc, kbSpaceSvc)
 	kbDsCtl := controller.NewKbDatasourceController(kbDsSvc)
 	scheduleCtl := controller.NewScheduleController(scheduleSvc)
+	calendarSyncCtl := controller.NewCalendarSyncController(calendarSyncSvc)
 
 	// 6. gin 装配
 	gin.SetMode(gin.ReleaseMode)
@@ -609,6 +614,7 @@ func main() {
 		KbDir:               kbDirCtl,
 		KbDatasource:        kbDsCtl,
 		Schedule:            scheduleCtl,
+		CalendarSync:        calendarSyncCtl,
 	})
 
 	// 7. 启动（PORT 环境变量可覆盖，便于开发期避开 :43211）

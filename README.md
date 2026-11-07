@@ -41,7 +41,7 @@ AI Arsenal 将 **Skill、LLM、MCP、Agent** 与企业知识（文档 / 知识�
 
 ### 🌐 任意场景，即插即用
 
-- **任意模型**：OpenAI 兼容族（deepseek / moonshot / groq / openrouter / ollama …）直连 + **Anthropic 原生 `/v1/messages` 双向翻译** + **Gemini 原生 `/v1beta` 双向翻译**，凭据 AES-256-GCM 加密录入即可用；
+- **任意模型**：OpenAI 兼容族（LM Studio / deepseek / moonshot / groq / openrouter / ollama …）直连 + **Anthropic 原生 `/v1/messages` 双向翻译** + **Gemini 原生 `/v1beta` 双向翻译**，凭据 AES-256-GCM 加密录入即可用；
 - **任意客户端**：MCP 网关同时服务 Claude Desktop / Cursor 及任意支持 SSE 或 streamable-http 的 AI 客户端，另附连接测试 / 试调用 / 接入引导；
 - **任意运行时**：Agent 实例默认本机 Docker，`config/tencent.yaml` 一键切换腾讯云 CVM；
 - **任意平台**：macOS / Windows / Ubuntu 三端一键部署脚本开箱即用。
@@ -91,10 +91,11 @@ AI Arsenal 将 **Skill、LLM、MCP、Agent** 与企业知识（文档 / 知识�
 | --- | --- | --- |
 | ⚙️ 系统管理 | ✅ 已上线 | 用户 / 角色 / 菜单 / 部门 / 岗位 / 权限分组 / 日志监控（登录 + 操作 + 在线用户）· JWT + Casbin RBAC · 按钮级权限 — 后台基座完备 |
 | 🧩 Skill 管理 | ✅ 已上线 | zip 上传解析（frontmatter + manifest）· 安全扫描（封禁扩展名 / 密钥指纹 / eval 规则，未过审拦截发布与安装）· pgvector 向量 + 全文检索 · 讯飞第三方市场（详情页 / 直链导入 + 目录引导，搜索与同步经 MCP 工具） |
-| 🧠 LLM 管理 | ✅ 已上线 | 凭据 / 模型 / 虚拟 Key / 预算 / 用量 / 健康后台 + `llm/` 网关 · OpenAI 兼容 `/v1/chat/completions` + Anthropic 原生 `/v1/messages`（双向翻译 + 透传）+ Gemini 原生 `/v1beta/models/{model}:generateContent`（双向翻译，含 SSE 流式）· `/v1/embeddings` 上游嵌入（可配 LLM embedding 供 Skill / 文档 / 知识库检索共用，离线哈希兜底）· 跨凭据 failover · 轮询 + cooldown + 健康探测 · 三级预算异步计费 · 凭据 AES-256-GCM 加密 |
+| 🧠 LLM 管理 | ✅ 已上线 | 凭据 / 模型 / 虚拟 Key / 预算 / 用量 / 健康后台 + `llm/` 网关 · 本机 LM Studio 免 Key 接入与模型自动发现 · OpenAI 兼容 `/v1/chat/completions` + Anthropic 原生 `/v1/messages`（双向翻译 + 透传）+ Gemini 原生 `/v1beta/models/{model}:generateContent`（双向翻译，含 SSE 流式）· `/v1/embeddings` 上游嵌入（可配 LLM embedding 供 Skill / 文档 / 知识库检索共用，离线哈希兜底）· 跨凭据 failover · 轮询 + cooldown + 健康探测 · 三级预算异步计费 · 凭据 AES-256-GCM 加密 |
 | 🔌 MCP 管理 | ✅ 已上线 | `api/cmd/mcp` 网关（SSE / streamable-http 双协议）· Bearer 鉴权 · stdio 子进程组管理 · 工具结果压缩 · OAuth 客户端 / 授权码 / 令牌全生命周期（PKCE S256，secret / code / token 仅存 sha256）· `$smart` 向量智能路由（工具描述嵌入 + pgvector ivfflat 语义选工具）· 上游探测 / 试调用 / 客户端接入引导 · 企业内部能力工具集（platform-doc / kb / skill / project / ops 等，经 `api/cmd/ops`） |
 | 📑 文档与知识库 | ✅ 已上线 | doc / kb 双模块：上传（多文件 + zip 解包）/ 在线预览 / 文本抽取分块 / 向量嵌入 / pgvector 语义检索 · 三档可见性 + 行级授权 · 项目 / 个人空间同步（doc + kb）· KB 数据源连接器（web / 数据库 / API / 对象存储 / 外部知识库，cron 定时同步 + 运行记录）· 经 MCP（platform-doc / platform-kb）供 Agent 检索 |
 | 📋 项目管理 | ✅ 已上线 | 项目 / 任务 / 看板 / 里程碑 / 成员 / 报表 / 时间线 / 动态 · 自定义字段与状态流 · 项目 ↔ Agent / Skill / KB / LLM / MCP 绑定 · 22 个 MCP 工具 |
+| 📅 日程 | ✅ 已上线 | 日 / 周 / 月视图 · 周期日程与单场例外 · 参会回执 · 忙闲与会议室冲突 · CalDAV 双向同步（iCloud / Nextcloud / Radicale）· ETag 并发保护 · 冲突保留双方 |
 | 🤖 Agent 管理 | ✅ 已上线 | 实例生命周期（本机 Docker 默认，腾讯云 CVM provider 可选）· 远程桌面门户（noVNC 反代）· 交互式终端（websocket tty）· 工作区文件管理 · 持久卷 / 备份 / 滚动发布 · 实例用量上报与查询 · OpenClaw 配置页与 Agent 用户管理 · 技能安装命令队列 · 心跳 + 配置漂移自愈 · MCP 分组绑定 · 实例 LLM Key 轮换 · 配置中心 / 安全扫描 / 模型规则 / 治理监控 / Team 协作 |
 | 💻 客户端 App | ✅ 已上线 | Tauri 2（Mac / Win）· device-code 登录中转 · 装 / 启停 OpenClaw / Hermes / Obsidian · 微信渠道扫码绑定（双端双路径）· 设备管理与封禁 · Agent 包缓存 · Mac 桌面节点（截屏 / 控鼠键 / 权限引擎 / 执行审批，约 7700 行 Rust）+ Windows 桌面节点（对齐 Mac：截屏 / 控鼠键 / 前台应用闸门 / 执行审批）· CI（api+llm 构建测试 / UI 构建 / 双端 cargo check）与 dmg / msi 自动打包发布 |
 
@@ -213,6 +214,20 @@ sudo bash deploy.sh prod         # 生产环境：HTTPS + 通配符证书
 
 供应商 API Key（阿里云 / OpenAI 等）不落 git、不入种子 SQL——部署后在管理后台「LLM 管理 → 凭据」录入（AES-256-GCM 加密落库）。轮换密钥：改 `/etc/aiarsenal/env` 后 `systemctl restart aiarsenal-api aiarsenal-mcp aiarsenal-llm`。
 
+本机 LM Studio：先在 LM Studio 打开 Local Server（默认 `http://127.0.0.1:1234/v1`），后台新增凭据时提供商选 **LM Studio（本机）**，BaseURL 与 API Key 都可留空；保存后点「导入模型」，即可把当前 LM Studio 可提供的模型批量登记到指定分组。
+
+### 手机日历双向同步
+
+「日程 → 我的日程 → 日历同步」支持通用 CalDAV。iPhone/iCloud 使用
+`https://caldav.icloud.com` + Apple ID + **App 专用密码**；Nextcloud、Radicale
+等服务填写对应 CalDAV 地址。可自动发现日历、选择同步间隔和冲突策略。
+
+- 本系统内当前用户组织的事件会推送到绑定日历。
+- 远端新增、修改、删除事件会回写本系统。
+- 周期事件的主规则及单场取消/改期会同步。
+- 默认冲突策略为 `manual`：本地与远端同时变化时保留双方并暂停该条映射，不静默覆盖。
+- Google Calendar 消费级账号不使用 CalDAV，需要后续单独接入 Google OAuth API。
+
 启动时 api / mcp / ops 会各自检查 `jwt.encryptKey` 是否仍取自 `config.yaml`：是则各输出一条 `level=WARN` 日志（带 `insecureDefaults` 字段，当前值为 `[jwt.encryptKey]`），**不阻断启动**。出现这条日志说明该实例的密钥写在随源码提交的 `config.yaml` 里（默认值即公开占位值），公网可达时该密钥等同公开，存在被冒用签发 token 的风险。处理顺序要注意：**未配置 `AIARSENAL_SECURITY_DATA_KEY` 时**，换 jwt 密钥会使库内既有 LLM 凭据 / Agent api_key / 双因子 TOTP 密钥无法解密（后者意味着已绑定双因子的账号全部无法登录，恢复需超管逐个重置双因子），存量部署应先把**当前正在用的**密钥原值写入 `/etc/aiarsenal/env` 再重启，待后台重录凭据后才轮换成随机值——`deploy.sh` 对这一步有同样的提醒。同一台机同时跑三个进程时会看到三条相同的 WARN，属正常。
 
 此外，`security.dataKey` 未配置时，api / mcp / ops 各进程启动都会额外输出一条带 `insecureDefault=security.dataKey.fallback` 的 WARN：库内敏感数据（LLM 凭据 / Agent api_key / TOTP 种子）仍在复用 JWT 签名密钥加密——同一把密钥既签发 token 又解密凭据，签名密钥泄漏等于凭据库同步失守（密钥分离原则）。按上表「平滑启用」路径配置即可消除该 WARN，且不需要重录任何数据。
@@ -220,7 +235,7 @@ sudo bash deploy.sh prod         # 生产环境：HTTPS + 通配符证书
 ## 🗃️ 数据库与迁移
 
 - **多库建模**：10 个业务库同实例（`aiarsenal` / `aa_skill` / `aa_llm` / `aa_mcp` / `aa_agent` / `aa_client` / `aa_project` / `aa_doc` / `aa_kb` / `aa_schedule`），模块间数据隔离。
-- **迁移运行器已接入**（[api/infrastructure/db/migrate.go](api/infrastructure/db/migrate.go)，golang-migrate + `go:embed`），api 启动自动逐库执行。**当前仓库未提交迁移文件**——启动时静默跳过、零副作用；按约定补文件即自动生效：
+- **迁移运行器已接入**（[api/infrastructure/db/migrate.go](api/infrastructure/db/migrate.go)，golang-migrate + `go:embed`），api 启动自动逐库执行。无迁移文件的库静默跳过；按约定补文件即自动生效：
 
 | 约定 | 说明 |
 | --- | --- |
