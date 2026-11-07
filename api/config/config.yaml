@@ -101,6 +101,16 @@ audit:
     retentionDays: 180    # 留存天数硬下限 180（网安法 21 条 + 8.1.5.4d 留存≥6 个月）；
                           # 配置 <180 按 180 执行并 WARN
 
+# 落库敏感数据加密（LLM 供应商凭据 / Agent 模型密钥 / TOTP 种子的 AES-256-GCM 密钥）。
+# 与 jwt.encryptKey 分离：同一把密钥既签发 token 又解密凭据时，签名密钥泄漏等于
+# 凭据库同步失守。留空（默认）回退 jwt.encryptKey——存量部署零变化，启动 WARN 提示。
+# 平滑启用：先设为当前 jwt.encryptKey 的值（存量密文照常解密），此后轮换 jwt 密钥
+# 不再影响库内数据；直接设全新值则旧密文不可解密，须重录凭据并重置 TOTP。
+# 生产用环境变量 AIARSENAL_SECURITY_DATA_KEY 注入（≥32 字节随机值，多实例同值，
+# 且须与 llm 网关的 SECRET_KEY 同值——api 加密、llm 解密）。
+security:
+  dataKey: ""
+
 # 系统配置
 actor:
   # 令牌交换签名密钥（网关→ops 身份透传 HMAC-SHA256；api 与 mcp 须同值）

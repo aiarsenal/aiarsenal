@@ -28,7 +28,7 @@ $ curl http://llm.aiarsenal.cc/health
 | `PORT` | `43214` | 监听端口 |
 | `DB_HOST/PORT/USER/PASSWORD/NAME` | 127.0.0.1/5432/aiarsenal/aiarsenal123/llm | llm 库 |
 | `REDIS_ADDR/DB/PASSWORD` | 127.0.0.1:6379/2/ | redis（db=2，区别于 api 的 db=1） |
-| `SECRET_KEY` | （随机生成） | 与 api 的 `jwt.encryptKey` 一致，解密 provider 凭据；部署时由 `/etc/aiarsenal/env` 注入，不入库 |
+| `SECRET_KEY` | （随机生成） | 与 api 的 `AIARSENAL_SECURITY_DATA_KEY` 同值（数据加密密钥，api 加密、llm 解密；deploy.sh 生成时已保证同值）；部署时由 `/etc/aiarsenal/env` 注入，不入库 |
 
 ## nginx 反代（测试环境 llm.aiarsenal.cc，纯 HTTP）
 

@@ -28,10 +28,14 @@ type Config struct {
 	Alert    AlertConfig    `mapstructure:"alert"`
 	Audit    AuditConfig    `mapstructure:"audit"`
 	Cors     CorsConfig     `mapstructure:"cors"`
+	Security SecurityConfig `mapstructure:"security"`
 
 	// jwtKeyFromFile 标记 jwt.encryptKey 是否直接取自 config.yaml（未被环境变量覆盖）。
 	// 不导出、不参与反序列化，仅由 Load 填入，供 insecureDefaults 上报。
 	jwtKeyFromFile bool
+	// dataKeyFromFile 标记 security.dataKey 是否为非空真值且直接取自 config.yaml。
+	// 同上，仅供 insecureDefaults 上报。
+	dataKeyFromFile bool
 	// pepperFromFile 标记 password.hash.pepper 是否直接取自 config.yaml（真值提交进
 	// git 等于把口令密钥公开）。同上，仅供 insecureDefaults 上报。
 	pepperFromFile bool
@@ -153,6 +157,22 @@ type CorsConfig struct {
 	// 本部署 UI 源（public.scheme://public.domain）自动放行无需列出；
 	// 无 Origin 的请求（同源浏览、curl、服务间调用）不需要 CORS 头。
 	AllowedOrigins []string `mapstructure:"allowedOrigins"`
+}
+
+// SecurityConfig 落库敏感数据的加密配置（与令牌签名密钥分离——同一把密钥既签发
+// token 又解密凭据时，签名密钥泄漏等于凭据库同步失守）。
+type SecurityConfig struct {
+	// DataKey 落库敏感数据（LLM 供应商凭据、Agent 模型密钥、TOTP 种子）的
+	// AES-256-GCM 加密密钥。生产经环境变量 AIARSENAL_SECURITY_DATA_KEY 注入，
+	// 多实例必须同值。留空（默认）回退用 jwt.encryptKey——存量部署零变化，
+	// 但密钥分离未达成，启动时 WARN 提示。
+	//
+	// 取值路径（平滑启用，零数据重录）：
+	//  1. 先设为当前 jwt.encryptKey 的值 → 存量密文照常解密，此后轮换
+	//     jwt.encryptKey 不再影响库内数据；
+	//  2. 直接设全新随机值 → 旧密文解密失败（GCM 认证错），须按 README
+	//     重录凭据、管理员重置 TOTP 后才恢复。
+	DataKey string `mapstructure:"dataKey"`
 }
 
 // defaultHashIterations 各算法默认迭代，以「单次派生 50~100ms 登录预算」定档
@@ -342,6 +362,11 @@ func Load() (*Config, error) {
 	if k := os.Getenv("AIARSENAL_ALERT_CHANNELS"); k != "" {
 		v.Set("alert.channels", strings.Split(k, ","))
 	}
+	yamlDataKey := v.GetString("security.dataKey")
+	// 落库数据加密密钥与 jwt 密钥同级敏感：仓库 yaml 只允许留空（回退旧键），真值走 env。
+	if k := os.Getenv("AIARSENAL_SECURITY_DATA_KEY"); k != "" {
+		v.Set("security.dataKey", k)
+	}
 	c := &Config{}
 	if err := v.Unmarshal(c); err != nil {
 		return nil, fmt.Errorf("unmarshal config: %w", err)
@@ -351,6 +376,7 @@ func Load() (*Config, error) {
 	c.applyAuditDefaults()
 	c.jwtKeyFromFile = jwtKeyFromConfigFile(c.Jwt.EncryptKey, yamlJwtKey)
 	c.pepperFromFile = pepperFromConfigFile(c.Password.Hash.Pepper, yamlPepper)
+	c.dataKeyFromFile = pepperFromConfigFile(c.Security.DataKey, yamlDataKey)
 	c.warnInsecureDefaults()
 	cfg = c
 	return c, nil
@@ -413,9 +439,9 @@ func (c *Config) applyAuditDefaults() {
 	}
 }
 
-// insecureDefaults 返回仍取自仓库默认值的敏感配置项，目前只覆盖 jwt.encryptKey 与
-// password.hash.pepper，新增检测项在这里追加即可。暂不导出：消费者只有本包的启动
-// 告警与 EmitInsecureDefaultAlerts。
+// insecureDefaults 返回仍取自仓库默认值的敏感配置项，目前覆盖 jwt.encryptKey 与
+// password.hash.pepper / security.dataKey，新增检测项在这里追加即可。暂不导出：
+// 消费者只有本包的启动告警与 EmitInsecureDefaultAlerts。
 func (c *Config) insecureDefaults() []string {
 	var out []string
 	if c.jwtKeyFromFile {
@@ -423,6 +449,9 @@ func (c *Config) insecureDefaults() []string {
 	}
 	if c.pepperFromFile {
 		out = append(out, "password.hash.pepper")
+	}
+	if c.dataKeyFromFile {
+		out = append(out, "security.dataKey")
 	}
 	return out
 }
@@ -446,15 +475,32 @@ func insecureDefaultNotice(item string) (title, body string) {
 			"jwt.encryptKey 仍取自随源码提交的 config.yaml：若本实例对公网可达，" +
 				"该密钥等同公开，存在被冒用签发 token 的风险；" +
 				"更换方式见 README「密钥与凭据（部署必读）」一节" +
-				"（该键同时加密库内 LLM 凭据，换值会使既有密文失效）。"
+				"（未配置 security.dataKey 时该键同时加密库内敏感数据，" +
+				"换值会使既有密文失效）。"
 	case "password.hash.pepper":
 		return "不安全配置默认值：password.hash.pepper",
 			"口令 pepper 的真值已随源码提交的 config.yaml 公开：拖库免疫失效，" +
 				"等于未启用 pepper；处置：改经环境变量 AIARSENAL_PWD_PEPPER 注入" +
 				"（≥32 字节随机值，多实例同值），换值会使既有 peppered 口令失效" +
 				"（等同强制全员重置）。"
+	case "security.dataKey":
+		return "不安全配置默认值：security.dataKey",
+			"落库数据加密密钥 security.dataKey 的真值已随源码提交的 config.yaml 公开：" +
+				"库内 LLM 凭据、Agent 模型密钥、TOTP 种子等同明文；处置：改经环境变量 " +
+				"AIARSENAL_SECURITY_DATA_KEY 注入（≥32 字节随机值，多实例同值），" +
+				"换值后既有密文不可解密，须重录凭据并重置 TOTP。"
 	}
 	return item, item
+}
+
+// DataEncryptKey 落库敏感数据（LLM 供应商凭据、Agent 模型密钥、TOTP 种子）的
+// 加密密钥：security.dataKey 优先，留空回退 jwt.encryptKey（存量部署零变化）。
+// 消费面统一走这里，不得直接读 Jwt.EncryptKey 解密数据——密钥语义在 config 收口。
+func (c *Config) DataEncryptKey() string {
+	if c.Security.DataKey != "" {
+		return c.Security.DataKey
+	}
+	return c.Jwt.EncryptKey
 }
 
 // warnInsecureDefaults 在敏感配置仍取自 config.yaml 时输出 WARN 级告警。
@@ -467,6 +513,18 @@ func (c *Config) warnInsecureDefaults() {
 	for _, item := range c.insecureDefaults() {
 		_, body := insecureDefaultNotice(item)
 		slog.Warn(body, "insecureDefault", item)
+	}
+	// 密钥分离检查（独立于「取自仓库」维度）：dataKey 留空=落库数据仍在复用令牌
+	// 签名密钥，签名密钥一旦泄漏（被冒用签 token 之外）连凭据库一起失守。不阻断：
+	// 回退是兼容语义，WARN 让未分离的部署可见。
+	if c.Security.DataKey == "" {
+		slog.Warn(
+			"security.dataKey 未配置：落库敏感数据（LLM 凭据/Agent 模型密钥/TOTP 种子）"+
+				"仍在复用 jwt.encryptKey 加密，密钥未分离；"+
+				"处置：先将其设为当前 jwt.encryptKey 的值（存量密文照常解密，平滑启用），"+
+				"详见 README「密钥与凭据」。",
+			"insecureDefault", "security.dataKey.fallback",
+		)
 	}
 }
 

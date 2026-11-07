@@ -88,7 +88,7 @@ func (s *AuthService) Login(ctx context.Context, username, password, totpCode, v
 	// 登录失败锁定、也不向用户伪装成「动态验证码错误」。
 	verify := func(string) bool { return false }
 	if user.TOTPEnabled == 1 {
-		secret, decErr := crypto.Decrypt(user.TOTPSecret, config.Get().Jwt.EncryptKey)
+		secret, decErr := crypto.Decrypt(user.TOTPSecret, config.Get().DataEncryptKey())
 		if decErr != nil {
 			slog.Error("totp 密钥解密失败", "err", decErr, "username", username)
 			s.userRepo.InsertLoginLog(ctx, &model.LoginLogParams{
