@@ -448,8 +448,8 @@ catalogs:
       specifier: ^3.3.5
       version: 3.3.5
     vxe-pc-ui:
-      specifier: ^4.14.39
-      version: 4.15.5
+      specifier: ^4.20.35
+      version: 4.20.35
     vxe-table:
       specifier: ^4.19.14
       version: 4.19.17
@@ -1509,7 +1509,7 @@ importers:
         version: 3.5.38(typescript@6.0.3)
       vxe-pc-ui:
         specifier: 'catalog:'
-        version: 4.15.5(vue@3.5.38(typescript@6.0.3))
+        version: 4.20.35(vue@3.5.38(typescript@6.0.3))
       vxe-table:
         specifier: 'catalog:'
         version: 4.19.17(vue@3.5.38(typescript@6.0.3))
@@ -5382,8 +5382,8 @@ packages:
     peerDependencies:
       vue: ^3.5.38
 
-  '@vxe-ui/core@4.4.14':
-    resolution: {integrity: sha512-bEMnvZl+R39+midxlz0vcpWS/w4WsdN9bOfjxWIfz7o95FyxOQWUjHs63IT9wNeUP09WhLkmUDKKjdl7BQYUMw==}
+  '@vxe-ui/core@4.5.5':
+    resolution: {integrity: sha512-ZUxERFhKsg/steowzKE4VBn7oaZTaPFK73O0IpjOA/qcoPIPBEnB6Xj1FgCy4HtspMqx1iAniJOGmV21jcDifA==}
     peerDependencies:
       vue: ^3.5.38
 
@@ -6302,8 +6302,8 @@ packages:
   dom-serializer@2.0.0:
     resolution: {integrity: sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==}
 
-  dom-zindex@1.0.7:
-    resolution: {integrity: sha512-cKU/h8v8IPBgdZOTPbPmq3Ib+Ac5C+kKoh9I4LbGR9BM3GwbmB16KYWKJcj5M2BavnA66EbgYzxYDLd1IytnlQ==}
+  dom-zindex@1.0.8:
+    resolution: {integrity: sha512-n6UB0BU5pltbvMWNu3zZqnLO35uFvOjTBO/s2GiPbdnfhyVGYLhLxynou/B2QSQEPJR4d398/0jbUZHLNiOmfA==}
 
   domelementtype@2.3.0:
     resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==}
@@ -10113,8 +10113,8 @@ packages:
       typescript:
         optional: true
 
-  vxe-pc-ui@4.15.5:
-    resolution: {integrity: sha512-g9m95gh1MZsnCTwN++jcQVzPwFgs81LaKjFC3u1Mt2o85F17FHcjDaiOufAGUPnzo4LPLC1rCCBIqVd8a2lwjQ==}
+  vxe-pc-ui@4.20.35:
+    resolution: {integrity: sha512-koXcQVwXJdaJk7M/wXdjWRl+27tnkxQVLOJzvc/6zyWEdF/r9LwiaJcztIjgJ+Rr4hYuMWwwcFWOWR/n1Benyw==}
 
   vxe-table@4.19.17:
     resolution: {integrity: sha512-zbuEdFbw6Pt6hsULmSW9VyJPlz/w6elGx3mmstWAI/GAiFO3zD391/s3ViJMvTD5Styyr7pzystv++elNjDPFg==}
@@ -10293,8 +10293,8 @@ packages:
   xe-utils@3.9.1:
     resolution: {integrity: sha512-Ujk5UmoH6Iaqhgz3oGwfCXVcMdUJKlXnfvLABdnMyseMG0eHsX2mcCvLd/8sGlIXtfwsprI9bW7vgcVognLmqQ==}
 
-  xe-utils@4.0.9:
-    resolution: {integrity: sha512-LLO3Otzg2i9ArUoBdsjse9Tw7cwE0XvvoP98IMjoqL8l4UELO/a8c041Mq9cAfaUdd6ksamSvGF5luZkwVArqw==}
+  xe-utils@4.1.4:
+    resolution: {integrity: sha512-bzLJZkRaLX8BPTXjZkxZWq40XshK06/4kdfKhZehsa4V3juQbvaTS9302mdL2keM88EmL9sAlrfPLDn/2npBfg==}
 
   xml-name-validator@4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
@@ -13961,11 +13961,11 @@ snapshots:
     dependencies:
       vue: 3.5.38(typescript@6.0.3)
 
-  '@vxe-ui/core@4.4.14(vue@3.5.38(typescript@6.0.3))':
+  '@vxe-ui/core@4.5.5(vue@3.5.38(typescript@6.0.3))':
     dependencies:
-      dom-zindex: 1.0.7
+      dom-zindex: 1.0.8
       vue: 3.5.38(typescript@6.0.3)
-      xe-utils: 4.0.9
+      xe-utils: 4.1.4
 
   abbrev@3.0.1: {}
 
@@ -14958,7 +14958,7 @@ snapshots:
       domhandler: 5.0.3
       entities: 4.5.0
 
-  dom-zindex@1.0.7: {}
+  dom-zindex@1.0.8: {}
 
   domelementtype@2.3.0: {}
 
@@ -19094,15 +19094,15 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  vxe-pc-ui@4.15.5(vue@3.5.38(typescript@6.0.3)):
+  vxe-pc-ui@4.20.35(vue@3.5.38(typescript@6.0.3)):
     dependencies:
-      '@vxe-ui/core': 4.4.14(vue@3.5.38(typescript@6.0.3))
+      '@vxe-ui/core': 4.5.5(vue@3.5.38(typescript@6.0.3))
     transitivePeerDependencies:
       - vue
 
   vxe-table@4.19.17(vue@3.5.38(typescript@6.0.3)):
     dependencies:
-      vxe-pc-ui: 4.15.5(vue@3.5.38(typescript@6.0.3))
+      vxe-pc-ui: 4.20.35(vue@3.5.38(typescript@6.0.3))
     transitivePeerDependencies:
       - vue
 
@@ -19351,7 +19351,7 @@ snapshots:
 
   xe-utils@3.9.1: {}
 
-  xe-utils@4.0.9: {}
+  xe-utils@4.1.4: {}
 
   xml-name-validator@4.0.0: {}
 
