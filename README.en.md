@@ -267,6 +267,7 @@ cd /home/ubuntu/aiarsenal && git pull && sudo bash deploy.sh prod
 
 ## 🛡️ Auth & Security
 
+- **Client IP only trusts the configured boundary (audit F-022)**: the api and llm gateway trust no proxy by default — `X-Forwarded-For` / `X-Real-IP` cannot forge the IP recorded in login/operation audit trails and gateway usage rows; reverse-proxy deployments declare trusted proxies explicitly via `AIARSENAL_SERVER_TRUSTED_PROXIES` (api/mcp, comma-separated CIDRs) and `TRUSTED_PROXIES` (llm). The official same-host nginx topology gets `127.0.0.1` injected by deploy.sh (nginx appends to `X-Forwarded-For`, so attacker-crafted leading entries are discarded by rightmost-wins resolution). Pure direct deployments keep trust-none.
 - Sessions are JWT-based (HS256), 30-day default validity, configurable. Every login token carries a `jti` registered in a server-side session store: logout and admin-forced sign-off (online users → kick) invalidate the token immediately instead of relying on the client discarding it.
 - Every request re-reads the user's current identity (`is_admin` / department / posts / status) from the database: permission changes and account freezes take effect on the next request. The token proves who you are; it no longer carries a 30-day authorization snapshot.
 - Permissions are Casbin RBAC: super admin (`is_admin`) bypasses all; regular users are authorized per menu policy, down to button level. Three role-independent server-side gates apply on top:

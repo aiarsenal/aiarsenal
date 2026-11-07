@@ -55,6 +55,12 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
+	// F-022：与 api 主引擎同款——默认不信任任何代理。MCP 网关的 Endpoint 会把
+	// c.ClientIP() 落进 aa_mcp_activity.source_ip（工具调用审计），trust-all 下
+	// 直连 43213 即可伪造。可信代理清单与 api 共用 AIARSENAL_SERVER_TRUSTED_PROXIES。
+	if err := r.SetTrustedProxies(config.Get().Server.TrustedProxies); err != nil {
+		log.Fatalf("set trusted proxies: %v", err)
+	}
 	r.Use(gin.Recovery())
 
 	// OAuth 授权端点（MCP 规范 2025-06-18 Authorization）：/oauth/register、/oauth/authorize、

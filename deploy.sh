@@ -156,6 +156,26 @@ else
   echo "==> /etc/aiarsenal/env 已存在，沿用现有密钥"
 fi
 
+# ---------- 2.4 可信代理声明（F-022）：官方拓扑为 nginx 同机反代 ----------
+# api/llm 默认不信任任何代理（ClientIP 取 TCP 对端，X-Forwarded-For 不可伪造审计 IP）；
+# 本机 nginx 是唯一合法转发者，注入 127.0.0.1 后登录/操作审计/计费用量落真实客户端 IP。
+# 纯直连（无 nginx）部署请手工删除这两行，保持信任 none。
+if ! grep -q '^AIARSENAL_SERVER_TRUSTED_PROXIES=' /etc/aiarsenal/env; then
+  cat >> /etc/aiarsenal/env <<PROXY
+
+# 可信代理（F-022）：仅信任本机 nginx；纯直连部署请删除这两行。
+# 若前置了 CDN（Cloudflare 等），需把 CDN 网段追加进清单，否则审计 IP 落 CDN 边缘地址。
+AIARSENAL_SERVER_TRUSTED_PROXIES=127.0.0.1
+TRUSTED_PROXIES=127.0.0.1
+PROXY
+  echo "==> 已注入可信代理声明（api + llm）"
+fi
+# 幂等键分侧：api/mcp 与 llm 各查各的，手工补过一侧时不误判另一侧已注入
+if ! grep -q '^TRUSTED_PROXIES=' /etc/aiarsenal/env; then
+  echo 'TRUSTED_PROXIES=127.0.0.1' >> /etc/aiarsenal/env
+  echo "==> 已补注入 llm 可信代理声明"
+fi
+
 echo "==> 安装 systemd unit (aiarsenal-api / aiarsenal-mcp / aiarsenal-llm)"
 # api unit 含 __PUBLIC_SCHEME__ 占位（对外协议 test→http / prod→https），按当前环境替换后安装
 case "$ENV" in test) PUB_SCHEME="http";; *) PUB_SCHEME="https";; esac

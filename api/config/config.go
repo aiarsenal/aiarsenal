@@ -260,6 +260,10 @@ type PublicConfig struct {
 
 type ServerConfig struct {
 	Address string `mapstructure:"address"`
+	// TrustedProxies 可信代理网段（F-022）：空/nil = 不信任任何代理，ClientIP 回落
+	// TCP 对端，X-Forwarded-For/X-Real-IP 不再能伪造审计与登录 IP。挂反代的部署
+	// 显式声明（官方同机 nginx 拓扑由 deploy.sh 注入 127.0.0.1）。
+	TrustedProxies []string `mapstructure:"trustedProxies"`
 }
 
 type DatabaseConfig struct {
@@ -367,6 +371,7 @@ func Load() (*Config, error) {
 	if k := os.Getenv("AIARSENAL_SECURITY_DATA_KEY"); k != "" {
 		v.Set("security.dataKey", k)
 	}
+	applyTrustedProxyEnvOverride(v)
 	c := &Config{}
 	if err := v.Unmarshal(c); err != nil {
 		return nil, fmt.Errorf("unmarshal config: %w", err)
@@ -501,6 +506,14 @@ func (c *Config) DataEncryptKey() string {
 		return c.Security.DataKey
 	}
 	return c.Jwt.EncryptKey
+}
+
+// applyTrustedProxyEnvOverride 可信代理网段注入（F-022）：逗号分隔网段清单，
+// 未设置 = 信任 none（ClientIP 取 TCP 对端，XFF 不参与）。
+func applyTrustedProxyEnvOverride(v *viper.Viper) {
+	if k := os.Getenv("AIARSENAL_SERVER_TRUSTED_PROXIES"); k != "" {
+		v.Set("server.trustedProxies", strings.Split(k, ","))
+	}
 }
 
 // warnInsecureDefaults 在敏感配置仍取自 config.yaml 时输出 WARN 级告警。
