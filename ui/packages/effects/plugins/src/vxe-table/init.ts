@@ -16,17 +16,18 @@ import {
   VxeRadioGroup,
   VxeSelect,
   VxeTooltip,
-  VxeUI,
   VxeUpload,
 } from 'vxe-pc-ui';
 import enUS from 'vxe-pc-ui/lib/language/en-US'; // 导入默认的语言
 import zhCN from 'vxe-pc-ui/lib/language/zh-CN';
+// vxe-pc-ui 4.20 起不再具名导出 VxeUI 单例，改从 vxe-table 取同一 @vxe-ui/core 实例
 import {
   VxeColgroup,
   VxeColumn,
   VxeGrid,
   VxeTable,
   VxeToolbar,
+  VxeUI,
 } from 'vxe-table';
 
 import { injectPluginsOptions } from '../plugins-context';
