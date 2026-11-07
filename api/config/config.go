@@ -372,6 +372,7 @@ func Load() (*Config, error) {
 		v.Set("security.dataKey", k)
 	}
 	applyTrustedProxyEnvOverride(v)
+	applyCredentialEnvOverrides(v)
 	c := &Config{}
 	if err := v.Unmarshal(c); err != nil {
 		return nil, fmt.Errorf("unmarshal config: %w", err)
@@ -458,7 +459,30 @@ func (c *Config) insecureDefaults() []string {
 	if c.dataKeyFromFile {
 		out = append(out, "security.dataKey")
 	}
+	// F-003：Redis 已配置但未设口令——会话注册表/锁定计数/缓存可被任意本机进程读写。
+	// address 为空的零值配置不报（保持空配置零告警的既有钉子）。
+	if c.Redis.Default.Address != "" && c.Redis.Default.Password == "" {
+		out = append(out, "redis.password")
+	}
+	// F-004：数据库口令仍是仓库默认值或与账号同源——读库即接管。
+	if link := c.Database.Default; link.Link != "" {
+		if _, _, user, pass, _, _ := link.parseLink(); pass == "aiarsenal123" || (user != "" && pass == user) {
+			out = append(out, "database.default.link")
+		}
+	}
 	return out
+}
+
+// applyCredentialEnvOverrides 数据库与 Redis 凭据的环境变量注入（F-003/F-004）。
+// 仓库 yaml 只放开发占位值；生产经 /etc/aiarsenal/env 注入随机口令。数据库口令
+// 内嵌在连接串里，以整条 link 覆盖（Go 侧不做连接串手术）；Redis 口令按字段覆盖。
+func applyCredentialEnvOverrides(v *viper.Viper) {
+	if k := os.Getenv("AIARSENAL_DATABASE_DEFAULT_LINK"); k != "" {
+		v.Set("database.default.link", k)
+	}
+	if k := os.Getenv("AIARSENAL_REDIS_PASSWORD"); k != "" {
+		v.Set("redis.default.password", k)
+	}
 }
 
 // EmitInsecureDefaultAlerts 把 insecure-default 配置项作为安全事件外发（PR② 埋点之一）。
@@ -494,6 +518,19 @@ func insecureDefaultNotice(item string) (title, body string) {
 				"库内 LLM 凭据、Agent 模型密钥、TOTP 种子等同明文；处置：改经环境变量 " +
 				"AIARSENAL_SECURITY_DATA_KEY 注入（≥32 字节随机值，多实例同值），" +
 				"换值后既有密文不可解密，须重录凭据并重置 TOTP。"
+	case "redis.password":
+		return "不安全配置默认值：Redis 未设访问口令",
+			"Redis 无密码即可读写会话注册表、登录锁定计数与缓存：本机任意进程可" +
+				"操纵会话（已吊销令牌复活、批量踢线、清零失败计数）；处置：" +
+				"deploy.sh 已在部署时自动设置 requirepass 并注入 AIARSENAL_REDIS_PASSWORD，" +
+				"手动部署请 redis-cli CONFIG SET requirepass 后 CONFIG REWRITE 持久化，" +
+				"并以 AIARSENAL_REDIS_PASSWORD 注入 api。"
+	case "database.default.link":
+		return "不安全配置默认值：数据库连接串使用公开口令",
+			"数据库连接串仍使用随源码公开的默认口令（或与账号同源），且该账号历史上" +
+				"以超级用户运行：读库即可接管全部数据并重放会话；处置：deploy.sh 已在" +
+				"部署时自动轮换口令、收回超级用户并以 AIARSENAL_DATABASE_DEFAULT_LINK " +
+				"注入整条连接串；手动部署请 ALTER ROLE 设置随机口令、NOSUPERUSER 收权后注入。"
 	}
 	return item, item
 }

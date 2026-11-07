@@ -175,6 +175,77 @@ if ! grep -q '^TRUSTED_PROXIES=' /etc/aiarsenal/env; then
   echo 'TRUSTED_PROXIES=127.0.0.1' >> /etc/aiarsenal/env
   echo "==> 已补注入 llm 可信代理声明"
 fi
+# ---------- 2.5 数据库/Redis 凭据收口（F-003/F-004，幂等）----------
+# 运行角色 aiarsenal 收回超级用户（建库/扩展由 postgres 超管在 rebuild-db 完成，运行期
+# 不需要）；公开默认口令（aiarsenal123，账号同源）一律轮换为随机值；Redis 设 requirepass。
+# 凭据经 /etc/aiarsenal/env 注入三个 unit：api/mcp 读 AIARSENAL_DATABASE_DEFAULT_LINK 与
+# AIARSENAL_REDIS_PASSWORD，llm 读 DB_PASSWORD 与 REDIS_PASSWORD（同一随机值）。
+# ⚠️ 已有部署升级：本步骤只收敛「env 里没登记过的凭据」；redis 若已被运维手工设过密码
+#    但未登记进 env，会在此显式失败——把现有口令填入 env 后重跑，不做静默猜测。
+# ⚠️ 轮换发生在服务重启之前：存量进程在本次部署的构建窗口内用旧口令建立的新连接会
+#    短暂失败（部署期一次性可用性间隙，重启后恢复）。
+echo "==> 数据库/Redis 凭据收口（F-003/F-004）"
+# ---- 数据库收口（不依赖 redis-cli）----
+if ! sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='aiarsenal'" | grep -q 1; then
+  AA_DB_PASS=$(openssl rand -hex 16)
+  sudo -u postgres psql -c "CREATE ROLE aiarsenal LOGIN PASSWORD '${AA_DB_PASS}'" >/dev/null
+  echo "==> 已创建数据库角色 aiarsenal（随机口令）"
+else
+  sudo -u postgres psql -c "ALTER ROLE aiarsenal NOSUPERUSER NOCREATEDB NOCREATEROLE" >/dev/null \
+    || { echo "!! ALTER ROLE aiarsenal 收权失败：postgres 不可达或权限不足"; exit 1; }
+  echo "==> 已收回 aiarsenal 超级用户（NOSUPERUSER/NOCREATEDB/NOCREATEROLE）"
+fi
+if [ -f /etc/aiarsenal/env ] && grep -q '^AIARSENAL_DATABASE_DEFAULT_LINK=' /etc/aiarsenal/env; then
+  echo "==> 数据库口令已注入过，沿用现值"
+else
+  [ -n "${AA_DB_PASS:-}" ] || AA_DB_PASS=$(openssl rand -hex 16)
+  sudo -u postgres psql -c "ALTER ROLE aiarsenal WITH PASSWORD '${AA_DB_PASS}'" >/dev/null \
+    || { echo "!! 数据库口令轮换失败：中止部署（继续跑会导致服务连不上库）"; exit 1; }
+  cat >> /etc/aiarsenal/env <<DBCREDS
+
+# 数据库凭据（F-004：deploy.sh 生成随机值；轮换后 systemctl restart 三服务）
+AIARSENAL_DATABASE_DEFAULT_LINK=pgsql:aiarsenal:${AA_DB_PASS}@tcp(127.0.0.1:5432)/aiarsenal?sslmode=disable
+DB_PASSWORD=${AA_DB_PASS}
+DBCREDS
+  echo "==> 已轮换数据库口令并注入 /etc/aiarsenal/env"
+fi
+# ---- Redis 收口（需要 redis-cli；缺失时仅跳过本段，DB 收口已在上一步完成）----
+if ! command -v redis-cli >/dev/null; then
+  echo "!! redis-cli 不可用：跳过 Redis 收口（本脚本按 config 默认拓扑管理本机 redis；" \
+       "Redis 口令未设时 api 启动告警会亮；redis 在本机的部署安装 redis-cli 后重跑即可）"
+else
+  if grep -q '^AIARSENAL_REDIS_PASSWORD=..' /etc/aiarsenal/env 2>/dev/null; then
+    # cut -d= -f2-：口令含 = 时取第一个 = 之后的全部（与 systemd EnvironmentFile 同语义）
+    AA_REDIS_PASS="$(grep '^AIARSENAL_REDIS_PASSWORD=' /etc/aiarsenal/env | head -1 | cut -d= -f2-)"
+  else
+    AA_REDIS_PASS=$(openssl rand -hex 16)
+  fi
+  # 单棵判定树：无密码实例（ping 免认证）→ 设置 requirepass；已设且与 env 一致 → 跳过；
+  # 其余（已设但 env 未登记/不一致）→ 显式失败。不能用 CONFIG GET 的输出判空——
+  # redis-cli 对无密码实例也打印键名，grep 会误判为"已设"（实测踩坑）。
+  if redis-cli ping >/dev/null 2>&1; then
+    redis-cli CONFIG SET requirepass "${AA_REDIS_PASS}" >/dev/null \
+      || { echo "!! redis CONFIG SET requirepass 失败：中止部署（api 将带 AUTH 连无密码实例）"; exit 1; }
+    redis-cli -a "${AA_REDIS_PASS}" CONFIG REWRITE >/dev/null 2>&1 \
+      || echo "!! CONFIG REWRITE 未持久化：请手工把 requirepass 写入 redis.conf（否则 redis 重启后 api 连不上）"
+    echo "==> 已设置 Redis requirepass"
+  elif redis-cli -a "${AA_REDIS_PASS}" ping >/dev/null 2>&1; then
+    echo "==> Redis 已设 requirepass 且与 env 一致"
+  else
+    echo "!! Redis 已设密码但 env 未登记（或口令不一致）：把现有口令填入 /etc/aiarsenal/env 的" \
+         "AIARSENAL_REDIS_PASSWORD/REDIS_PASSWORD 后重跑；不做静默猜测"; exit 1
+  fi
+  if ! grep -q '^AIARSENAL_REDIS_PASSWORD=' /etc/aiarsenal/env 2>/dev/null; then
+    cat >> /etc/aiarsenal/env <<REDISCREDS
+
+# Redis 凭据（F-003：deploy.sh 生成随机值；轮换后 systemctl restart 三服务）
+AIARSENAL_REDIS_PASSWORD=${AA_REDIS_PASS}
+REDIS_PASSWORD=${AA_REDIS_PASS}
+REDISCREDS
+    echo "==> 已注入 Redis 凭据到 /etc/aiarsenal/env"
+  fi
+fi
+unset AA_DB_PASS AA_REDIS_PASS
 
 echo "==> 安装 systemd unit (aiarsenal-api / aiarsenal-mcp / aiarsenal-llm)"
 # api unit 含 __PUBLIC_SCHEME__ 占位（对外协议 test→http / prod→https），按当前环境替换后安装
