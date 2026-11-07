@@ -41,7 +41,7 @@ Tech foundation: backend [Gin](https://github.com/gin-gonic/gin) + GORM (DDD fou
 
 ### 🌐 Plug and play for any scenario
 
-- **Any model**: the OpenAI-compatible family (deepseek / moonshot / groq / openrouter / ollama …) direct + **native Anthropic `/v1/messages` bidirectional translation** + **native Gemini `/v1beta` bidirectional translation** — enter credentials (AES-256-GCM encrypted) and go;
+- **Any model**: the OpenAI-compatible family (LM Studio / deepseek / moonshot / groq / openrouter / ollama …) direct + **native Anthropic `/v1/messages` bidirectional translation** + **native Gemini `/v1beta` bidirectional translation** — enter credentials (AES-256-GCM encrypted) and go;
 - **Any client**: the MCP gateway serves Claude Desktop / Cursor and any AI client speaking SSE or streamable-http, with connection testing / trial invocation / onboarding guides;
 - **Any runtime**: Agent instances run on local Docker by default, one-line switch to Tencent Cloud CVM via `config/tencent.yaml`;
 - **Any platform**: one-command deployment scripts for macOS / Windows / Ubuntu, ready out of the box.
@@ -91,10 +91,11 @@ Tech foundation: backend [Gin](https://github.com/gin-gonic/gin) + GORM (DDD fou
 | --- | --- | --- |
 | ⚙️ System | ✅ Shipped | Users / roles / menus / departments / posts / permission groups / log monitoring (login + operation + online users) · JWT + Casbin RBAC · button-level permissions — admin foundation complete |
 | 🧩 Skill | ✅ Shipped | zip upload & parsing (frontmatter + manifest) · security scanning (banned extensions / secret fingerprints / eval rules; failing review blocks publish & install) · pgvector vector + full-text search · iFlytek marketplace (detail pages / direct-link import + catalog guide; search & sync via MCP tools) |
-| 🧠 LLM | ✅ Shipped | Credential / model / virtual-key / budget / usage / health back office + `llm/` gateway · OpenAI-compatible `/v1/chat/completions` + native Anthropic `/v1/messages` (bidirectional translation + passthrough) + native Gemini `/v1beta/models/{model}:generateContent` (bidirectional translation, SSE streaming) · `/v1/embeddings` upstream embeddings (optionally LLM-powered, shared by Skill / Docs / KB retrieval with offline-hash fallback) · cross-credential failover · weighted routing + cooldown + health probing · three-level budget async billing · AES-256-GCM credentials |
+| 🧠 LLM | ✅ Shipped | Credential / model / virtual-key / budget / usage / health back office + `llm/` gateway · keyless local LM Studio integration with automatic model discovery · OpenAI-compatible `/v1/chat/completions` + native Anthropic `/v1/messages` (bidirectional translation + passthrough) + native Gemini `/v1beta/models/{model}:generateContent` (bidirectional translation, SSE streaming) · `/v1/embeddings` upstream embeddings (optionally LLM-powered, shared by Skill / Docs / KB retrieval with offline-hash fallback) · cross-credential failover · weighted routing + cooldown + health probing · three-level budget async billing · AES-256-GCM credentials |
 | 🔌 MCP | ✅ Shipped | `api/cmd/mcp` gateway (SSE / streamable-http) · Bearer auth · stdio process-group management · tool-result compression · full OAuth client / code / token lifecycle (PKCE S256; secret / code / token stored as sha256 only) · `$smart` vector smart routing (tool-description embeddings + pgvector ivfflat semantic tool selection) · upstream probing / trial calls / client onboarding · internal platform toolset (platform-doc / kb / skill / project / ops … via `api/cmd/ops`) |
 | 📑 Docs & Knowledge | ✅ Shipped | doc / kb dual modules: upload (multi-file + zip unpack) / inline preview / text extraction & chunking / embeddings / pgvector semantic search · 3-tier visibility + row-level grants · project / personal space sync (doc + kb) · KB datasource connectors (web / database / API / object storage / external KB, cron-scheduled sync + run history) · agent retrieval via MCP (platform-doc / platform-kb) |
 | 📋 Project | ✅ Shipped | Projects / tasks / kanban / milestones / members / reports / timeline / activity · custom fields & status flows · project ↔ Agent / Skill / KB / LLM / MCP bindings · 22 MCP tools |
+| 📅 Schedule | ✅ Shipped | Day / week / month views · recurring events with per-occurrence exceptions · meeting RSVP · free/busy & meeting-room conflict checks · two-way CalDAV sync (iCloud / Nextcloud / Radicale) · ETag concurrency protection · conflicts keep both sides |
 | 🤖 Agent | ✅ Shipped | Instance lifecycle (local Docker default, optional Tencent CVM provider) · remote desktop portal (noVNC reverse proxy) · interactive terminal (websocket tty) · workspace file management · persistent volumes / backup / rolling release · instance usage reporting & queries · OpenClaw config page & agent-user management · skill-install command queue · heartbeat + config-drift self-healing · MCP group binding · per-instance LLM key rotation · config center / security scanning / model rules / governance monitoring / team collaboration |
 | 💻 Desktop Client | ✅ Shipped | Tauri 2 (Mac / Win) · device-code login relay · install / start / stop OpenClaw / Hermes / Obsidian · WeChat QR channel binding (dual-platform dual-path) · device management & banning · agent package cache · Mac desktop node (screen capture / mouse & keyboard control / permission engine / exec approval, ~7,700 lines of Rust) + Windows desktop node (Mac parity: screen capture / mouse & keyboard control / foreground-app gate / exec approval) · CI (api+llm build & test / UI build / cargo check on both ends) and automated dmg / msi release packaging |
 
@@ -212,6 +213,20 @@ The repository **ships no real secrets**: `jwt.encryptKey` / `actor.signKey` in 
 | `AIARSENAL_REDIS_PASSWORD` / `REDIS_PASSWORD` | Redis access password (audit F-003): `deploy.sh` automatically runs `CONFIG SET requirepass` on unauthenticated instances and best-effort `CONFIG REWRITE`; api/mcp read the former, llm the latter (same random value). For deployments where a password was set manually, put it into env and rerun (the script never guesses); after a Redis restart requirepass must be persisted in redis.conf, or api fails to connect with AUTH |
 
 Provider API keys (Alibaba Cloud / OpenAI etc.) never land in git nor in seed SQL — enter them in the admin console after deployment ("LLM Management → Credentials", stored AES-256-GCM encrypted). To rotate: edit `/etc/aiarsenal/env`, then `systemctl restart aiarsenal-api aiarsenal-mcp aiarsenal-llm`.
+Local LM Studio: start the Local Server inside LM Studio first (default `http://127.0.0.1:1234/v1`), then create a credential in the admin console with provider **LM Studio (local)** — both BaseURL and API Key can stay empty; after saving, click "Import Models" to bulk-register the models your LM Studio currently serves into the chosen group.
+
+### Two-way sync with phone calendars
+
+"Schedule → My Schedule → Calendar Sync" speaks standard CalDAV. On iPhone/iCloud use
+`https://caldav.icloud.com` + your Apple ID + an **app-specific password**; Nextcloud, Radicale
+and similar services take their own CalDAV URLs. Calendars are auto-discovered; pick a sync
+interval and a conflict policy.
+
+- Events organized by the current user inside this system are pushed to the bound calendar.
+- Events created, changed or deleted on the remote side are written back into this system.
+- Recurring events sync their main rule plus per-occurrence cancellations / reschedules.
+- The default conflict policy is `manual`: when local and remote both change, both sides are kept and that mapping is paused — nothing is silently overwritten.
+- Consumer Google Calendar accounts do not speak CalDAV; Google OAuth API support is a separate follow-up.
 
 On startup, api / mcp / ops each check whether `jwt.encryptKey` is still taken from `config.yaml`. If so, each emits one `level=WARN` line carrying an `insecureDefaults` field (currently `[jwt.encryptKey]`) and **do not block startup**. That line means the instance's key comes from the `config.yaml` committed to the repo (the public placeholder by default): when it is reachable from the internet, that key is effectively public and can be abused to sign tokens. Mind the order of operations — **while `AIARSENAL_SECURITY_DATA_KEY` is unset**, changing the JWT key makes existing LLM credentials / Agent api_keys / TOTP secrets in the DB undecryptable (every TOTP binding is lost and needs a per-account reset by a super admin), so an existing deployment must first copy the **currently active** key into `/etc/aiarsenal/env` and restart, re-enter the credentials in the console, and only then rotate to a random value. `deploy.sh` repeats the same warning. Running all three processes on one host produces three identical WARN lines, which is expected.
 
@@ -220,7 +235,7 @@ Additionally, when `security.dataKey` is unset, each of api / mcp / ops emits on
 ## 🗃️ Databases & Migrations
 
 - **Multi-database modeling**: 10 business databases on one instance (`aiarsenal` / `aa_skill` / `aa_llm` / `aa_mcp` / `aa_agent` / `aa_client` / `aa_project` / `aa_doc` / `aa_kb` / `aa_schedule`), isolated per module.
-- **Migration runner wired in** ([api/infrastructure/db/migrate.go](api/infrastructure/db/migrate.go), golang-migrate + `go:embed`), executed database-by-database on api startup. **No migration files are committed yet** — startup silently skips them with zero side effects; follow the conventions below and files take effect automatically:
+- **Migration runner wired in** ([api/infrastructure/db/migrate.go](api/infrastructure/db/migrate.go), golang-migrate + `go:embed`), executed database-by-database on api startup. Databases without migration files are silently skipped; follow the conventions below and files take effect automatically:
 
 | Convention | Description |
 | --- | --- |
