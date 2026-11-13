@@ -199,8 +199,8 @@ catalogs:
       specifier: ^10.1.0
       version: 10.1.0
     cspell:
-      specifier: ^10.0.1
-      version: 10.0.1
+      specifier: ^10.4.1
+      version: 10.4.1
     cz-git:
       specifier: ^1.13.1
       version: 1.13.1
@@ -485,7 +485,7 @@ importers:
         version: 2.31.0(@types/node@25.9.4)
       '@tsdown/css':
         specifier: 'catalog:'
-        version: 0.22.3(jiti@2.7.0)(postcss@8.5.32)(sass-embedded@1.100.0)(sass@1.101.0)(tsdown@0.22.3)(yaml@2.9.0)
+        version: 0.22.3(jiti@2.7.0)(postcss@8.5.32)(sass-embedded@1.100.0)(sass@1.101.0)(tsdown@0.22.3)(yaml@2.9.1)
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.4
@@ -521,16 +521,16 @@ importers:
         version: link:scripts/vsh
       '@vitejs/plugin-vue':
         specifier: 'catalog:'
-        version: 6.0.7(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 6.0.7(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
       '@vitejs/plugin-vue-jsx':
         specifier: 'catalog:'
-        version: 5.1.5(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.5(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
       cross-env:
         specifier: 'catalog:'
         version: 10.1.0
       cspell:
         specifier: 'catalog:'
-        version: 10.0.1
+        version: 10.4.1
       eslint:
         specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
@@ -575,10 +575,10 @@ importers:
         version: 0.3.1(synckit@0.11.13)
       vite:
         specifier: 'catalog:'
-        version: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+        version: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 4.1.9(@types/node@25.9.4)(happy-dom@20.10.6)(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@25.9.4)(happy-dom@20.10.6)(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))
       vue:
         specifier: ^3.5.38
         version: 3.5.38(typescript@6.0.3)
@@ -659,7 +659,7 @@ importers:
         version: 3.5.38(typescript@6.0.3)
       vue-router:
         specifier: 'catalog:'
-        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
 
   internal/lint-configs/commitlint-config:
     dependencies:
@@ -843,19 +843,19 @@ importers:
         version: link:../../packages/types
       vite:
         specifier: 'catalog:'
-        version: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+        version: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
 
   internal/vite-config:
     dependencies:
       '@intlify/unplugin-vue-i18n':
         specifier: 'catalog:'
-        version: 11.2.4(@vue/compiler-dom@3.5.38)(eslint@10.5.0(jiti@2.7.0))(rollup@4.64.10)(typescript@6.0.3)(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue-i18n@11.4.6(vue@3.5.38(typescript@6.0.3)))(vue@3.5.38(typescript@6.0.3))
+        version: 11.2.4(@vue/compiler-dom@3.5.38)(eslint@10.5.0(jiti@2.7.0))(rollup@4.64.10)(typescript@6.0.3)(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue-i18n@11.4.6(vue@3.5.38(typescript@6.0.3)))(vue@3.5.38(typescript@6.0.3))
       '@jspm/generator':
         specifier: 'catalog:'
         version: 2.16.2
       '@tailwindcss/vite':
         specifier: 'catalog:'
-        version: 4.3.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))
+        version: 4.3.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))
       '@vben/node-utils':
         specifier: workspace:*
         version: link:../node-utils
@@ -879,10 +879,10 @@ importers:
         version: 2.0.4
       vite-plugin-pwa:
         specifier: 'catalog:'
-        version: 1.3.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(workbox-build@7.4.1)(workbox-window@7.4.1)
+        version: 1.3.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1)
       vite-plugin-vue-devtools:
         specifier: 'catalog:'
-        version: 8.1.3(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 8.1.3(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
     devDependencies:
       '@pnpm/workspace.read-manifest':
         specifier: 'catalog:'
@@ -895,10 +895,10 @@ importers:
         version: 7.0.2
       '@vitejs/plugin-vue':
         specifier: 'catalog:'
-        version: 6.0.7(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 6.0.7(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
       '@vitejs/plugin-vue-jsx':
         specifier: 'catalog:'
-        version: 5.1.5(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.5(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
@@ -916,13 +916,13 @@ importers:
         version: 1.100.0
       unplugin-dts:
         specifier: 'catalog:'
-        version: 1.0.2(esbuild@0.28.1)(rolldown@1.1.2)(rollup@4.64.10)(typescript@6.0.3)(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))
+        version: 1.0.2(esbuild@0.28.1)(rolldown@1.1.2)(rollup@4.64.10)(typescript@6.0.3)(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))
       vite:
         specifier: 'catalog:'
-        version: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+        version: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       vite-plugin-compression:
         specifier: 'catalog:'
-        version: 0.5.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))
+        version: 0.5.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))
       vite-plugin-lazy-import:
         specifier: 'catalog:'
         version: 1.0.7
@@ -995,7 +995,7 @@ importers:
         version: 3.5.38(typescript@6.0.3)
       vue-router:
         specifier: 'catalog:'
-        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
 
   packages/@core/composables:
     dependencies:
@@ -1072,7 +1072,7 @@ importers:
     devDependencies:
       unplugin-vue:
         specifier: 'catalog:'
-        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.0)
+        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.1)
 
   packages/@core/ui-kit/layout-ui:
     dependencies:
@@ -1100,7 +1100,7 @@ importers:
     devDependencies:
       unplugin-vue:
         specifier: 'catalog:'
-        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.0)
+        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.1)
 
   packages/@core/ui-kit/menu-ui:
     dependencies:
@@ -1137,7 +1137,7 @@ importers:
         version: 6.15.1
       unplugin-vue:
         specifier: 'catalog:'
-        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.0)
+        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.1)
 
   packages/@core/ui-kit/popup-ui:
     dependencies:
@@ -1168,7 +1168,7 @@ importers:
     devDependencies:
       unplugin-vue:
         specifier: 'catalog:'
-        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.0)
+        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.1)
 
   packages/@core/ui-kit/shadcn-ui:
     dependencies:
@@ -1232,7 +1232,7 @@ importers:
     devDependencies:
       unplugin-vue:
         specifier: 'catalog:'
-        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.0)
+        version: 7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.1)
 
   packages/constants:
     dependencies:
@@ -1316,7 +1316,7 @@ importers:
         version: 2.6.0(vue@3.5.38(typescript@6.0.3))
       vue-router:
         specifier: 'catalog:'
-        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
       vue-tippy:
         specifier: 'catalog:'
         version: 6.7.1(vue@3.5.38(typescript@6.0.3))
@@ -1356,7 +1356,7 @@ importers:
         version: 3.5.38(typescript@6.0.3)
       vue-router:
         specifier: 'catalog:'
-        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
       watermark-js-plus:
         specifier: 'catalog:'
         version: 1.6.6
@@ -1422,7 +1422,7 @@ importers:
         version: 3.5.38(typescript@6.0.3)
       vue-router:
         specifier: 'catalog:'
-        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
 
   packages/effects/plugins:
     dependencies:
@@ -1591,7 +1591,7 @@ importers:
         version: 3.5.38(typescript@6.0.3)
       vue-router:
         specifier: 'catalog:'
-        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
 
   packages/styles:
     dependencies:
@@ -1609,7 +1609,7 @@ importers:
         version: 3.5.38(typescript@6.0.3)
       vue-router:
         specifier: 'catalog:'
-        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
 
   packages/utils:
     dependencies:
@@ -1621,7 +1621,7 @@ importers:
         version: link:../@core/base/typings
       vue-router:
         specifier: 'catalog:'
-        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))
+        version: 5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))
 
   scripts/turbo-run:
     dependencies:
@@ -2484,36 +2484,36 @@ packages:
       conventional-commits-parser:
         optional: true
 
-  '@cspell/cspell-bundled-dicts@10.0.1':
-    resolution: {integrity: sha512-WvkSDNX4Uyyj/ZgbPO6L38iFNMfK1EqsH1FteRiI2qLz6QZMXRFrIt12OqiWIplzZDDaVpBH9FCJOPJll0fjCQ==}
+  '@cspell/cspell-bundled-dicts@10.4.1':
+    resolution: {integrity: sha512-QkDsQSUa6qK/2/AF43YYTrN1rpsJN3Yn1ckA3qH9zmBn0N/tkCWaJ675wo8j1CguPjZdPBF1t4J5tLcjiQv/Dg==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-json-reporter@10.0.1':
-    resolution: {integrity: sha512-/nes1RGILec3WCBcoMOd0byNTBtnJuPaVz/+ZzqYkLtY7x58VMcBG5kyP6hPyN8cIwjRADE/SR43gwdXuqk/FA==}
+  '@cspell/cspell-json-reporter@10.4.1':
+    resolution: {integrity: sha512-PV0fshBdl78839JMs0H8rpq6766TTdZQPdT+tiZ1+atarso+gZLxM4DXMqePdCBbhgV46jbW91DoN4KZIYUysA==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-performance-monitor@10.0.1':
-    resolution: {integrity: sha512-9tVcHXwRnbazUv4WSG0h3MqV4+LgmLNgSALAQUflPPW0EMxTf7C4Dmv9cgxJyCEQrdnVKCr58nPPaahhz9LJUg==}
+  '@cspell/cspell-performance-monitor@10.4.1':
+    resolution: {integrity: sha512-hVYcJ3i8vnuo+8lK+awOsuYHIA2rlFS/DIW/ZIjKmCcVjgdNTVAWtx/EQs3mqGZGegJTOPaSv1uGvLpLgtLTHw==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-pipe@10.0.1':
-    resolution: {integrity: sha512-HPeXMD9AZ3V/qPkvQaPcak+C7cJ2z7JTHN8smd6J8L2aThLRky2cHc2OyeaHPSHB7WA47b4z2n5u5nawZhv5VQ==}
+  '@cspell/cspell-pipe@10.4.1':
+    resolution: {integrity: sha512-7P4srvEo/LUyoGTwwsnijCZzUKTyC39N9seYyk7/u4DHmww4cQpKW3ktWdZu90hOP1hV+zdAptUMnHTHxa5NmQ==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-resolver@10.0.1':
-    resolution: {integrity: sha512-PIzkZHD1fGUQx1XteK2d1iQ0Mzq/maYcoB4jkvAiiR6WqP3MWYNKFdI9z+R5pOq5KgMfW+5Ig1q0oSR6h8irlA==}
+  '@cspell/cspell-resolver@10.4.1':
+    resolution: {integrity: sha512-7aKxe59PqwVHUIQQJaN//RiiooCudG4sU+ycKUUUcEKN04vxQuo582Desa1WQQsKMH4VjCLZF1XD5lCmnpS0rw==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-service-bus@10.0.1':
-    resolution: {integrity: sha512-y6NcIGP2IdXaBL4PVH8vxsr7K27wzz3Ech87UtUtrDSXAiVEOvXgAIknEOUVp59rTlUE8Rn4IRURC6f/hgMyfw==}
+  '@cspell/cspell-service-bus@10.4.1':
+    resolution: {integrity: sha512-sC7dR3kfGIugcAjVjIfKKfI1T/r+2E1ps9a7aXqAJRmfLZAKXbnKGO5aeVGHKmtxGw/odZEDDOis2uwq2tdUfQ==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-types@10.0.1':
-    resolution: {integrity: sha512-kLgLShnWADDVreKC63pBrWkcvxgZzFIfO34Jhx/SWfuOIA3cD8AXT+HjyuLfoGJ7mUb58hv2kUziKzEy4INb1w==}
+  '@cspell/cspell-types@10.4.1':
+    resolution: {integrity: sha512-FfaRrnrZ3xD09Tq6C49BdAZSx+tLM38Z60vFR/1+qQMQejUOHhv/lQ3UNN4I9z+P3BhmKutcLf8M8IOwlMfOtQ==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-worker@10.0.1':
-    resolution: {integrity: sha512-L2bJerfuYOls2wEknm8FmynLtj/G7O4UqX9I/HznRggEW6i2yZIxagDetpVDNowpyavNHJ3SJtUFiyMiZc16Sw==}
+  '@cspell/cspell-worker@10.4.1':
+    resolution: {integrity: sha512-H6+jTNdXsb5NYRG0g29axVVVS3VHvtXCeggD3p0tRVnBF/SBJZVdsHkQJPFSSAjgMNXPq8S1zhEJzmQECG9G6A==}
     engines: {node: '>=22.18.0'}
 
   '@cspell/dict-ada@4.1.1':
@@ -2528,11 +2528,11 @@ packages:
   '@cspell/dict-bash@4.2.3':
     resolution: {integrity: sha512-ljUZoKHbDqw5Sx0qpL2qTUlmkmr+vhZH/sCNrNaBZKTbdgiswErSnIF1jRbGmEitJNxHRHWsuZyVgnTGfVO1Yw==}
 
-  '@cspell/dict-companies@3.2.11':
-    resolution: {integrity: sha512-0cmafbcz2pTHXLd59eLR1gvDvN6aWAOM0+cIL4LLF9GX9yB2iKDNrKsvs4tJRqutoaTdwNFBbV0FYv+6iCtebQ==}
+  '@cspell/dict-companies@3.2.14':
+    resolution: {integrity: sha512-3EeCXEjd6ocbKNEHsPHViHJrDduJsVo9ixr0EMrzUO6OVCXlLSCLosDUzeANQidu/u6WA1ln63uRJ9fAGAKHzw==}
 
-  '@cspell/dict-cpp@7.0.2':
-    resolution: {integrity: sha512-dfbeERiVNeqmo/npivdR6rDiBCqZi3QtjH2Z0HFcXwpdj6i97dX1xaKyK2GUsO/p4u1TOv63Dmj5Vm48haDpuA==}
+  '@cspell/dict-cpp@7.2.0':
+    resolution: {integrity: sha512-hxz+OyQKV96/Bk2JYGsDuSOheYA5gd8KybXnoZMMu/mhZPnwhPi+qiS0Kjc0gLNbXjJ6wbBuXIQWi1UWpQBU/g==}
 
   '@cspell/dict-cryptocurrencies@5.0.5':
     resolution: {integrity: sha512-R68hYYF/rtlE6T/dsObStzN5QZw+0aQBinAXuWCVqwdS7YZo0X33vGMfChkHaiCo3Z2+bkegqHlqxZF4TD3rUA==}
@@ -2546,29 +2546,29 @@ packages:
   '@cspell/dict-dart@2.3.2':
     resolution: {integrity: sha512-sUiLW56t9gfZcu8iR/5EUg+KYyRD83Cjl3yjDEA2ApVuJvK1HhX+vn4e4k4YfjpUQMag8XO2AaRhARE09+/rqw==}
 
-  '@cspell/dict-data-science@2.0.14':
-    resolution: {integrity: sha512-jl6Ds4u5u5JT+yY30pWQpAbdCHfy3lCcNkLbpL/AZKoUaLEoXbaYsps9xQtvD7DyaiXxiLZkdH2yHHXtoFtZyg==}
+  '@cspell/dict-data-science@2.0.17':
+    resolution: {integrity: sha512-6KuM1tXc1PROGu2VJjRMIkFI3lf/1c3ReFqbjV148m5w8SwNVej4Jp6nJa2f64xyaR5Z+LSRTr5RvDDJVovP8A==}
 
-  '@cspell/dict-django@4.1.6':
-    resolution: {integrity: sha512-SdbSFDGy9ulETqNz15oWv2+kpWLlk8DJYd573xhIkeRdcXOjskRuxjSZPKfW7O3NxN/KEf3gm3IevVOiNuFS+w==}
+  '@cspell/dict-django@4.1.7':
+    resolution: {integrity: sha512-94LIxiF/StBTxDkmBhi1eoOX9D/B7gk6pabBvIZFh0gmREAU6ESqU2Wv/RfGARdueMQMPfOJka+vbtL4yKv0oA==}
 
   '@cspell/dict-docker@1.1.17':
     resolution: {integrity: sha512-OcnVTIpHIYYKhztNTyK8ShAnXTfnqs43hVH6p0py0wlcwRIXe5uj4f12n7zPf2CeBI7JAlPjEsV0Rlf4hbz/xQ==}
 
-  '@cspell/dict-dotnet@5.0.13':
-    resolution: {integrity: sha512-xPp7jMnFpOri7tzmqmm/dXMolXz1t2bhNqxYkOyMqXhvs08oc7BFs+EsbDY0X7hqiISgeFZGNqn0dOCr+ncPYw==}
+  '@cspell/dict-dotnet@5.0.15':
+    resolution: {integrity: sha512-j2MUKPlzMeDy/mnb1EjmtkX8e6VzZdw60Qyf6vPlp7WZhUwwp2LBlKOWx7+hASjP6k4a0nDpmn77G+4upxvbZA==}
 
   '@cspell/dict-elixir@4.0.8':
     resolution: {integrity: sha512-CyfphrbMyl4Ms55Vzuj+mNmd693HjBFr9hvU+B2YbFEZprE5AG+EXLYTMRWrXbpds4AuZcvN3deM2XVB80BN/Q==}
 
-  '@cspell/dict-en-common-misspellings@2.1.12':
-    resolution: {integrity: sha512-14Eu6QGqyksqOd4fYPuRb58lK1Va7FQK9XxFsRKnZU8LhL3N+kj7YKDW+7aIaAN/0WGEqslGP6lGbQzNti8Akw==}
+  '@cspell/dict-en-common-misspellings@2.2.6':
+    resolution: {integrity: sha512-RMOmCPOJuBfcC8IVLKjs9aqssjLKmhwVI8Yw/xgEnO9trWAiUzESassDATE229xqi1sdtRIIMGHyuxlkL75Xjg==}
 
-  '@cspell/dict-en-gb-mit@3.1.24':
-    resolution: {integrity: sha512-Oowb/Uzkh7OmDRdCcETzMc9imEb4IpLlHJXoYjX8A8DS2X/54gqSjI915JFB8hKtFjBko5OM0BLQ+6cZhFEMmQ==}
+  '@cspell/dict-en-gb-mit@3.1.32':
+    resolution: {integrity: sha512-bEASyTAzXLowmFWrZIJjeAeCpY9g3jcYDO3tVyFDL/UaAuz0UvCVgOEyg+Ym7bclijqvXmj0xXOD/cW2XWG8iw==}
 
-  '@cspell/dict-en_us@4.4.35':
-    resolution: {integrity: sha512-xWpxBCc/FzzMMo/A+0qwARVaIIhR0Ql8yhhv4rvsvg+GfQF+LG9yzg2GwTM5N2rjvzmM3nKuR9zxFZq2I6fJSg==}
+  '@cspell/dict-en_us@4.4.43':
+    resolution: {integrity: sha512-RK0zfFXSPi0G/zmV9YgUhS2xw9eTV/8DtQ+ouLIiRZ8ejWRt2zhAonu5di+qmIhzhQ62fg7d3tMz3WwRy82yJA==}
 
   '@cspell/dict-filetypes@3.0.18':
     resolution: {integrity: sha512-yU7RKD/x1IWmDLzWeiItMwgV+6bUcU/af23uS0+uGiFUbsY1qWV/D4rxlAAO6Z7no3J2z8aZOkYIOvUrJq0Rcw==}
@@ -2585,14 +2585,14 @@ packages:
   '@cspell/dict-fullstack@3.2.9':
     resolution: {integrity: sha512-diZX+usW5aZ4/b2T0QM/H/Wl9aNMbdODa1Jq0ReBr/jazmNeWjd+PyqeVgzd1joEaHY+SAnjrf/i9CwKd2ZtWQ==}
 
-  '@cspell/dict-gaming-terms@1.1.2':
-    resolution: {integrity: sha512-9XnOvaoTBscq0xuD6KTEIkk9hhdfBkkvJAIsvw3JMcnp1214OCGW8+kako5RqQ2vTZR3Tnf3pc57o7VgkM0q1Q==}
+  '@cspell/dict-gaming-terms@1.1.3':
+    resolution: {integrity: sha512-hLGzd/f+KX5B/5YxAXuQi4DYEfu6IKudtNFO/Nima3JLXD+8Xn+d0q6VdaBxkWVhGYlzow9o+dce+S9mNtgpMg==}
 
-  '@cspell/dict-git@3.1.0':
-    resolution: {integrity: sha512-KEt9zGkxqGy2q1nwH4CbyqTSv5nadpn8BAlDnzlRcnL0Xb3LX9xTgSGShKvzb0bw35lHoYyLWN2ZKAqbC4pgGQ==}
+  '@cspell/dict-git@3.1.1':
+    resolution: {integrity: sha512-XvuGVYj9YEu4EzntqyhH8XlTRyy57C6j8oxkIbUQfR2UYzxZGAP77XHl7qY7eC/40r/haDwnBaccyFR6BRmUCg==}
 
-  '@cspell/dict-golang@6.0.26':
-    resolution: {integrity: sha512-YKA7Xm5KeOd14v5SQ4ll6afe9VSy3a2DWM7L9uBq4u3lXToRBQ1W5PRa+/Q9udd+DTURyVVnQ+7b9cnOlNxaRg==}
+  '@cspell/dict-golang@6.0.29':
+    resolution: {integrity: sha512-EZCgfxrr5lPnYQLmSvB6YtpfoDFt2KKxAD4ppq2xGSIgDFXAF7Mv4doiXIFUQaynCBIEfAMl3f/uDfrIUo4fyQ==}
 
   '@cspell/dict-google@1.0.9':
     resolution: {integrity: sha512-biL65POqialY0i4g6crj7pR6JnBkbsPovB2WDYkj3H4TuC/QXv7Pu5pdPxeUJA6TSCHI7T5twsO4VSVyRxD9CA==}
@@ -2603,8 +2603,8 @@ packages:
   '@cspell/dict-html-symbol-entities@4.0.5':
     resolution: {integrity: sha512-429alTD4cE0FIwpMucvSN35Ld87HCyuM8mF731KU5Rm4Je2SG6hmVx7nkBsLyrmH3sQukTcr1GaiZsiEg8svPA==}
 
-  '@cspell/dict-html@4.0.15':
-    resolution: {integrity: sha512-GJYnYKoD9fmo2OI0aySEGZOjThnx3upSUvV7mmqUu8oG+mGgzqm82P/f7OqsuvTaInZZwZbo+PwJQd/yHcyFIw==}
+  '@cspell/dict-html@4.0.16':
+    resolution: {integrity: sha512-9B6/Cpb5YVcYgsEAlKudun1yd4ONllYS/ZibKLYea2apPR+l2vQdARnPrP9kTqa7NUNfRKl7m9Fb6k9rjimnow==}
 
   '@cspell/dict-java@5.0.12':
     resolution: {integrity: sha512-qPSNhTcl7LGJ5Qp6VN71H8zqvRQK04S08T67knMq9hTA8U7G1sTKzLmBaDOFhq17vNX/+rT+rbRYp+B5Nwza1A==}
@@ -2612,8 +2612,8 @@ packages:
   '@cspell/dict-julia@1.1.1':
     resolution: {integrity: sha512-WylJR9TQ2cgwd5BWEOfdO3zvDB+L7kYFm0I9u0s9jKHWQ6yKmfKeMjU9oXxTBxIufhCXm92SKwwVNAC7gjv+yA==}
 
-  '@cspell/dict-k8s@1.0.12':
-    resolution: {integrity: sha512-2LcllTWgaTfYC7DmkMPOn9GsBWsA4DZdlun4po8s2ysTP7CPEnZc1ZfK6pZ2eI4TsZemlUQQ+NZxMe9/QutQxg==}
+  '@cspell/dict-k8s@1.0.13':
+    resolution: {integrity: sha512-ELGkS13k7K/NEfVimBSrxVTfqXvOF/Kvxj4I62YxRm8bvHbfoXgrGaOx28lPiNRz+dmu+yYtvuXbnURKtYbC6g==}
 
   '@cspell/dict-kotlin@1.1.1':
     resolution: {integrity: sha512-J3NzzfgmxRvEeOe3qUXnSJQCd38i/dpF9/t3quuWh6gXM+krsAXP75dY1CzDmS8mrJAlBdVBeAW5eAZTD8g86Q==}
@@ -2630,52 +2630,52 @@ packages:
   '@cspell/dict-makefile@1.0.5':
     resolution: {integrity: sha512-4vrVt7bGiK8Rx98tfRbYo42Xo2IstJkAF4tLLDMNQLkQ86msDlYSKG1ZCk8Abg+EdNcFAjNhXIiNO+w4KflGAQ==}
 
-  '@cspell/dict-markdown@2.0.17':
-    resolution: {integrity: sha512-H8bAxih6U8NOnSPL7R8My+tqjaB4tmnJTjERuz4zYqmf+cH+5xshX3UVgKlwWFcyjsYfv/zEDuRdMctQv1q6HQ==}
+  '@cspell/dict-markdown@2.0.18':
+    resolution: {integrity: sha512-KLRSwVrwKDz4n7bl2XQjzvaBZbGgx5QKkP5Ok1b24xaO3TpXsLhAbAn1mItvFlI2tF6Rkt83iYjQcYppywuf5Q==}
     peerDependencies:
       '@cspell/dict-css': ^4.1.2
-      '@cspell/dict-html': ^4.0.15
+      '@cspell/dict-html': ^4.0.16
       '@cspell/dict-html-symbol-entities': ^4.0.5
       '@cspell/dict-typescript': ^3.2.3
 
-  '@cspell/dict-monkeyc@1.0.12':
-    resolution: {integrity: sha512-MN7Vs11TdP5mbdNFQP5x2Ac8zOBm97ARg6zM5Sb53YQt/eMvXOMvrep7+/+8NJXs0jkp70bBzjqU4APcqBFNAw==}
+  '@cspell/dict-monkeyc@1.1.2':
+    resolution: {integrity: sha512-4VzwdSUVqyUVmAKAzMkVwVa7AkvSi1l1OHdQr58MWq4VR4NQDO8sVQSibd2PMxruXTkxJt9UwVQVHgaaVTiV1Q==}
 
   '@cspell/dict-node@5.0.9':
     resolution: {integrity: sha512-hO+ga+uYZ/WA4OtiMEyKt5rDUlUyu3nXMf8KVEeqq2msYvAPdldKBGH7lGONg6R/rPhv53Rb+0Y1SLdoK1+7wQ==}
 
-  '@cspell/dict-npm@5.2.41':
-    resolution: {integrity: sha512-To3xsfRmMBYVXtWVEdUgV35M9a/JZ54dSuoY6m6D3uHKKL3I326Wmy4xifZ3PU8MQaWhyEH7zbIcUEtKwTQMcA==}
+  '@cspell/dict-npm@5.2.56':
+    resolution: {integrity: sha512-VqN/f97X64gYR7zVXLu2PN6t5Sm6EljZEFp4htmbOL9tGqs0XVErl9B9kwfaLlKJqfLU6vYcupjRBjqTQ6rQ4Q==}
 
-  '@cspell/dict-php@4.1.1':
-    resolution: {integrity: sha512-EXelI+4AftmdIGtA8HL8kr4WlUE11OqCSVlnIgZekmTkEGSZdYnkFdiJ5IANSALtlQ1mghKjz+OFqVs6yowgWA==}
+  '@cspell/dict-php@4.1.3':
+    resolution: {integrity: sha512-41oKzl7rLVrrVZA/Gs0ESnP6KliEX7c+IwaaNmOL3PAoHasFDVEmIFeENIzuDdM12UcHT+MlLkAm3Qw/lS/ERA==}
 
-  '@cspell/dict-powershell@5.0.15':
-    resolution: {integrity: sha512-l4S5PAcvCFcVDMJShrYD0X6Huv9dcsQPlsVsBGbH38wvuN7gS7+GxZFAjTNxDmTY1wrNi1cCatSg6Pu2BW4rgg==}
+  '@cspell/dict-powershell@5.0.17':
+    resolution: {integrity: sha512-khOoIdBgKRk2scnr7888pf70yJ1Tr3RGdnYcAN0MJ2vtaNRKoOTCFc13gXUkNDHwEyhMI1h9oz3KsT180F2amw==}
 
-  '@cspell/dict-public-licenses@2.0.16':
-    resolution: {integrity: sha512-EQRrPvEOmwhwWezV+W7LjXbIBjiy6y/shrET6Qcpnk3XANTzfvWflf9PnJ5kId/oKWvihFy0za0AV1JHd03pSQ==}
+  '@cspell/dict-public-licenses@2.0.17':
+    resolution: {integrity: sha512-Asdumgg3oZ4ki//b2a+beiVIsNZA5thim4t4v3lTDLY/6a8VAPmTjzC3Y2t0x7ywC/bzAhi1KW/fg8JlwHDgig==}
 
-  '@cspell/dict-python@4.2.27':
-    resolution: {integrity: sha512-Rj6xQgYS4X6ienjgAZF+njA0GRY4oSPouJWv0vfikCTn6EWlfk0V6Dy1HP3Migj1O+IC2NmespgVq+BZNSp8OA==}
+  '@cspell/dict-python@4.5.3':
+    resolution: {integrity: sha512-I226HEEJW4fleE0HMxRaecnzcJICFK6TOqIjqVkOJZzaVZTTjE7fojM+f5XECAwhf4BImW7HVOKMu4rMtza6ZA==}
 
   '@cspell/dict-r@2.1.1':
     resolution: {integrity: sha512-71Ka+yKfG4ZHEMEmDxc6+blFkeTTvgKbKAbwiwQAuKl3zpqs1Y0vUtwW2N4b3LgmSPhV3ODVY0y4m5ofqDuKMw==}
 
-  '@cspell/dict-ruby@5.1.1':
-    resolution: {integrity: sha512-LHrp84oEV6q1ZxPPyj4z+FdKyq1XAKYPtmGptrd+uwHbrF/Ns5+fy6gtSi7pS+uc0zk3JdO9w/tPK+8N1/7WUA==}
+  '@cspell/dict-ruby@5.1.4':
+    resolution: {integrity: sha512-Slw1dLY/pW5liJ5Fle+MIPphIdleZkIM6STDoXCN7sy298GfbfT34sJTcSZcXzZJVXiCEAvlLp+s1YNr6DuWNg==}
 
   '@cspell/dict-rust@4.1.2':
     resolution: {integrity: sha512-O1FHrumYcO+HZti3dHfBPUdnDFkI+nbYK3pxYmiM1sr+G0ebOd6qchmswS0Wsc6ZdEVNiPYJY/gZQR6jfW3uOg==}
 
-  '@cspell/dict-scala@5.0.9':
-    resolution: {integrity: sha512-AjVcVAELgllybr1zk93CJ5wSUNu/Zb5kIubymR/GAYkMyBdYFCZ3Zbwn4Zz8GJlFFAbazABGOu0JPVbeY59vGg==}
+  '@cspell/dict-scala@5.0.11':
+    resolution: {integrity: sha512-+D59847Y61KZ0MBoXJzBMtOXfFhezEb6ShjvJlL7bnryyy6iBwAfozbz7OJAe+KrEpYm+GlVV7Wy4FmJSgxBag==}
 
   '@cspell/dict-shell@1.2.0':
     resolution: {integrity: sha512-PVctvT22lJ49niMiakO8xieY7ELCAzjSqhejWR7bAMb5AZ9F4WDEs+XdGMnoVHWeXq7K5rcepLPmEJb+37zzIw==}
 
-  '@cspell/dict-software-terms@5.2.2':
-    resolution: {integrity: sha512-0CaYd6TAsKtEoA7tNswm1iptEblTzEe3UG8beG2cpSTHk7afWIVMtJLgXDv0f/Li67Lf3Z1Jf3JeXR7GsJ2TRw==}
+  '@cspell/dict-software-terms@5.4.9':
+    resolution: {integrity: sha512-bB5L+OGW0F8Vt83j0XFcMEWCbCNqquLgjlQjm/iCp1jcYi/pQbqDLkXIPbINgbeG0vRqiu5yCPDFCsv4Qb6miQ==}
 
   '@cspell/dict-sql@2.2.1':
     resolution: {integrity: sha512-qDHF8MpAYCf4pWU8NKbnVGzkoxMNrFqBHyG/dgrlic5EQiKANCLELYtGlX5auIMDLmTf1inA0eNtv74tyRJ/vg==}
@@ -2686,8 +2686,8 @@ packages:
   '@cspell/dict-swift@2.0.6':
     resolution: {integrity: sha512-PnpNbrIbex2aqU1kMgwEKvCzgbkHtj3dlFLPMqW1vSniop7YxaDTtvTUO4zA++ugYAEL+UK8vYrBwDPTjjvSnA==}
 
-  '@cspell/dict-terraform@1.1.3':
-    resolution: {integrity: sha512-gr6wxCydwSFyyBKhBA2xkENXtVFToheqYYGFvlMZXWjviynXmh+NK/JTvTCk/VHk3+lzbO9EEQKee6VjrAUSbA==}
+  '@cspell/dict-terraform@1.1.4':
+    resolution: {integrity: sha512-Ere42ilvMFvQA4GlcN0OKlruMPR6EsvaB+iTHzj2xc+NJGRK64V7yApUcWrOrSgTiM/vhWXPIsK3OMfiAiNdmA==}
 
   '@cspell/dict-typescript@3.2.3':
     resolution: {integrity: sha512-zXh1wYsNljQZfWWdSPYwQhpwiuW0KPW1dSd8idjMRvSD0aSvWWHoWlrMsmZeRl4qM4QCEAjua8+cjflm41cQBg==}
@@ -2698,24 +2698,24 @@ packages:
   '@cspell/dict-zig@1.0.0':
     resolution: {integrity: sha512-XibBIxBlVosU06+M6uHWkFeT0/pW5WajDRYdXG2CgHnq85b0TI/Ks0FuBJykmsgi2CAD3Qtx8UHFEtl/DSFnAQ==}
 
-  '@cspell/dynamic-import@10.0.1':
-    resolution: {integrity: sha512-mP1gdq00aIcH8HxNMqnH11X6BKxLcneDtFgl/ecjIKnaGKwi44m8AndP5Kr4ODaYdl8UUw9O3dJh7KaQXnLHZQ==}
+  '@cspell/dynamic-import@10.4.1':
+    resolution: {integrity: sha512-0TlwRH0VHL3atb2QC7l8PK0CRGNmVqRPCqL84rqWlEHrh1bOqvK+2EvMRnf9nSSx5IdS2rXZYibrSfcEY0cUqQ==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/filetypes@10.0.1':
-    resolution: {integrity: sha512-Z5S35giU5IW49fBBq6BksUbE8PC4IYPfaKuwl5Nl9jkf/OkAKiBmCowKX45NzRUQInwK/GSqqIUifrNeI6LdLw==}
+  '@cspell/filetypes@10.4.1':
+    resolution: {integrity: sha512-ztHYeAA/cKAJdX90xjVY+RjJN9im2POkY2wAztDQjOUtP+8qztWHtdk5mOBcRXv7Q93ivBY9N0ZmctakE3+A7Q==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/rpc@10.0.1':
-    resolution: {integrity: sha512-axSRKv3zEAmBm66iD/FV/MPmE4/Yf7c3PZiwTW894Yd3iEhtn3KPKeTrqQ2/tDrhB1Z2qTsap/Hue0MK4o5WXg==}
+  '@cspell/rpc@10.4.1':
+    resolution: {integrity: sha512-rkNS7F1q+aofcex3lun2YzxMybx2pUXgVB1mFRC7LOQhrFOqs85FYg0Absc2sKr2QmedckgWj3Du91ZJn0eChA==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/strong-weak-map@10.0.1':
-    resolution: {integrity: sha512-lenN1DVyPi8nJLSMSJJ670ddTjyiruLueuSZO1qLcxBqUhgxDt/mALu9N/1m6WdOVcg6m/5cLiZVg2KOo2UzRw==}
+  '@cspell/strong-weak-map@10.4.1':
+    resolution: {integrity: sha512-Bap/Gs0/G4NE6KQtT+dNvyGBC2iHws+5il/nvFUuZ1D5dLEK/SYeOuLCX/hdCvcPEF02kr8NxJfY7oK/w8YFiQ==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/url@10.0.1':
-    resolution: {integrity: sha512-abYYgI29wJhWIfWTYrYuzRYDcHQUQ1N5ylnhxYn1NJnIQMqUWGLbDmt12JABtZ+R6h6UNatQrS7rhP86etvJyQ==}
+  '@cspell/url@10.4.1':
+    resolution: {integrity: sha512-QoFi7+fMsBMz9l1wULNcVfyih2DarTv9Z+QKkQGuC/a1Xq70Veoh/JRtczDoOXCAsgutX12VHlHtu9nPRhahoQ==}
     engines: {node: '>=22.18.0'}
 
   '@csstools/css-calc@3.2.1':
@@ -4649,6 +4649,10 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
+  '@streetsidesoftware/unindent@1.0.1':
+    resolution: {integrity: sha512-ZXfg7MT3AT9ZOq/hgzbqNc01zVPG+PFkr+kbB2OHlMcNrtvK10ZPkNgy38MqTErjNeajh4VG1sSSv5zIyjOXxg==}
+    engines: {node: '>=22.18.0'}
+
   '@stylistic/stylelint-plugin@5.2.0':
     resolution: {integrity: sha512-pfa2PMvlH87qwoOMUH4rqz7x/vuO5Kh+r/R1Pe+/5T8sukDPe/VfF6mbdUGE5gwZPlj5O1X56qw55IZrFFRF0g==}
     peerDependencies:
@@ -5450,6 +5454,10 @@ packages:
     resolution: {integrity: sha512-Bq3SmSpyFHaWjPk8If9yc6svM8c56dB5BAtW4Qbw5jHTwwXXcTLoRMkpDJp6VL0XzlWaCHTXrkFURMYmD0sLqg==}
     engines: {node: '>=12'}
 
+  ansi-regex@6.6.0:
+    resolution: {integrity: sha512-XZ5apbzreCbXSKwPjJstu8R0zOi247w3XYwWxtwBXgpZrCyc1Ka7p9/xY0A9/diMewmHbEKz+FIraWaEWjlN5g==}
+    engines: {node: '>=12'}
+
   ansi-styles@4.3.0:
     resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
     engines: {node: '>=8'}
@@ -5800,8 +5808,8 @@ packages:
   chainsaw@0.1.0:
     resolution: {integrity: sha512-75kWfWt6MEKNC8xYXIdRpDehRYY/tNSgwKaJq+dbbDcxORuVrrQ+SEHoWsniVn9XPYfP4gmdWIeDk/4YNp1rNQ==}
 
-  chalk-template@1.1.2:
-    resolution: {integrity: sha512-2bxTP2yUH7AJj/VAXfcA+4IcWGdQ87HwBANLt5XxGTeomo8yG0y95N1um9i5StvhT/Bl0/2cARA5v1PpPXUxUA==}
+  chalk-template@1.1.3:
+    resolution: {integrity: sha512-KDt7oQ+LRF2VLFsTAZd76ZNCKQa8LuW7SZkNJMkriMzvlSNj6dI+S+f41mfK9oTtil49seHVyabtt1753sFL2w==}
     engines: {node: '>=14.16'}
 
   chalk@4.1.2:
@@ -5811,6 +5819,10 @@ packages:
   chalk@5.6.2:
     resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
+  chalk@6.0.1:
+    resolution: {integrity: sha512-/Ce6KNm3vIbWdMlNna6RVIZ/ICQxnJxCicet5LBKK9ZffBkqzDw0xh9EiKSljdRtiIQ1S1z4YgcscUUGzNCWrA==}
+    engines: {node: '>=22'}
 
   chardet@2.2.0:
     resolution: {integrity: sha512-rddelWYNPRrXq6PtNEN2S3f6t9ILzvqaN5pVgi4kqt9jHQaXIial9PznB5iSPVlQSLNaaH22ItWz3EJtQ10+OA==}
@@ -5914,6 +5926,10 @@ packages:
   commander@14.0.3:
     resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
+
+  commander@15.1.0:
+    resolution: {integrity: sha512-cgnQ88TRrWcC7pVq46RzJVRMktu3W2RcbnoidnfBsl1bmDCBwJS/udcIZpKoCrbAYYaCqsz1yZCVIgbIaU3ddQ==}
+    engines: {node: '>=22.12.0'}
 
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -6087,44 +6103,44 @@ packages:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
     engines: {node: '>=8'}
 
-  cspell-config-lib@10.0.1:
-    resolution: {integrity: sha512-hMpo/0j6k7pbiqrLDOLJKD2IGP9XwhjKf2miiM6p84Xeo4nyuFZaxxDCQ68R851HSYFrrdltgpoipMbj1h2Tnw==}
+  cspell-config-lib@10.4.1:
+    resolution: {integrity: sha512-g6XYIdwwIlvakGsIaBtddakSXe35DIwREDptBxLhf0rcIdMv0n4Ii9BluaX+RgzMzRavkBlLS19quNLl80g+LA==}
     engines: {node: '>=22.18.0'}
 
-  cspell-dictionary@10.0.1:
-    resolution: {integrity: sha512-3cZ659vgsZWkzGQJR/sNqGDVt/OnvTSieLKI76V++4t1bHJfochb9ZrrwsuMsb1VPGiyqClUP1/O6WrefF/FVg==}
+  cspell-dictionary@10.4.1:
+    resolution: {integrity: sha512-o9aIAsY0R+MMBbhFEF7aP77NaNETdp1YbZTRN0Xt4JsXQzjX9CMSXOm7WepRVk4Cf9DSSBdyhOYVbECu+2T0wg==}
     engines: {node: '>=22.18.0'}
 
-  cspell-gitignore@10.0.1:
-    resolution: {integrity: sha512-wN23U61Mx6qPJN3CesOmBU9vnbJ0jQm/ylK0iaVui3CcnO7Zzl5qLu5mPHUzGQGm8yso6qjyxqo16Ho7LpZGOQ==}
-    engines: {node: '>=22.18.0'}
-    hasBin: true
-
-  cspell-glob@10.0.1:
-    resolution: {integrity: sha512-7bII9J3aSSpZDwhx7w+zfQXbMxHZQ3be0ilUp5bHrsjz6o07v/NqOHMGcwKdPn1sw2dxDz9sv057xE5pqXnSdw==}
-    engines: {node: '>=22.18.0'}
-
-  cspell-grammar@10.0.1:
-    resolution: {integrity: sha512-xC9AFYmaI9wsO//a7S5tdDGKGJVD5UEEsTg+Up2fi7lPfXIryisYmV6tePNL1SEg0idYss4ja8LUZ3Mib09BjQ==}
+  cspell-gitignore@10.4.1:
+    resolution: {integrity: sha512-YGX9WrxBOma0zNbR8RrVQWmtVJzHMy71ouljbJ/iC8HHTFwaVUlKEFMzvpSYLTAMSMVpa1Cc+9HpUjCcxiyOaA==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  cspell-io@10.0.1:
-    resolution: {integrity: sha512-8C2ka07faxflnaqEBO3pektS21XViE/SEHT7F5ZD1ou7FyMR5u3xawTBJSczClfsxLt/WYeztBYrpmGAjmjksw==}
+  cspell-glob@10.4.1:
+    resolution: {integrity: sha512-bgLVOtD1sDSE0NxTXva6A9HSoxPhet4y709czloJ2bEDb0FNLl+kKJl2hEX0GtMztaNuLWK8nmb9y4RiJbON1Q==}
     engines: {node: '>=22.18.0'}
 
-  cspell-lib@10.0.1:
-    resolution: {integrity: sha512-RpsIPiLzc4/YMW8BMRKpyJ81x439qjYWcqgdKeXnMkbKM88J9PexzutfFf/4v97v96KzfNitEzMpbI0uj8OeUg==}
+  cspell-grammar@10.4.1:
+    resolution: {integrity: sha512-LqXg57TQp/7UPH2XJC6WZTfTLvV0iP+8Ox0Gkyo0tFr+ijBWBB2KnPGEX1udtzZqaRpGokT2xi5rB3zO/lAxgg==}
+    engines: {node: '>=22.18.0'}
+    hasBin: true
+
+  cspell-io@10.4.1:
+    resolution: {integrity: sha512-4AtNoBOFDHKDul2teL+PsmvZlIM+U1uWxFVGmzCtP4xVENKm1WlgwOoSSsQVvZDBlMRLjkWbsHJAKIR3f97wfg==}
     engines: {node: '>=22.18.0'}
 
-  cspell-trie-lib@10.0.1:
-    resolution: {integrity: sha512-BFvhalSkRQFjKrZ//FKK7fRGrZFpifnxB5AwCkzsIsBZqicsfafcQ1xP21qpb0QqyV/IomjNgviG+tRJs+0rMw==}
+  cspell-lib@10.4.1:
+    resolution: {integrity: sha512-mX9UfN3hpcfdbqLWYIzLiJ81W2dhcgJfBDo3H1YAPK+yXZobSxtHeyQQBBapJ6Ca84U2R6AWNjuSjCneeISogg==}
+    engines: {node: '>=22.18.0'}
+
+  cspell-trie-lib@10.4.1:
+    resolution: {integrity: sha512-MOxZ3b2MLNfRWXz1Seh6xXGvUclMxA9h11tCBj6+Y0pd+7KtNk7YMlzmHIGOnbF9W5YZNtA2bMuYbVlefcOa1w==}
     engines: {node: '>=22.18.0'}
     peerDependencies:
-      '@cspell/cspell-types': 10.0.1
+      '@cspell/cspell-types': 10.4.1
 
-  cspell@10.0.1:
-    resolution: {integrity: sha512-Gg6w/flT3fKfl3la62hfTnhtNnDQ+9mU7kUhVqw/axl/Ms4oENw0oJMkWFIoj4f6nL/SDPz7KcPXd2XbkKFNmQ==}
+  cspell@10.4.1:
+    resolution: {integrity: sha512-/6r9R7Pv78VFuD4uKogu2g6SG+Lms78sLBesgEPR8YJ/VEbEYAz6cbXv86m3FMlqWJdccvnG6WiPNt2Ce8SZAw==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
@@ -6734,8 +6750,8 @@ packages:
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
-  fast-equals@6.0.0:
-    resolution: {integrity: sha512-PFhhIGgdM79r5Uztdj9Zb6Tt1zKafqVfdMGwVca1z5z6fbX7DmsySSuJd8HiP6I1j505DCS83cLxo5rmSNeVEA==}
+  fast-equals@6.2.2:
+    resolution: {integrity: sha512-n+XqoarWCgcar0O3om3DeNYx6xTuLWGTUF1bRZ9iuO00tsPepzP1L4V7rqtxxZ4PEya34UCESReimFvxmEVwIA==}
     engines: {node: '>=6.0.0'}
 
   fast-fifo@1.3.2:
@@ -6827,6 +6843,9 @@ packages:
 
   flatted@3.4.2:
     resolution: {integrity: sha512-PjDse7RzhcPkIJwy5t7KPWQSZ9cAbzQXcafsetQoD7sOJRQlGikNbx7yZp2OotDnJyrDcbyRq3Ttb18iYOqkxA==}
+
+  flatted@3.4.4:
+    resolution: {integrity: sha512-5+ybhBZANEJxaH3X5evAFatUxLfEHSr7n6kYJ+1Qd0mUqr4eu9gIf6GDbWHf8RJijHrjjO8G+la14SlL2SeS1Q==}
 
   focus-trap@8.2.1:
     resolution: {integrity: sha512-6CxwrrFRquH7pDXb1mWxudkU9LSfYBMRZutpgddb2o6iwCk7cIRrBhyY3c8SGKcmIKdeMTrGSNg4Bedh2RSF/w==}
@@ -7194,8 +7213,8 @@ packages:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
 
-  import-fresh@4.0.0:
-    resolution: {integrity: sha512-Fpi660c7VPDM3fPKYovStd9IP1CPOikf6v/dGxJJMmHPcwYQIMJ4W7kO1avBYEpMqkCh+Dx3Ln6H7VYqgztLjw==}
+  import-fresh@4.0.1:
+    resolution: {integrity: sha512-/XFeXYgkuWgbtqPC7qPKvciXTvhtz7WMNQKQsAM1Kz+j0I5OWJDrybfiya6QtHF9oEvPkLwTHmC9+4OR/MmfIA==}
     engines: {node: '>=22.15'}
 
   import-meta-resolve@4.2.0:
@@ -8349,6 +8368,10 @@ packages:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
+  picomatch@4.0.7:
+    resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
+    engines: {node: '>=12'}
+
   pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
@@ -8995,6 +9018,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.8.6:
+    resolution: {integrity: sha512-9lpSSU4Mly3mrtruwLs1eLK6+gzbzqeBFwRNjIjE+9LuDpWdYctrQlQ3ej1Ilgi7gknpsTRnPoLP8DpCHqHIJw==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   send@1.2.1:
     resolution: {integrity: sha512-1gnZf7DFcoIcajTjTwjwuDjzuz4PPcY2StKPlsGAQ1+YH20IRVrBaXSWmdjowTJ6u8Rc01PoYOGHXfP1mYcZNQ==}
     engines: {node: '>= 18'}
@@ -9098,6 +9126,10 @@ packages:
 
   smol-toml@1.6.1:
     resolution: {integrity: sha512-dWUG8F5sIIARXih1DTaQAX4SsiTXhInKf1buxdY9DIg4ZYPZK5nGM1VRIYmEbDbsHt7USo99xSLFu5Q1IqTmsg==}
+    engines: {node: '>= 18'}
+
+  smol-toml@1.9.1:
+    resolution: {integrity: sha512-j7WyPdf0CJoutMzMoPLF/bVXHtKZIT9Rb4eGeEbWw8X2t5oirjPgpL+OpaENZrILYaXqYwnVH+qgUwVbl+pUJQ==}
     engines: {node: '>= 18'}
 
   sortablejs@1.15.7:
@@ -10032,11 +10064,14 @@ packages:
       jsdom:
         optional: true
 
-  vscode-languageserver-textdocument@1.0.12:
-    resolution: {integrity: sha512-cxWNPesCnQCcMPeenjKKsOCKQZ/L6Tv19DTRIGuLWe32lyzWhihGVJ/rcckZXJxfdKCFvRLS3fpBIsV/ZGX4zA==}
+  vscode-languageserver-textdocument@1.0.16:
+    resolution: {integrity: sha512-qeNEuOi9a3qkqRf7Gfez2WL2VwlBTLCNekHBGO9kxPVUp9XuY15yfTJ9jwvOwKI0I2MhUUfZq95NSp+LK1CLQg==}
 
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
+
+  vscode-uri@3.2.0:
+    resolution: {integrity: sha512-m2gXo3bn0G1kT9InzMf07fTbqMbGtyckj3bH5ktLO+1Ssv+yiATZ4dhwaQv9UZWxJh6E9IFGnQyjgWVDWVBDrg==}
 
   vue-component-type-helpers@3.3.5:
     resolution: {integrity: sha512-Fe1jyPJoUGpJOYKOri44jduR7My4yYINOMJISuMAbmrs+L5LbIDUc8NTWZYY3EJLK0yPLuCmcd5zoCsE4k2/KA==}
@@ -10327,6 +10362,11 @@ packages:
 
   yaml@2.9.0:
     resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
+  yaml@2.9.1:
+    resolution: {integrity: sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw==}
     engines: {node: '>= 14.6'}
     hasBin: true
 
@@ -11518,87 +11558,87 @@ snapshots:
     optionalDependencies:
       conventional-commits-parser: 6.4.0
 
-  '@cspell/cspell-bundled-dicts@10.0.1':
+  '@cspell/cspell-bundled-dicts@10.4.1':
     dependencies:
       '@cspell/dict-ada': 4.1.1
       '@cspell/dict-al': 1.1.1
       '@cspell/dict-aws': 4.0.17
       '@cspell/dict-bash': 4.2.3
-      '@cspell/dict-companies': 3.2.11
-      '@cspell/dict-cpp': 7.0.2
+      '@cspell/dict-companies': 3.2.14
+      '@cspell/dict-cpp': 7.2.0
       '@cspell/dict-cryptocurrencies': 5.0.5
       '@cspell/dict-csharp': 4.0.8
       '@cspell/dict-css': 4.1.2
       '@cspell/dict-dart': 2.3.2
-      '@cspell/dict-data-science': 2.0.14
-      '@cspell/dict-django': 4.1.6
+      '@cspell/dict-data-science': 2.0.17
+      '@cspell/dict-django': 4.1.7
       '@cspell/dict-docker': 1.1.17
-      '@cspell/dict-dotnet': 5.0.13
+      '@cspell/dict-dotnet': 5.0.15
       '@cspell/dict-elixir': 4.0.8
-      '@cspell/dict-en-common-misspellings': 2.1.12
-      '@cspell/dict-en-gb-mit': 3.1.24
-      '@cspell/dict-en_us': 4.4.35
+      '@cspell/dict-en-common-misspellings': 2.2.6
+      '@cspell/dict-en-gb-mit': 3.1.32
+      '@cspell/dict-en_us': 4.4.43
       '@cspell/dict-filetypes': 3.0.18
       '@cspell/dict-flutter': 1.1.1
       '@cspell/dict-fonts': 4.0.6
       '@cspell/dict-fsharp': 1.1.1
       '@cspell/dict-fullstack': 3.2.9
-      '@cspell/dict-gaming-terms': 1.1.2
-      '@cspell/dict-git': 3.1.0
-      '@cspell/dict-golang': 6.0.26
+      '@cspell/dict-gaming-terms': 1.1.3
+      '@cspell/dict-git': 3.1.1
+      '@cspell/dict-golang': 6.0.29
       '@cspell/dict-google': 1.0.9
       '@cspell/dict-haskell': 4.0.6
-      '@cspell/dict-html': 4.0.15
+      '@cspell/dict-html': 4.0.16
       '@cspell/dict-html-symbol-entities': 4.0.5
       '@cspell/dict-java': 5.0.12
       '@cspell/dict-julia': 1.1.1
-      '@cspell/dict-k8s': 1.0.12
+      '@cspell/dict-k8s': 1.0.13
       '@cspell/dict-kotlin': 1.1.1
       '@cspell/dict-latex': 5.1.0
       '@cspell/dict-lorem-ipsum': 4.0.5
       '@cspell/dict-lua': 4.0.8
       '@cspell/dict-makefile': 1.0.5
-      '@cspell/dict-markdown': 2.0.17(@cspell/dict-css@4.1.2)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-html@4.0.15)(@cspell/dict-typescript@3.2.3)
-      '@cspell/dict-monkeyc': 1.0.12
+      '@cspell/dict-markdown': 2.0.18(@cspell/dict-css@4.1.2)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-html@4.0.16)(@cspell/dict-typescript@3.2.3)
+      '@cspell/dict-monkeyc': 1.1.2
       '@cspell/dict-node': 5.0.9
-      '@cspell/dict-npm': 5.2.41
-      '@cspell/dict-php': 4.1.1
-      '@cspell/dict-powershell': 5.0.15
-      '@cspell/dict-public-licenses': 2.0.16
-      '@cspell/dict-python': 4.2.27
+      '@cspell/dict-npm': 5.2.56
+      '@cspell/dict-php': 4.1.3
+      '@cspell/dict-powershell': 5.0.17
+      '@cspell/dict-public-licenses': 2.0.17
+      '@cspell/dict-python': 4.5.3
       '@cspell/dict-r': 2.1.1
-      '@cspell/dict-ruby': 5.1.1
+      '@cspell/dict-ruby': 5.1.4
       '@cspell/dict-rust': 4.1.2
-      '@cspell/dict-scala': 5.0.9
+      '@cspell/dict-scala': 5.0.11
       '@cspell/dict-shell': 1.2.0
-      '@cspell/dict-software-terms': 5.2.2
+      '@cspell/dict-software-terms': 5.4.9
       '@cspell/dict-sql': 2.2.1
       '@cspell/dict-svelte': 1.0.7
       '@cspell/dict-swift': 2.0.6
-      '@cspell/dict-terraform': 1.1.3
+      '@cspell/dict-terraform': 1.1.4
       '@cspell/dict-typescript': 3.2.3
       '@cspell/dict-vue': 3.0.5
       '@cspell/dict-zig': 1.0.0
 
-  '@cspell/cspell-json-reporter@10.0.1':
+  '@cspell/cspell-json-reporter@10.4.1':
     dependencies:
-      '@cspell/cspell-types': 10.0.1
+      '@cspell/cspell-types': 10.4.1
 
-  '@cspell/cspell-performance-monitor@10.0.1': {}
+  '@cspell/cspell-performance-monitor@10.4.1': {}
 
-  '@cspell/cspell-pipe@10.0.1': {}
+  '@cspell/cspell-pipe@10.4.1': {}
 
-  '@cspell/cspell-resolver@10.0.1':
+  '@cspell/cspell-resolver@10.4.1':
     dependencies:
       global-directory: 5.0.0
 
-  '@cspell/cspell-service-bus@10.0.1': {}
+  '@cspell/cspell-service-bus@10.4.1': {}
 
-  '@cspell/cspell-types@10.0.1': {}
+  '@cspell/cspell-types@10.4.1': {}
 
-  '@cspell/cspell-worker@10.0.1':
+  '@cspell/cspell-worker@10.4.1':
     dependencies:
-      cspell-lib: 10.0.1
+      cspell-lib: 10.4.1
 
   '@cspell/dict-ada@4.1.1': {}
 
@@ -11610,9 +11650,9 @@ snapshots:
     dependencies:
       '@cspell/dict-shell': 1.2.0
 
-  '@cspell/dict-companies@3.2.11': {}
+  '@cspell/dict-companies@3.2.14': {}
 
-  '@cspell/dict-cpp@7.0.2': {}
+  '@cspell/dict-cpp@7.2.0': {}
 
   '@cspell/dict-cryptocurrencies@5.0.5': {}
 
@@ -11622,21 +11662,21 @@ snapshots:
 
   '@cspell/dict-dart@2.3.2': {}
 
-  '@cspell/dict-data-science@2.0.14': {}
+  '@cspell/dict-data-science@2.0.17': {}
 
-  '@cspell/dict-django@4.1.6': {}
+  '@cspell/dict-django@4.1.7': {}
 
   '@cspell/dict-docker@1.1.17': {}
 
-  '@cspell/dict-dotnet@5.0.13': {}
+  '@cspell/dict-dotnet@5.0.15': {}
 
   '@cspell/dict-elixir@4.0.8': {}
 
-  '@cspell/dict-en-common-misspellings@2.1.12': {}
+  '@cspell/dict-en-common-misspellings@2.2.6': {}
 
-  '@cspell/dict-en-gb-mit@3.1.24': {}
+  '@cspell/dict-en-gb-mit@3.1.32': {}
 
-  '@cspell/dict-en_us@4.4.35': {}
+  '@cspell/dict-en_us@4.4.43': {}
 
   '@cspell/dict-filetypes@3.0.18': {}
 
@@ -11648,11 +11688,11 @@ snapshots:
 
   '@cspell/dict-fullstack@3.2.9': {}
 
-  '@cspell/dict-gaming-terms@1.1.2': {}
+  '@cspell/dict-gaming-terms@1.1.3': {}
 
-  '@cspell/dict-git@3.1.0': {}
+  '@cspell/dict-git@3.1.1': {}
 
-  '@cspell/dict-golang@6.0.26': {}
+  '@cspell/dict-golang@6.0.29': {}
 
   '@cspell/dict-google@1.0.9': {}
 
@@ -11660,13 +11700,13 @@ snapshots:
 
   '@cspell/dict-html-symbol-entities@4.0.5': {}
 
-  '@cspell/dict-html@4.0.15': {}
+  '@cspell/dict-html@4.0.16': {}
 
   '@cspell/dict-java@5.0.12': {}
 
   '@cspell/dict-julia@1.1.1': {}
 
-  '@cspell/dict-k8s@1.0.12': {}
+  '@cspell/dict-k8s@1.0.13': {}
 
   '@cspell/dict-kotlin@1.1.1': {}
 
@@ -11678,40 +11718,40 @@ snapshots:
 
   '@cspell/dict-makefile@1.0.5': {}
 
-  '@cspell/dict-markdown@2.0.17(@cspell/dict-css@4.1.2)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-html@4.0.15)(@cspell/dict-typescript@3.2.3)':
+  '@cspell/dict-markdown@2.0.18(@cspell/dict-css@4.1.2)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-html@4.0.16)(@cspell/dict-typescript@3.2.3)':
     dependencies:
       '@cspell/dict-css': 4.1.2
-      '@cspell/dict-html': 4.0.15
+      '@cspell/dict-html': 4.0.16
       '@cspell/dict-html-symbol-entities': 4.0.5
       '@cspell/dict-typescript': 3.2.3
 
-  '@cspell/dict-monkeyc@1.0.12': {}
+  '@cspell/dict-monkeyc@1.1.2': {}
 
   '@cspell/dict-node@5.0.9': {}
 
-  '@cspell/dict-npm@5.2.41': {}
+  '@cspell/dict-npm@5.2.56': {}
 
-  '@cspell/dict-php@4.1.1': {}
+  '@cspell/dict-php@4.1.3': {}
 
-  '@cspell/dict-powershell@5.0.15': {}
+  '@cspell/dict-powershell@5.0.17': {}
 
-  '@cspell/dict-public-licenses@2.0.16': {}
+  '@cspell/dict-public-licenses@2.0.17': {}
 
-  '@cspell/dict-python@4.2.27':
+  '@cspell/dict-python@4.5.3':
     dependencies:
-      '@cspell/dict-data-science': 2.0.14
+      '@cspell/dict-data-science': 2.0.17
 
   '@cspell/dict-r@2.1.1': {}
 
-  '@cspell/dict-ruby@5.1.1': {}
+  '@cspell/dict-ruby@5.1.4': {}
 
   '@cspell/dict-rust@4.1.2': {}
 
-  '@cspell/dict-scala@5.0.9': {}
+  '@cspell/dict-scala@5.0.11': {}
 
   '@cspell/dict-shell@1.2.0': {}
 
-  '@cspell/dict-software-terms@5.2.2': {}
+  '@cspell/dict-software-terms@5.4.9': {}
 
   '@cspell/dict-sql@2.2.1': {}
 
@@ -11719,7 +11759,7 @@ snapshots:
 
   '@cspell/dict-swift@2.0.6': {}
 
-  '@cspell/dict-terraform@1.1.3': {}
+  '@cspell/dict-terraform@1.1.4': {}
 
   '@cspell/dict-typescript@3.2.3': {}
 
@@ -11727,18 +11767,18 @@ snapshots:
 
   '@cspell/dict-zig@1.0.0': {}
 
-  '@cspell/dynamic-import@10.0.1':
+  '@cspell/dynamic-import@10.4.1':
     dependencies:
-      '@cspell/url': 10.0.1
+      '@cspell/url': 10.4.1
       import-meta-resolve: 4.2.0
 
-  '@cspell/filetypes@10.0.1': {}
+  '@cspell/filetypes@10.4.1': {}
 
-  '@cspell/rpc@10.0.1': {}
+  '@cspell/rpc@10.4.1': {}
 
-  '@cspell/strong-weak-map@10.0.1': {}
+  '@cspell/strong-weak-map@10.4.1': {}
 
-  '@cspell/url@10.0.1': {}
+  '@cspell/url@10.4.1': {}
 
   '@csstools/css-calc@3.2.1(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)':
     dependencies:
@@ -12178,7 +12218,7 @@ snapshots:
 
   '@intlify/shared@11.4.6': {}
 
-  '@intlify/unplugin-vue-i18n@11.2.4(@vue/compiler-dom@3.5.38)(eslint@10.5.0(jiti@2.7.0))(rollup@4.64.10)(typescript@6.0.3)(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue-i18n@11.4.6(vue@3.5.38(typescript@6.0.3)))(vue@3.5.38(typescript@6.0.3))':
+  '@intlify/unplugin-vue-i18n@11.2.4(@vue/compiler-dom@3.5.38)(eslint@10.5.0(jiti@2.7.0))(rollup@4.64.10)(typescript@6.0.3)(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue-i18n@11.4.6(vue@3.5.38(typescript@6.0.3)))(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.5.0(jiti@2.7.0))
       '@intlify/bundle-utils': 11.2.4(vue-i18n@11.4.6(vue@3.5.38(typescript@6.0.3)))
@@ -12194,7 +12234,7 @@ snapshots:
       unplugin: 2.3.11
       vue: 3.5.38(typescript@6.0.3)
     optionalDependencies:
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       vue-i18n: 11.4.6(vue@3.5.38(typescript@6.0.3))
     transitivePeerDependencies:
       - '@vue/compiler-dom'
@@ -13130,6 +13170,8 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
+  '@streetsidesoftware/unindent@1.0.1': {}
+
   '@stylistic/stylelint-plugin@5.2.0(stylelint@17.13.0(typescript@6.0.3))':
     dependencies:
       '@csstools/css-parser-algorithms': 4.0.0(@csstools/css-tokenizer@4.0.0)
@@ -13211,12 +13253,12 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 4.3.1
 
-  '@tailwindcss/vite@4.3.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))':
+  '@tailwindcss/vite@4.3.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))':
     dependencies:
       '@tailwindcss/node': 4.3.1
       '@tailwindcss/oxide': 4.3.1
       tailwindcss: 4.3.1
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
 
   '@tanstack/store@0.11.0': {}
 
@@ -13425,10 +13467,10 @@ snapshots:
       magic-string: 0.30.21
       string.prototype.matchall: 4.1.0
 
-  '@tsdown/css@0.22.3(jiti@2.7.0)(postcss@8.5.32)(sass-embedded@1.100.0)(sass@1.101.0)(tsdown@0.22.3)(yaml@2.9.0)':
+  '@tsdown/css@0.22.3(jiti@2.7.0)(postcss@8.5.32)(sass-embedded@1.100.0)(sass@1.101.0)(tsdown@0.22.3)(yaml@2.9.1)':
     dependencies:
       lightningcss: 1.32.0
-      postcss-load-config: 6.0.1(jiti@2.7.0)(postcss@8.5.32)(yaml@2.9.0)
+      postcss-load-config: 6.0.1(jiti@2.7.0)(postcss@8.5.32)(yaml@2.9.1)
       rolldown: 1.1.2
       tsdown: 0.22.3(@tsdown/css@0.22.3)(oxc-resolver@11.21.3)(publint@0.3.21)(typescript@6.0.3)(unrun@0.3.1(synckit@0.11.13))(vue-tsc@3.3.5(typescript@6.0.3))
     optionalDependencies:
@@ -13639,40 +13681,40 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vitejs/plugin-vue-jsx@5.1.5(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))':
+  '@vitejs/plugin-vue-jsx@5.1.5(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-syntax-typescript': 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
       '@rolldown/pluginutils': 1.0.1
       '@vue/babel-plugin-jsx': 2.0.1(@babel/core@7.29.7)
-      vite: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       vue: 3.5.38(typescript@6.0.3)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue-jsx@5.1.5(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))':
+  '@vitejs/plugin-vue-jsx@5.1.5(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-syntax-typescript': 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
       '@rolldown/pluginutils': 1.0.1
       '@vue/babel-plugin-jsx': 2.0.1(@babel/core@7.29.7)
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       vue: 3.5.38(typescript@6.0.3)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@6.0.7(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))':
+  '@vitejs/plugin-vue@6.0.7(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       vue: 3.5.38(typescript@6.0.3)
 
-  '@vitejs/plugin-vue@6.0.7(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))':
+  '@vitejs/plugin-vue@6.0.7(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       vue: 3.5.38(typescript@6.0.3)
 
   '@vitest/expect@4.1.9':
@@ -13684,13 +13726,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.9(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))':
+  '@vitest/mocker@4.1.9(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))':
     dependencies:
       '@vitest/spy': 4.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
 
   '@vitest/pretty-format@4.1.9':
     dependencies:
@@ -14022,6 +14064,8 @@ snapshots:
   ansi-regex@5.0.1: {}
 
   ansi-regex@6.2.2: {}
+
+  ansi-regex@6.6.0: {}
 
   ansi-styles@4.3.0:
     dependencies:
@@ -14454,7 +14498,7 @@ snapshots:
     dependencies:
       traverse: 0.3.9
 
-  chalk-template@1.1.2:
+  chalk-template@1.1.3:
     dependencies:
       chalk: 5.6.2
 
@@ -14464,6 +14508,8 @@ snapshots:
       supports-color: 7.2.0
 
   chalk@5.6.2: {}
+
+  chalk@6.0.1: {}
 
   chardet@2.2.0: {}
 
@@ -14575,6 +14621,8 @@ snapshots:
   commander@11.1.0: {}
 
   commander@14.0.3: {}
+
+  commander@15.1.0: {}
 
   commander@2.20.3: {}
 
@@ -14741,94 +14789,94 @@ snapshots:
 
   crypto-random-string@2.0.0: {}
 
-  cspell-config-lib@10.0.1:
+  cspell-config-lib@10.4.1:
     dependencies:
-      '@cspell/cspell-types': 10.0.1
+      '@cspell/cspell-types': 10.4.1
       comment-json: 5.0.0
-      smol-toml: 1.6.1
-      yaml: 2.9.0
+      smol-toml: 1.9.1
+      yaml: 2.9.1
 
-  cspell-dictionary@10.0.1:
+  cspell-dictionary@10.4.1:
     dependencies:
-      '@cspell/cspell-performance-monitor': 10.0.1
-      '@cspell/cspell-pipe': 10.0.1
-      '@cspell/cspell-types': 10.0.1
-      cspell-trie-lib: 10.0.1(@cspell/cspell-types@10.0.1)
-      fast-equals: 6.0.0
+      '@cspell/cspell-performance-monitor': 10.4.1
+      '@cspell/cspell-pipe': 10.4.1
+      '@cspell/cspell-types': 10.4.1
+      cspell-trie-lib: 10.4.1(@cspell/cspell-types@10.4.1)
+      fast-equals: 6.2.2
 
-  cspell-gitignore@10.0.1:
+  cspell-gitignore@10.4.1:
     dependencies:
-      '@cspell/url': 10.0.1
-      cspell-glob: 10.0.1
-      cspell-io: 10.0.1
+      '@cspell/url': 10.4.1
+      cspell-glob: 10.4.1
+      cspell-io: 10.4.1
 
-  cspell-glob@10.0.1:
+  cspell-glob@10.4.1:
     dependencies:
-      '@cspell/url': 10.0.1
-      picomatch: 4.0.4
+      '@cspell/url': 10.4.1
+      picomatch: 4.0.7
 
-  cspell-grammar@10.0.1:
+  cspell-grammar@10.4.1:
     dependencies:
-      '@cspell/cspell-pipe': 10.0.1
-      '@cspell/cspell-types': 10.0.1
+      '@cspell/cspell-pipe': 10.4.1
+      '@cspell/cspell-types': 10.4.1
 
-  cspell-io@10.0.1:
+  cspell-io@10.4.1:
     dependencies:
-      '@cspell/cspell-service-bus': 10.0.1
-      '@cspell/url': 10.0.1
+      '@cspell/cspell-service-bus': 10.4.1
+      '@cspell/url': 10.4.1
 
-  cspell-lib@10.0.1:
+  cspell-lib@10.4.1:
     dependencies:
-      '@cspell/cspell-bundled-dicts': 10.0.1
-      '@cspell/cspell-performance-monitor': 10.0.1
-      '@cspell/cspell-pipe': 10.0.1
-      '@cspell/cspell-resolver': 10.0.1
-      '@cspell/cspell-types': 10.0.1
-      '@cspell/dynamic-import': 10.0.1
-      '@cspell/filetypes': 10.0.1
-      '@cspell/rpc': 10.0.1
-      '@cspell/strong-weak-map': 10.0.1
-      '@cspell/url': 10.0.1
-      cspell-config-lib: 10.0.1
-      cspell-dictionary: 10.0.1
-      cspell-glob: 10.0.1
-      cspell-grammar: 10.0.1
-      cspell-io: 10.0.1
-      cspell-trie-lib: 10.0.1(@cspell/cspell-types@10.0.1)
+      '@cspell/cspell-bundled-dicts': 10.4.1
+      '@cspell/cspell-performance-monitor': 10.4.1
+      '@cspell/cspell-pipe': 10.4.1
+      '@cspell/cspell-resolver': 10.4.1
+      '@cspell/cspell-types': 10.4.1
+      '@cspell/dynamic-import': 10.4.1
+      '@cspell/filetypes': 10.4.1
+      '@cspell/rpc': 10.4.1
+      '@cspell/strong-weak-map': 10.4.1
+      '@cspell/url': 10.4.1
+      cspell-config-lib: 10.4.1
+      cspell-dictionary: 10.4.1
+      cspell-glob: 10.4.1
+      cspell-grammar: 10.4.1
+      cspell-io: 10.4.1
+      cspell-trie-lib: 10.4.1(@cspell/cspell-types@10.4.1)
       env-paths: 4.0.0
       gensequence: 8.0.8
-      import-fresh: 4.0.0
+      import-fresh: 4.0.1
       resolve-from: 5.0.0
-      vscode-languageserver-textdocument: 1.0.12
-      vscode-uri: 3.1.0
+      vscode-languageserver-textdocument: 1.0.16
+      vscode-uri: 3.2.0
       xdg-basedir: 5.1.0
 
-  cspell-trie-lib@10.0.1(@cspell/cspell-types@10.0.1):
+  cspell-trie-lib@10.4.1(@cspell/cspell-types@10.4.1):
     dependencies:
-      '@cspell/cspell-types': 10.0.1
+      '@cspell/cspell-types': 10.4.1
 
-  cspell@10.0.1:
+  cspell@10.4.1:
     dependencies:
-      '@cspell/cspell-json-reporter': 10.0.1
-      '@cspell/cspell-performance-monitor': 10.0.1
-      '@cspell/cspell-pipe': 10.0.1
-      '@cspell/cspell-types': 10.0.1
-      '@cspell/cspell-worker': 10.0.1
-      '@cspell/dynamic-import': 10.0.1
-      '@cspell/url': 10.0.1
-      ansi-regex: 6.2.2
-      chalk: 5.6.2
-      chalk-template: 1.1.2
-      commander: 14.0.3
-      cspell-config-lib: 10.0.1
-      cspell-dictionary: 10.0.1
-      cspell-gitignore: 10.0.1
-      cspell-glob: 10.0.1
-      cspell-io: 10.0.1
-      cspell-lib: 10.0.1
-      fast-json-stable-stringify: 2.1.0
-      flatted: 3.4.2
-      semver: 7.8.5
+      '@cspell/cspell-json-reporter': 10.4.1
+      '@cspell/cspell-performance-monitor': 10.4.1
+      '@cspell/cspell-pipe': 10.4.1
+      '@cspell/cspell-types': 10.4.1
+      '@cspell/cspell-worker': 10.4.1
+      '@cspell/dynamic-import': 10.4.1
+      '@cspell/url': 10.4.1
+      '@streetsidesoftware/unindent': 1.0.1
+      ansi-regex: 6.6.0
+      chalk: 6.0.1
+      chalk-template: 1.1.3
+      commander: 15.1.0
+      cspell-config-lib: 10.4.1
+      cspell-dictionary: 10.4.1
+      cspell-gitignore: 10.4.1
+      cspell-glob: 10.4.1
+      cspell-io: 10.4.1
+      cspell-lib: 10.4.1
+      flatted: 3.4.4
+      semver: 7.8.6
       tinyglobby: 0.2.17
 
   css-functions-list@3.3.3: {}
@@ -15522,7 +15570,7 @@ snapshots:
 
   fast-deep-equal@3.1.3: {}
 
-  fast-equals@6.0.0: {}
+  fast-equals@6.2.2: {}
 
   fast-fifo@1.3.2: {}
 
@@ -15615,6 +15663,8 @@ snapshots:
       hookified: 1.15.1
 
   flatted@3.4.2: {}
+
+  flatted@3.4.4: {}
 
   focus-trap@8.2.1:
     dependencies:
@@ -16020,7 +16070,7 @@ snapshots:
       parent-module: 1.0.1
       resolve-from: 4.0.0
 
-  import-fresh@4.0.0: {}
+  import-fresh@4.0.1: {}
 
   import-meta-resolve@4.2.0: {}
 
@@ -17225,6 +17275,8 @@ snapshots:
 
   picomatch@4.0.4: {}
 
+  picomatch@4.0.7: {}
+
   pify@4.0.1: {}
 
   pinia-plugin-persistedstate@4.7.1(@nuxt/kit@4.4.8(magicast@0.5.3))(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))):
@@ -17284,13 +17336,13 @@ snapshots:
       postcss: 8.5.32
       postcss-safe-parser: 6.0.0(postcss@8.5.32)
 
-  postcss-load-config@6.0.1(jiti@2.7.0)(postcss@8.5.32)(yaml@2.9.0):
+  postcss-load-config@6.0.1(jiti@2.7.0)(postcss@8.5.32)(yaml@2.9.1):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       jiti: 2.7.0
       postcss: 8.5.32
-      yaml: 2.9.0
+      yaml: 2.9.1
 
   postcss-media-query-parser@0.2.3: {}
 
@@ -17939,6 +17991,8 @@ snapshots:
 
   semver@7.8.5: {}
 
+  semver@7.8.6: {}
+
   send@1.2.1:
     dependencies:
       debug: 4.4.3
@@ -18069,6 +18123,8 @@ snapshots:
   smob@1.6.2: {}
 
   smol-toml@1.6.1: {}
+
+  smol-toml@1.9.1: {}
 
   sortablejs@1.15.7: {}
 
@@ -18534,7 +18590,7 @@ snapshots:
       tree-kill: 1.2.2
       unconfig-core: 7.5.0
     optionalDependencies:
-      '@tsdown/css': 0.22.3(jiti@2.7.0)(postcss@8.5.32)(sass-embedded@1.100.0)(sass@1.101.0)(tsdown@0.22.3)(yaml@2.9.0)
+      '@tsdown/css': 0.22.3(jiti@2.7.0)(postcss@8.5.32)(sass-embedded@1.100.0)(sass@1.101.0)(tsdown@0.22.3)(yaml@2.9.1)
       publint: 0.3.21
       typescript: 6.0.3
       unrun: 0.3.1(synckit@0.11.13)
@@ -18689,7 +18745,7 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unplugin-dts@1.0.2(esbuild@0.28.1)(rolldown@1.1.2)(rollup@4.64.10)(typescript@6.0.3)(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)):
+  unplugin-dts@1.0.2(esbuild@0.28.1)(rolldown@1.1.2)(rollup@4.64.10)(typescript@6.0.3)(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)):
     dependencies:
       '@rollup/pluginutils': 5.4.0(rollup@4.64.10)
       '@volar/typescript': 2.4.28
@@ -18704,7 +18760,7 @@ snapshots:
       esbuild: 0.28.1
       rolldown: 1.1.2
       rollup: 4.64.10
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -18713,14 +18769,14 @@ snapshots:
       pathe: 2.0.3
       picomatch: 4.0.4
 
-  unplugin-vue@7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.0):
+  unplugin-vue@7.2.0(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(vue@3.5.38(typescript@6.0.3))(yaml@2.9.1):
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
       '@vue/reactivity': 3.5.38
       obug: 2.1.3
       unplugin: 3.0.0
-      vite: 8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       vue: 3.5.38(typescript@6.0.3)
     transitivePeerDependencies:
       - '@types/node'
@@ -18848,26 +18904,26 @@ snapshots:
       type-fest: 4.41.0
       vue: 3.5.38(typescript@6.0.3)
 
-  vite-dev-rpc@2.0.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)):
+  vite-dev-rpc@2.0.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)):
     dependencies:
       birpc: 4.0.0
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
-      vite-hot-client: 2.2.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
+      vite-hot-client: 2.2.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))
 
-  vite-hot-client@2.2.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)):
+  vite-hot-client@2.2.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)):
     dependencies:
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
 
-  vite-plugin-compression@0.5.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)):
+  vite-plugin-compression@0.5.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)):
     dependencies:
       chalk: 4.1.2
       debug: 4.4.3
       fs-extra: 10.1.0
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-inspect@11.4.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)):
+  vite-plugin-inspect@11.4.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)):
     dependencies:
       ansis: 4.3.1
       error-stack-parser-es: 1.0.5
@@ -18877,8 +18933,8 @@ snapshots:
       perfect-debounce: 2.1.0
       sirv: 3.0.2
       unplugin-utils: 0.3.1
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
-      vite-dev-rpc: 2.0.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
+      vite-dev-rpc: 2.0.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))
 
   vite-plugin-lazy-import@1.0.7:
     dependencies:
@@ -18887,32 +18943,32 @@ snapshots:
       rollup: 4.64.10
       xe-utils: 3.9.1
 
-  vite-plugin-pwa@1.3.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(workbox-build@7.4.1)(workbox-window@7.4.1):
+  vite-plugin-pwa@1.3.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(workbox-build@7.4.1)(workbox-window@7.4.1):
     dependencies:
       debug: 4.4.3
       pretty-bytes: 6.1.1
       tinyglobby: 0.2.17
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       workbox-build: 7.4.1
       workbox-window: 7.4.1
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-vue-devtools@8.1.3(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3)):
+  vite-plugin-vue-devtools@8.1.3(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3)):
     dependencies:
       '@vue/devtools-core': 8.1.3(vue@3.5.38(typescript@6.0.3))
       '@vue/devtools-kit': 8.1.3
       '@vue/devtools-shared': 8.1.3
       sirv: 3.0.2
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
-      vite-plugin-inspect: 11.4.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))
-      vite-plugin-vue-inspector: 6.0.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
+      vite-plugin-inspect: 11.4.1(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))
+      vite-plugin-vue-inspector: 6.0.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))
     transitivePeerDependencies:
       - '@nuxt/kit'
       - supports-color
       - vue
 
-  vite-plugin-vue-inspector@6.0.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)):
+  vite-plugin-vue-inspector@6.0.0(vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)):
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-proposal-decorators': 7.29.7(@babel/core@7.29.7)
@@ -18923,11 +18979,11 @@ snapshots:
       '@vue/compiler-dom': 3.5.38
       kolorist: 1.8.0
       magic-string: 0.30.21
-      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
     transitivePeerDependencies:
       - supports-color
 
-  vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0):
+  vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.4
@@ -18943,9 +18999,9 @@ snapshots:
       sass: 1.101.0
       sass-embedded: 1.100.0
       terser: 5.48.0
-      yaml: 2.9.0
+      yaml: 2.9.1
 
-  vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0):
+  vite@8.0.10(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.4
@@ -18961,9 +19017,9 @@ snapshots:
       sass: 1.101.0
       sass-embedded: 1.100.0
       terser: 5.48.0
-      yaml: 2.9.0
+      yaml: 2.9.1
 
-  vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0):
+  vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.4
@@ -18979,12 +19035,12 @@ snapshots:
       sass: 1.101.0
       sass-embedded: 1.100.0
       terser: 5.48.0
-      yaml: 2.9.0
+      yaml: 2.9.1
 
-  vitest@4.1.9(@types/node@25.9.4)(happy-dom@20.10.6)(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)):
+  vitest@4.1.9(@types/node@25.9.4)(happy-dom@20.10.6)(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)):
     dependencies:
       '@vitest/expect': 4.1.9
-      '@vitest/mocker': 4.1.9(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))
+      '@vitest/mocker': 4.1.9(vite@8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))
       '@vitest/pretty-format': 4.1.9
       '@vitest/runner': 4.1.9
       '@vitest/snapshot': 4.1.9
@@ -19001,7 +19057,7 @@ snapshots:
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.10(@types/node@25.9.4)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 25.9.4
@@ -19009,9 +19065,11 @@ snapshots:
     transitivePeerDependencies:
       - msw
 
-  vscode-languageserver-textdocument@1.0.12: {}
+  vscode-languageserver-textdocument@1.0.16: {}
 
   vscode-uri@3.1.0: {}
+
+  vscode-uri@3.2.0: {}
 
   vue-component-type-helpers@3.3.5: {}
 
@@ -19043,7 +19101,7 @@ snapshots:
     dependencies:
       vue: 3.5.38(typescript@6.0.3)
 
-  vue-router@5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3)):
+  vue-router@5.1.0(@vue/compiler-sfc@3.5.38)(pinia@4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3)))(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1))(vue@3.5.38(typescript@6.0.3)):
     dependencies:
       '@babel/generator': 8.0.0
       '@vue-macros/common': 3.1.2(vue@3.5.38(typescript@6.0.3))
@@ -19066,7 +19124,7 @@ snapshots:
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.38
       pinia: 4.1.0(@vue/devtools-api@8.1.3)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))
-      vite: 8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.0)
+      vite: 8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)(sass-embedded@1.100.0)(sass@1.101.0)(terser@5.48.0)(yaml@2.9.1)
 
   vue-tippy@6.7.1(vue@3.5.38(typescript@6.0.3)):
     dependencies:
@@ -19376,6 +19434,8 @@ snapshots:
       yaml: 2.9.0
 
   yaml@2.9.0: {}
+
+  yaml@2.9.1: {}
 
   yargs-parser@18.1.3:
     dependencies:
