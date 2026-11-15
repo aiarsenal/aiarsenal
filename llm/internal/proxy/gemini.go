@@ -2,6 +2,7 @@ package proxy
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -68,6 +69,13 @@ func (h *Handler) GeminiGenerateContent(c *gin.Context) {
 		geminiError(c, http.StatusNotFound, 404, "NOT_FOUND", "no model deployed for: "+reqModel)
 		return
 	}
+	// F-024 预算原子预留（同 proxyChat，按翻译后的 openai 请求体估成本）。
+	rs, ok := h.reserveFor(c, k, hash, openaiBody, candidates[0])
+	if !ok {
+		return
+	}
+	defer rs.settleAll(context.Background())
+
 	// 单请求内跨凭据 failover（同 proxyChat）：逐候选尝试，成功即返回；全失败透传最后一次上游错误。
 	tried := map[string]struct{}{}
 	last := attemptResult{failStatus: http.StatusServiceUnavailable, failBody: []byte(`{"error":{"message":"no deployment succeeded"}}`)}

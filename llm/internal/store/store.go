@@ -98,6 +98,54 @@ func (s *Store) IncrementKeySpend(ctx context.Context, hash string, delta model.
 	return s.db.WithContext(ctx).Exec(`UPDATE aa_llm_virtual_key SET spend = spend + ? WHERE token_hash = ?`, delta, hash).Error
 }
 
+// ReserveKeySpend 预算原子预留（F-024）：判定与扣减同一语句——预算窗口放得下本次
+// 预估成本才推进 spend，0 行更新=超限。不再依赖 5s 缓存快照（并发请求共享旧值
+// 全部放行的竞态根因）；max_budget IS NULL（不限额）无条件预留。
+func (s *Store) ReserveKeySpend(ctx context.Context, hash string, est model.Milli) (bool, error) {
+	res := s.db.WithContext(ctx).Exec(
+		`UPDATE aa_llm_virtual_key SET spend = spend + ?
+		 WHERE token_hash = ? AND deleted_at IS NULL
+		   AND (max_budget IS NULL OR spend + ? <= max_budget)`, est, hash, est)
+	if res.Error != nil {
+		return false, res.Error
+	}
+	return res.RowsAffected > 0, nil
+}
+
+// RefundKeySpend 退还预留（请求终局对账：真实成本经 IncrementKeySpend 另计，
+// 净效果 spend += 真实成本）。退款是原子减法，与预留/增量任意交错均收敛；
+// GREATEST(0,…) 下限堵跨窗口缝隙——请求跨窗口到期时刻时窗口 N 的预留若滚存到
+// 窗口 N+1，无下限退款会把新窗口 spend 打负（低报额度外借 ≤est）；下限后该
+// 场景的不精确方向变为 spend 偏高（fail-closed）。
+func (s *Store) RefundKeySpend(ctx context.Context, hash string, est model.Milli) error {
+	if est == 0 {
+		return nil
+	}
+	return s.db.WithContext(ctx).Exec(
+		`UPDATE aa_llm_virtual_key SET spend = GREATEST(0, spend - ?) WHERE token_hash = ?`, est, hash).Error
+}
+
+// ReserveBudgetSpend 共享预算原子预留（F-024，与 ReserveKeySpend 同语义）。
+func (s *Store) ReserveBudgetSpend(ctx context.Context, budgetID string, est model.Milli) (bool, error) {
+	res := s.db.WithContext(ctx).Exec(
+		`UPDATE aa_llm_budget SET spend = spend + ?
+		 WHERE budget_id = ? AND deleted_at IS NULL
+		   AND (max_budget IS NULL OR spend + ? <= max_budget)`, est, budgetID, est)
+	if res.Error != nil {
+		return false, res.Error
+	}
+	return res.RowsAffected > 0, nil
+}
+
+// RefundBudgetSpend 共享预算预留退还（同 RefundKeySpend：GREATEST(0,…) 堵跨窗口负值）。
+func (s *Store) RefundBudgetSpend(ctx context.Context, budgetID string, est model.Milli) error {
+	if est == 0 {
+		return nil
+	}
+	return s.db.WithContext(ctx).Exec(
+		`UPDATE aa_llm_budget SET spend = GREATEST(0, spend - ?) WHERE budget_id = ?`, est, budgetID).Error
+}
+
 // WriteErrorLog 写错误日志。requestBody 落 request_kwargs（详情页"请求参数"），便于复现失败请求。
 func (s *Store) WriteErrorLog(ctx context.Context, r SpendRecord, excType, excStr, statusCode, requestBody string) error {
 	return s.db.WithContext(ctx).Exec(`

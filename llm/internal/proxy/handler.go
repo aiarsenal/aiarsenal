@@ -77,6 +77,13 @@ func (h *Handler) Messages(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": gin.H{"message": "no model deployed for: " + reqModel}})
 		return
 	}
+	// F-024 预算原子预留（同 proxyChat）：失败 fail-closed，终局对账退还。
+	rs, ok := h.reserveFor(c, k, hash, raw, candidates[0])
+	if !ok {
+		return
+	}
+	defer rs.settleAll(context.Background())
+
 	// 单请求内跨凭据 failover（同 proxyChat）：逐候选尝试，成功即返回；全失败透传最后一次上游错误。
 	tried := map[string]struct{}{}
 	last := attemptResult{failStatus: http.StatusServiceUnavailable, failBody: []byte(`{"error":{"message":"no deployment succeeded"}}`)}
@@ -297,6 +304,14 @@ func (h *Handler) proxyChat(c *gin.Context, callType string) {
 		c.JSON(http.StatusNotFound, gin.H{"error": gin.H{"message": "no model deployed for: " + reqModel}})
 		return
 	}
+	// F-024 预算原子预留：发送上游前按估算成本在 key/共享预算上预留（判定与扣减
+	// 同一 UPDATE），失败 fail-closed；预留状态经 context 交给 bill 终局对账。
+	rs, ok := h.reserveFor(c, k, hash, body, candidates[0])
+	if !ok {
+		return
+	}
+	defer rs.settleAll(context.Background())
+
 	// 单请求内跨凭据 failover：逐个尝试候选（跳过已试过 + 冷却），成功即返回；
 	// 全失败透传最后一次上游错误（保留真实 status/body，让客户端看到真正的 429 而非笼统 503）。
 	tried := map[string]struct{}{}
@@ -523,6 +538,14 @@ func (h *Handler) bill(c *gin.Context, m *model.Model, k *model.VirtualKey, hash
 	date := start.Format("2006-01-02")
 	// 鉴权时命中的用户权限组预算：goroutine 里不能碰 gin.Context（请求返回即回收），先捕获。
 	userBudgetIDs := c.GetStringSlice("user_budget_ids")
+	// F-024 终局对账：预留退还（幂等，与异步真实成本增量任意交错均收敛于 spend+=cost）。
+	// 同步执行：bill 每 attempt 必达，一次触发即完成；入口 defer settleAll 兜底无 bill 路径。
+	if rv, exists := c.Get("spend_reservation"); exists {
+		if resv, ok2 := rv.(*spendReservation); ok2 {
+			resv.refundKey(context.Background())
+			resv.refundShared(context.Background())
+		}
+	}
 	go func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
