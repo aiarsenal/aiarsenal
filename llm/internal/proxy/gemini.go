@@ -2,6 +2,7 @@ package proxy
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -68,6 +69,13 @@ func (h *Handler) GeminiGenerateContent(c *gin.Context) {
 		geminiError(c, http.StatusNotFound, 404, "NOT_FOUND", "no model deployed for: "+reqModel)
 		return
 	}
+	// F-024 预算原子预留（同 proxyChat，按翻译后的 openai 请求体估成本）。
+	rs, ok := h.reserveFor(c, k, hash, openaiBody, candidates[0])
+	if !ok {
+		return
+	}
+	defer rs.settleAll(context.Background())
+
 	// 单请求内跨凭据 failover（同 proxyChat）：逐候选尝试，成功即返回；全失败透传最后一次上游错误。
 	tried := map[string]struct{}{}
 	last := attemptResult{failStatus: http.StatusServiceUnavailable, failBody: []byte(`{"error":{"message":"no deployment succeeded"}}`)}
@@ -110,19 +118,19 @@ func (h *Handler) attemptGemini(c *gin.Context, m *model.Model, openaiBody []byt
 	url, method, headers, upBody, err := p.BuildUpstream(c, provReq)
 	if err != nil {
 		h.recordError(c, m, k, hash, reqID, start, "chat", baseURL, "build_upstream_error", err.Error(), "500", capStr(string(openaiBody)))
-		return attemptResult{failStatus: http.StatusInternalServerError, failBody: []byte(err.Error())}
+		return attemptResult{failStatus: http.StatusInternalServerError, failBody: upstreamFailBody(), rawUpstream: true}
 	}
 	auth.TouchActive(h.st, hash)
 	resp, br, cancelUpstream, err := h.doUpstream(c, method, url, headers, upBody)
 	if err != nil {
 		if resp == nil {
 			h.recordError(c, m, k, hash, reqID, start, "chat", baseURL, "upstream_error", err.Error(), "502", capStr(string(openaiBody)))
-			return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error()), rawUpstream: true}
+			return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 		}
 		// 首字节没等到（超时/零字节空流）：不伪装成成功空流，按上游失败走 failover。
 		h.recordError(c, m, k, hash, reqID, start, "chat", baseURL, "upstream_no_data", err.Error(), "502", capStr(string(openaiBody)))
 		h.bill(c, m, k, hash, reqID, start, "chat", baseURL, 0, 0, 0, "failed", capStr(string(openaiBody)), "")
-		return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error())}
+		return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 	}
 	defer cancelUpstream()
 	defer resp.Body.Close()

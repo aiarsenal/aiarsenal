@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"aiarsenal/domain/entity"
 	"aiarsenal/domain/repository"
@@ -75,7 +76,18 @@ func (s *McpKeyService) Edit(ctx context.Context, e *entity.McpBearerKey) error 
 	return s.repo.Edit(ctx, e)
 }
 
+// Delete 批量删除 MCP 密钥。F-033：仓库层 Delete 对不存在的 key_id 影响零行也返回
+// 成功——管理员以为删掉了、密钥实际仍可鉴权。先逐个确认存在（删除是低频管理动作，
+// N 次点查可接受），缺一即拒；空清单同属参数形状错误，同样拒绝。
 func (s *McpKeyService) Delete(ctx context.Context, ids []string) error {
+	if len(ids) == 0 {
+		return errors.New("keyId 不能为空")
+	}
+	for _, id := range ids {
+		if _, err := s.repo.Get(ctx, id); err != nil {
+			return fmt.Errorf("密钥 %s 不存在或已删除", id)
+		}
+	}
 	return s.repo.Delete(ctx, ids)
 }
 

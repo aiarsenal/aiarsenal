@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -14,6 +15,7 @@ import (
 // Config 全局配置（对应 config.yaml 各段）
 type Config struct {
 	Server   ServerConfig   `mapstructure:"server"`
+	Mcp      McpConfig      `mapstructure:"mcp"`
 	Public   PublicConfig   `mapstructure:"public"`
 	Database DatabaseConfig `mapstructure:"database"`
 	Redis    RedisConfig    `mapstructure:"redis"`
@@ -258,6 +260,17 @@ type PublicConfig struct {
 	Domain string `mapstructure:"domain"` // 对外根域名，如 aiarsenal.cc；api./mcp./llm. 子域据此推导
 }
 
+// McpConfig MCP 网关（api 模块第三 main）配置。
+type McpConfig struct {
+	// MaxBatchItems JSON-RPC 批量请求子条数上限（F-032）：超限整单拒绝（fail-closed），
+	// 防止单请求放大千倍成本。MCP 2025-06-18 规范已移除批量语义，上限只为兼容旧客户端。
+	// <=0 回落默认值。
+	MaxBatchItems int `mapstructure:"maxBatchItems"`
+}
+
+// DefaultMaxBatchItems 批量请求默认上限（等保默认，可经 yaml/env 调整）。
+const DefaultMaxBatchItems = 20
+
 type ServerConfig struct {
 	Address string `mapstructure:"address"`
 	// TrustedProxies 可信代理网段（F-022）：空/nil = 不信任任何代理，ClientIP 回落
@@ -373,10 +386,12 @@ func Load() (*Config, error) {
 	}
 	applyTrustedProxyEnvOverride(v)
 	applyCredentialEnvOverrides(v)
+	applyMcpEnvOverride(v)
 	c := &Config{}
 	if err := v.Unmarshal(c); err != nil {
 		return nil, fmt.Errorf("unmarshal config: %w", err)
 	}
+	c.applyMcpDefaults()
 	c.applyPasswordDefaults()
 	c.applyAlertDefaults()
 	c.applyAuditDefaults()
@@ -550,6 +565,22 @@ func (c *Config) DataEncryptKey() string {
 func applyTrustedProxyEnvOverride(v *viper.Viper) {
 	if k := os.Getenv("AIARSENAL_SERVER_TRUSTED_PROXIES"); k != "" {
 		v.Set("server.trustedProxies", strings.Split(k, ","))
+	}
+}
+
+// applyMcpEnvOverride MCP 批量上限注入（F-032）：AIARSENAL_MCP_MAX_BATCH_ITEMS。
+func applyMcpEnvOverride(v *viper.Viper) {
+	if k := os.Getenv("AIARSENAL_MCP_MAX_BATCH_ITEMS"); k != "" {
+		if n, err := strconv.Atoi(k); err == nil {
+			v.Set("mcp.maxBatchItems", n)
+		}
+	}
+}
+
+// applyMcpDefaults 归一 MCP 配置：未配置/非法值回落默认上限（fail-closed 语义）。
+func (c *Config) applyMcpDefaults() {
+	if c.Mcp.MaxBatchItems <= 0 {
+		c.Mcp.MaxBatchItems = DefaultMaxBatchItems
 	}
 }
 

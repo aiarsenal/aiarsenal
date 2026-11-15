@@ -33,6 +33,10 @@ database:
     maxOpen: 10        # 连接池最大打开连接数
     maxLifetime: "30s" # 连接对象可重复使用时长
 
+# MCP 网关（api 模块第三 main）
+mcp:
+  maxBatchItems: 20    # JSON-RPC 批量请求子条数上限（F-032）；超限整单拒绝。经 AIARSENAL_MCP_MAX_BATCH_ITEMS 覆盖
+
 # Redis
 redis:
   default:
