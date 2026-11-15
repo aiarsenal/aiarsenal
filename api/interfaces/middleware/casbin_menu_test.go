@@ -36,6 +36,18 @@ func TestMenuFor(t *testing.T) {
 			wantHit: "api/v1/system/user/edit",
 		},
 		{
+			name:    "参数路由模板（F-030）：FullPath 带 :id 段，迁移 000008 按模板登记",
+			url:     "api/v1/agent/instance/:id/exec",
+			names:   []string{"api/v1/agent/instance/:id/start", "api/v1/agent/instance/:id/exec"},
+			wantHit: "api/v1/agent/instance/:id/exec",
+		},
+		{
+			name:    "参数模板不与不同参数名的路由互撞",
+			url:     "api/v1/agent/instance/:id/start",
+			names:   []string{"api/v1/agent/instance/:deviceId/commands"},
+			wantHit: "",
+		},
+		{
 			name:    "带查询串的记录按 ? 前段命中",
 			url:     "api/v1/system/user/list",
 			names:   []string{"api/v1/system/user/list?accessParams=x"},
