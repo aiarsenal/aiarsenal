@@ -232,8 +232,8 @@ func Register(r *gin.Engine, d Deps) {
 	post.DELETE("/delete", d.Post.Delete)
 
 	// 权限分组管理（分组/员工集合两字典；写后快照刷新即时生效）
-	// options 为 GrantEditor 选择器瘦投影：不加菜单行走 casbin 隐式放行（同 user/search 惯例），
-	// 登录即可拉到 {id,name}，不吐词条/工号明细。
+	// options 为 GrantEditor 选择器瘦投影：默认拒绝后走迁移 000008 的 nocheck 放行
+	// （登录即可拉到 {id,name}，不吐词条/工号明细；菜单登记由 000008 覆盖）。
 	pg := protected.Group("/permgroup")
 	pgGroup := pg.Group("/group")
 	pgGroup.GET("/list", d.PermGroup.GroupList)
@@ -504,8 +504,8 @@ func Register(r *gin.Engine, d Deps) {
 	}
 
 	// ===== 统一审核工单（主库 aa_review_order；审核系统「我的提交/我的审核」） =====
-	// 自助端点：菜单行只是导航（/review/mine、/review/todo），本组路径无 aa_rule 行时 casbin 放行，
-	// 真实授权在 service（提交=本人，审批=部门负责人或超管）。
+	// 自助端点：真实授权在 service（提交=本人，审批=部门负责人或超管）；默认拒绝后
+	// 本组路径由迁移 000008 的 nocheck 放行（菜单闸门形同虚设，授权不靠 casbin）。
 	reviewGrp := v1.Group("/review", middleware.JWTAuth(d.UserRepo), middleware.CasbinAuth(d.MenuRepo))
 	ro := reviewGrp.Group("/order")
 	ro.POST("/create", d.ReviewOrder.Create)
@@ -535,7 +535,7 @@ func Register(r *gin.Engine, d Deps) {
 	grp.POST("/add", d.McpGroup.Add)
 	grp.PUT("/edit", d.McpGroup.Edit)
 	grp.DELETE("/delete", d.McpGroup.Delete)
-	// 组合授权配置（菜单表无此路径 → casbin fail-open，真实门槛在 service 层 canManage）
+	// 组合授权配置（迁移 000008 登记 nocheck 放行，真实门槛在 service 层 canManage）
 	grp.GET("/grant/get", d.McpGroup.GrantGet)
 	grp.POST("/grant/save", d.McpGroup.GrantSave)
 

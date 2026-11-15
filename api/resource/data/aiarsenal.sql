@@ -1578,6 +1578,297 @@ p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	mcpoauthbtdel000000000000000000a	All	g
 p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	mcpoauthbtrotate000000000000000a	All	g		
 p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	mcpoauthtoklist0000000000000000a	All	g		
 p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	mcpoauthtokrevoke00000000000000a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	bc6a5ae7a9e3514b2dc3f99ae4e2eb6f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f7e0551a7199631f1ba559ba888d341c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9d7ec6da6be2e45d44f15fc08e932966	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	58cde53d088da3346b73b6adc5f856fa	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4c49bd72eb946ff6c68fbee5956ff06c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9960c16a4c640090d9ad22c5124a5885	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d212f7cccbeb8f28eddbb7dfe3d42f83	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	97bfa1b2a245708ad9687aee03fed991	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	e354b22dcb7d7d0e16764cfdb100b42d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	551ee8efbdf37aedd84329d75bba3464	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	e3da3cecae11b27fa86f57fa0654ab48	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f286784950376ae969dc73ebb284c29e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ad12356195e796e71601ea98e927006b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c39466a47aba9b102a0153ecf274e113	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	483430a6470fc885fd4ed81d270fba8e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9a5923966dee64ad273ffa25d2e00c6c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6cd1c1670e9127912eb9d8492cbdb46f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b04aa14d7a8a12f48db9b799e49360b9	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	09e5768570719645342d185527633f31	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3a1ef8844022e25ac16949aa40733b00	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	776ca855b828db7a21953ccc18cdddd3	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	457d97150b0b20afc1bcea5d2640d421	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5092353264a1aa721587f5f315bdd894	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d0b729f25a5f082c832f64bc9246a746	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	627c3d7bfb79cf73e27f1fcc0329c9f1	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4195395bbdade5cdcfec63121fa521db	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b5e3e55c047dd1438794e6a73120a3e4	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	37c268c33fa32464889cfc1966493314	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	20f2e697cddf4347012d093a9d452e25	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	57acaebcc0a9d2223291933c5da58559	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	eee8d93bbfaff036592614219252a55f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b191943b45b80612a54743668f68c4ac	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	91bfa4b40fd6908d518627e16d2dc91f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3be38c836b5af7bf841f4aa7e49ae120	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7e8d3833f69dc7f89fd16b64b9b75aae	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	64dce8199d599521e657e49b5a7379ea	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	fc9d83fc62490c657cef0386d18f2028	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a554e88ac666030f86fafbdc57c9e1dc	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ab1cc3e635e7e2add6f83ca94b33e1ed	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	69edb65569f325e63a780831b078258c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9833b5822a177025b18ac6ab4feeeecd	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a1c878dd0096c9252d0279cb604254dd	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a7d39d537fa2180990fd9b8864a0cfaa	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6816756881a7c2c8107bf87f0275a2bf	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f6792180a85b99dec347d6dfe2b18185	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	e7b0ef6488dedf85c1317b3e8fddc16b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	031485963b9edaf2c55a375a1ef65e54	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f4a53c6ce8016af46a020ffd287b1699	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5db6f6bcc6d9c2df4842cf7589ac57be	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1ff7ffa47570b7c241e33eea35ada04e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1e87baf910e119129ff30538ea2160a3	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6b7aac20e77515232cb8c84c4970c0d2	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4391923029413b6cbee973f8cfeb5857	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6c567483fbe99dfc59671388a666be9a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	605675c8a85c2662074094df498d3b1b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	69aa7f58eed2a0f50baa043acae04a67	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9a417be5ff1831cb1e575bc3fcf1fc40	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4360a9db4f4263a0895a2a3295e25340	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	301980d8eccabb227f785bb304b25b96	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	bde39204966b0800fdc765a2d4b7652b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c100e5c00ff4fa9edfc36c2044357ecc	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	046bfe2bccc69ecd510ed8dea0a49b85	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f6fc217b7a9833bd1bf7ac1cbcbf77ac	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	add826cc0b9b5bd638d8153fed18ad77	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6b7a4ab6bfaf58633100290286d3dd0e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6f92d6844d6d5e1aa36e63ebfa11118c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	22e1f36fba6b2dc067246c8f536ff3d9	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c6c575ef69257a72231870d9465a5d25	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5ff14dffe82e6da15808d772dddc463e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	56646bc7928411f7973393ff606c2536	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	355e226e2001f25e05abfb1d690a36d5	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	aec056a09b7e4167a75b5a3137e0cc3f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3c87e34dd80e526bb2384c105ce73afe	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	80124b68d86f9734a6fc840563d92d52	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	cdac62241f26bbe32d1caf02dcef8e2d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ffd0c7b65291ae1daa712a8e43fca5ba	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	72aede8e0fabd04f3b7171e25d416872	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4bb062215abd97b6a72121ee701261e9	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5ba05253fb7e79a8dbf6c2b719b58236	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	82b63bcd5aa5cd126a87e2aa9f0859cd	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1cc461203fe9c1b388ab29ece5d6490b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	569b1d604342bc80ace7ab05069f3478	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a35bea27690d40994917f2e954df5a7c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5b1515bcde3a68d5cbed2aa2e0d452d2	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9d9896640e382a08be90eee1a5447203	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	2dc6159565473b79817dbb2044bf00a3	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	339c0e45b0db06a5aed8ad335a3fc710	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d0e98d2d8ddc4c47a19b6168d4f1b594	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	042766ba8888461b06a9037c4c8ac4a2	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7c049257f301b70b619f182a989de82e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	730f51b3167b8e0b9a913ccbe8df5c2a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	93828451f49fd3a51d38d4a68d41a669	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	772d99054f8365dc95a19280c32a8997	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b693e525d9779bed39cf3c99d575f4c9	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	594b7cf9c3c5b80dd4fedd786207e439	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4f242dc8d19085f440006f5d367f276a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	bc965914b23d24e2dcc450b5c08f8230	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5fc102f9fab81d8455246f54d25bda6d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a528f0d649b121e31b1431651c0166b5	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	2382234970fc453d79364357a474ea18	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7a7349e7e511bf5a2b7850456125ee64	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	e0862ae491784542e7fba16b35640a55	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c8f92d5f8da366a5fe1bdb3b075f83b0	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f05d47b0ee6297355d6f9a85e8fc358a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1431ea04acbacfbd931ed3039e5b692b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b91a996b03c8b7eb767e9bbf4430f58b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b4a42994af8eb59d9f8ea1d2f851a177	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6ecd7a292c1e588b944938470fc34fe5	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	66ef7563766102f5696012f62a48dc0c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	fe9b8ef9387001647259cbad4563736f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	13b121445f442bcd3023253cf9ca00cb	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7d20ec64713f18f2fa659c7f647a947c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4075f42ffe35ebf0d367f0015c414b0e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a386efd33649438bb913c905269abd0b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c068a3eee1b481f3a7d3c01ef093ce0a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7e42620144eca152cdc03fa276a0c135	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c8436d0a8f9051daacfab4008fa81915	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	70f78dae283be585cb3d175f68b40663	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a7291d6ec5064f238bf279db1acedf42	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5caa4c9d7bd8c40970d8115b96b883b3	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ec76c665d073723c2333ce387f9db5ef	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9b3b72e769cfe42d8d3148bf9c349359	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	adf4072be22720d027b04a68d7eb93c5	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	707666d30b6aa86ba05814747922cb53	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1a87ee8e99a36c50cf67e1d9e289a727	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	939eb949c3c495f5f872ba988640ea66	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	982952fb89d8ae2c8dd00275735d87dd	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	08ee6fe61f4b1e76fe0338a71c6ef61a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	dab8a0f978b415dc6cdf1119fec408ea	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6691cf61e993da18a13e6c3fae142d9a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4c636ef4c58377e1c3312ad8350998cd	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	eadf9856640717dff898a2ff63097dd7	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1e4b0f788f0778eba3a10137d2ba43bc	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a7fa62d3fe56895fe27323e08d93febb	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	76ae457032f889caa8e4c81662cb11cb	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3fc6aa91a4a21a7da558e38d78277961	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5d63bd9916dde34ede28ed9dacd36ed3	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5aa1a23a9b61abab75ce0aae1488ff8e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3c767ec5c5cf18a023c7fbd829df854a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5fd1165088a72a3ea8fb7608fa8a1049	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5ab62142a27ddac78e7ba5cda75118ff	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	fc63d95ddddadcf62cecdbceeab6b4b1	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6bf784ccbe8e560dc502fde0d209b7e9	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	2f4f6a251b33a2cc18134f1b004e935b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	087f801a5d98daa4da70800e99a81488	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	40e87bad79968a48c82edcd73679ba8d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	8dda952743db99567196170f5c2219c2	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	760269eb88a0bcc2d04a9ce1010e0c62	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c5f37087e565af6b1feff1204eec112d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	bb83f50a1025478038b571667ef1eacf	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9d58f18edb94df6c70602cda18e9bd09	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d0b166f24408d157e5cc4e7f5959a087	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d97a5a9e0933591e5fd4cc195fc72549	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7c26461c5224b1cf07c705c4389f7c8c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a7650058d6c28e4e806246a2d0f0652d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	5597741fa4876a1f9a2c26cfc958b83e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f12d04149fcd6a5b83594b2bc8aa3741	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d340994693c4bac8c6e8a2c6278b2aa0	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	edced5e7c99ff70bd97c82b9cc158cef	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f7dbf19cc886351c5f88ab82e1588209	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a0f3d9f73d669488dad9eb46134ac645	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	914515f8992f91a1ee48a3b3069fe834	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3a1152310b8df19b841b60ed38cb47bc	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6fa3c5261f14f7d43a7ef330d35a9d49	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b0ab77279aed86f97a590c82e482adb7	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f1cc44465588bfc9d246a45f52e1430c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7bc3e6ae77e6822e2ce4224e0d584772	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a542d641e6157628b090baa434173da8	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7858163e013959c26cf5ddf216f749b2	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	762e8ebad9d10dfe4e9b5356f8f78ba0	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	0a68c811df8b082dea55062ed8d8ef40	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3b39a4ada28f8e7f420672852aa9934b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f6da3800dff03039c48541f405f4dbe3	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c4bfb28c35a5035de2a172258a22f140	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b9bc9d3b32f1dc86b33139760b1d7e61	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	530a9a640cbc6d253073d48c813c4ba0	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	97fb225e0bc3d657df7d2d820243de45	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	806d025198b6a13419b3c848ab68cb53	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	670b7bbaa264b5706e9669c497885d0b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6348ca3bb600f5c03566a61c43b41ed7	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7a426a9f4b9303e39e5a75c304a154de	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	2cc389aabc03b069e8a677ec34ed31fb	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	85c36c59207882e3c7134915d5d5a356	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1345b15d39b21eccbb24fb3fc5dbf4f6	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	8712a225631b9cdfbf0d770b105ab415	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c0397438e530ac7889ad8e9e30c1bf1c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	acf7b5b5238939ce5ca9afc85a61f864	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ecc8542e683e14c6ad4bc55979883720	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	380ac45b6c05fcf023a5600082082467	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ba1f9234710f88622a87b214d930184d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d3a5d74fad48dfd5d488ec90092a94d8	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	443632c77f647ceda21744bed38c4697	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	744981468a22a47be0ae041ab5d2b6fc	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a8857e8854937a5205c4eaa380e8a7dc	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	42fb04f9ca9e6f99f127dbfa940d600f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	66c79c1a9b9b3e6c0ce13d1b30a4a5f0	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	11e43c713214a7a3542b9263c86eed9e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3b0cc36014f2bd90cd6761d574d4abbd	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	e1ba62a45b8d0b57896b3d24e885fe9a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3f8bb8307273c4a5688e00ab93871c74	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ea7485952300788e28396f6a1f9782e9	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	53965e0b220a83a998f9b102702f5cee	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	349f6ec3b5f82dca111f51577d4cef89	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	bf26ec0f43dfb653823fc8db72db257f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	eac55e9c55484590dfe0226dcd18ab3b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1c483f2484a7c37b7c879df718cffc5e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	0deb68215ba7bf14cd2f5da92a6b91cf	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a086d1f094c23d096bf680f0b8ec5572	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ee2924ff32543e7a6b24ace14d8c07e6	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b17fb89ec3e877a3dad2f1c2981a39aa	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a911977b47a452395b671e897bb1e40b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7b04b8558de7325d2db9fe9d31755af1	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	388c79b9224f27784cf88ffc0ab46226	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1eb35d633ceedbaf173752d6c40828ad	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a22878f9ad09f7951a384e1ae8a3a4fc	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ca24b0cf487901398b50e290e89da53c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	dd05f608ab5e8d81b75ec8ec60ffed9d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	2cdbd823974fbc968ca139c1d22c5bec	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	bf0204c5ee0929191b1f58b719731c1e	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	01cc77ca03ba5c228fd28f5234f4c58d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a76f09a48e4586ba773c607d3cc4f89d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	13c562904e508033122ebeec6d4c158c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f110cfbd4677d4700b6044b709af997b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c479d42b27942d6c587b288f62ed70a5	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	362d9ed5235573b55752e4200ac26402	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	78284776796cece1c62362fa62ea081b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	be2f467ff9ba72b007e0b92f86a7c689	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9926fab2d916edcb21cef3b07bae9fc0	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	e12602dc95f217ece11736ef56a1aa05	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b0b84074b9ea5d49ee00361981f63e3c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	e7dc1f703e5a9ad2b9f2f23ae2eb280d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	72d1da1bdf901eeebfe26ca6585fd585	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	95c9d8bdaaf3651769b51129e9199833	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	3b23704b5d778ec09e398e74559718d7	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4f93d482ee1fbabbae737e361d452371	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	e453a7c24ab3037e7e9a33f2968a57d0	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d7217250651b679398b4321e522d867b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	18eead970a2b64c0409bfa5bc98b413f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	10f4e41129299f0532843b95ee78fca7	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	837c28f000d5e8b459a12a9679b0376d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c2b1063cfa8b556f5c47c2e6276bf847	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	888f9e9e9cc329faba2cb6dc2fcee6e5	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	8cccf9fa14451c903ef542a63641e9d8	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	923a5b79e094768dc6149df3c43d936d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	c104c2177f2250422a5db963be06efc7	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	6e065204d7db6fd0f06f0f3847d1ad0a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	7957a0e50f918a87a4a8a9bb82d052be	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	43ed6f683536b1db2d5f5759d3993de0	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	231dcb8fcd7c4427679062f69a64e9ba	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	69cad0d73a1d82075d59ce8e1043303d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	19360275f971c86e8b2043fb968c8592	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f73828bfac89e3685986e18a24109981	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	2823cf08a84d4bd71a2f16ea3fdf4aef	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	243efcc4e2f92f5e8a25eff0385e60d4	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	558b96777c3b0307b11f11d4b6159cf5	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	1825683405432b4c0147a5e6433762be	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	555aa7d4e017419a9f272db56ec14b66	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	dce9d036e32eb26dde3cd322f53b4100	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d46304124bfcefe6896ea2f1e66eb32c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	76af8f86cc6603fa4877667fea8a03aa	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ec820d774d349419f32452972ffcf050	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	07c7c86f1f721025dc6c9f11dec315b6	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ae4b2e0b0416c0c2490119f63932bb24	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ec500130d23d2e380da4caaad91553fc	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	44442fb64adf59d3dc6b671a1eda98cb	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	49205a31a9d3fd0900b3163d9cf4667f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4e9c7abe5ff183594879412df042072b	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a03b738d68391a513e1ccdf7848cf13a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	103411483926c57b0cdf92b6edc02b81	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	2eda5ce09515f27130de25a14c86c1d4	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	07d32fec6952620d5479b5884c450218	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	f44dfb8f6ff8dbd5ff79fe4534cd1242	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	9726fd0d551e98e29f2b7997117e164a	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	8faa9a0c556eb7beebe50cddb7dbe581	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	71d273f72e7bc49a2a070c7c6cb52c8c	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	4c627d5d0f1d586f2cadc77cf396749d	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	e61a43bff89ed66ce6fde8cad8df20ab	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	757576a113a4fb20c69aac268660af86	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	ba857bb463f7f2e5e01a6b17337fdc75	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	765c00449e025f8e0188209156a0f265	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	331e02684c29d8f2091defc81297a9db	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	931f2645e6b3835e1938cdbc47cdfb03	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	101a7cfa1af730c4062bbe1470ec94fd	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	2c42ef85c1714447f9c167826a6fbbc1	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	a6b986ca3ef10a9232ec7b3f0f5da54f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	56bea494f6279ac0628aae2ded1b1446	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	0c00d519f047affd6430137277e16ee9	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	b013f39fed0c282efd787c675a2403a0	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	d198f51a15186ac0481ebd7ff2fe3152	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	60ff129170837c5328ad393cdd25e21f	All	g		
+p	ghj0ywa1u5dtd52le2xhzui2qtgnj8ec	66a15a36a032f7e315f47adbbb4545db	All	g		
 \.
 
 
@@ -1832,6 +2123,308 @@ SELECT pg_catalog.setval('public.aa_login_log_id_seq', 22, true);
 --
 
 SELECT pg_catalog.setval('public.aa_menu_id_seq', 634, true);
+
+-- F-030 补齐菜单表（默认拒绝前置）：291 条路由的按钮型记录（menu_type=2）。
+-- 走 INSERT 不占显式 id（旧 COPY 的 id 有历史空洞，显式 id 必撞唯一键），
+-- 序列自 setval 634 起自然分配；menu_id = md5(route path) 确定性生成，
+-- 与迁移 000008 同值（迁移对存量库追平同一批记录）。
+INSERT INTO public.aa_menu
+    (menu_id, pid, name, title, en_name, icon, condition, remark, menu_type,
+     weigh, is_hide, path, component, is_link, module_type, model_id, is_iframe,
+     is_cached, redirect, is_affix, link_url, grant_rules)
+VALUES
+    ('bc6a5ae7a9e3514b2dc3f99ae4e2eb6f', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/backup/:id', 'Backup', 'Backup', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f7e0551a7199631f1ba559ba888d341c', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/backup/:id/restore', 'Restore', 'Restore', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9d7ec6da6be2e45d44f15fc08e932966', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/backup/create', 'Backup Create', 'Backup Create', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('58cde53d088da3346b73b6adc5f856fa', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/backup/delete', 'Backup Delete', 'Backup Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4c49bd72eb946ff6c68fbee5956ff06c', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/backup/list', 'Backup List', 'Backup List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9960c16a4c640090d9ad22c5124a5885', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/backup/schedule/:id/edit', 'Edit', 'Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d212f7cccbeb8f28eddbb7dfe3d42f83', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/backup/schedule/create', 'Schedule Create', 'Schedule Create', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('97bfa1b2a245708ad9687aee03fed991', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/backup/schedule/delete', 'Schedule Delete', 'Schedule Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('e354b22dcb7d7d0e16764cfdb100b42d', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/backup/schedule/list', 'Schedule List', 'Schedule List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('551ee8efbdf37aedd84329d75bba3464', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-item/add', 'Bundle Item Add', 'Bundle Item Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('e3da3cecae11b27fa86f57fa0654ab48', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-item/delete', 'Bundle Item Delete', 'Bundle Item Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f286784950376ae969dc73ebb284c29e', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-item/edit', 'Bundle Item Edit', 'Bundle Item Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ad12356195e796e71601ea98e927006b', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-item/get', 'Bundle Item Get', 'Bundle Item Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c39466a47aba9b102a0153ecf274e113', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-item/list', 'Bundle Item List', 'Bundle Item List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('483430a6470fc885fd4ed81d270fba8e', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-skill/add', 'Bundle Skill Add', 'Bundle Skill Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9a5923966dee64ad273ffa25d2e00c6c', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-skill/delete', 'Bundle Skill Delete', 'Bundle Skill Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6cd1c1670e9127912eb9d8492cbdb46f', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-skill/edit', 'Bundle Skill Edit', 'Bundle Skill Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b04aa14d7a8a12f48db9b799e49360b9', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-skill/get', 'Bundle Skill Get', 'Bundle Skill Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('09e5768570719645342d185527633f31', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle-skill/list', 'Bundle Skill List', 'Bundle Skill List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3a1ef8844022e25ac16949aa40733b00', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle/add', 'Bundle Add', 'Bundle Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('776ca855b828db7a21953ccc18cdddd3', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle/delete', 'Bundle Delete', 'Bundle Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('457d97150b0b20afc1bcea5d2640d421', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle/edit', 'Bundle Edit', 'Bundle Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5092353264a1aa721587f5f315bdd894', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle/get', 'Bundle Get', 'Bundle Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d0b729f25a5f082c832f64bc9246a746', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/bundle/list', 'Bundle List', 'Bundle List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('627c3d7bfb79cf73e27f1fcc0329c9f1', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/resource/add', 'Resource Add', 'Resource Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4195395bbdade5cdcfec63121fa521db', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/resource/delete', 'Resource Delete', 'Resource Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b5e3e55c047dd1438794e6a73120a3e4', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/resource/edit', 'Resource Edit', 'Resource Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('37c268c33fa32464889cfc1966493314', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/resource/get', 'Resource Get', 'Resource Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('20f2e697cddf4347012d093a9d452e25', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/config/resource/list', 'Resource List', 'Resource List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('57acaebcc0a9d2223291933c5da58559', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/dashboard/overview', 'Dashboard Overview', 'Dashboard Overview', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('eee8d93bbfaff036592614219252a55f', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/command/enqueue', 'Command Enqueue', 'Command Enqueue', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b191943b45b80612a54743668f68c4ac', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/command/list', 'Command List', 'Command List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('91bfa4b40fd6908d518627e16d2dc91f', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/config-changes', 'Config Changes', 'Config Changes', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3be38c836b5af7bf841f4aa7e49ae120', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/desktop/access', 'Desktop Access', 'Desktop Access', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7e8d3833f69dc7f89fd16b64b9b75aae', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/exec', 'Exec', 'Exec', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('64dce8199d599521e657e49b5a7379ea', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/logs', 'Logs', 'Logs', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('fc9d83fc62490c657cef0386d18f2028', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/mcp/bind', 'Mcp Bind', 'Mcp Bind', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a554e88ac666030f86fafbdc57c9e1dc', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/mcp/list', 'Mcp List', 'Mcp List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ab1cc3e635e7e2add6f83ca94b33e1ed', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/mcp/unbind', 'Mcp Unbind', 'Mcp Unbind', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('69edb65569f325e63a780831b078258c', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/refresh-llm-key', 'Refresh Llm Key', 'Refresh Llm Key', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9833b5822a177025b18ac6ab4feeeecd', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/restart', 'Restart', 'Restart', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a1c878dd0096c9252d0279cb604254dd', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/runtime-status', 'Runtime Status', 'Runtime Status', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a7d39d537fa2180990fd9b8864a0cfaa', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/runtime-status/history', 'Runtime Status History', 'Runtime Status History', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6816756881a7c2c8107bf87f0275a2bf', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/skill/install', 'Skill Install', 'Skill Install', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f6792180a85b99dec347d6dfe2b18185', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/skill/list', 'Skill List', 'Skill List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('e7b0ef6488dedf85c1317b3e8fddc16b', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/skill/uninstall', 'Skill Uninstall', 'Skill Uninstall', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('031485963b9edaf2c55a375a1ef65e54', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/start', 'Start', 'Start', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f4a53c6ce8016af46a020ffd287b1699', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/status', 'Status', 'Status', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5db6f6bcc6d9c2df4842cf7589ac57be', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/stop', 'Stop', 'Stop', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1ff7ffa47570b7c241e33eea35ada04e', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/tty/access', 'Tty Access', 'Tty Access', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1e87baf910e119129ff30538ea2160a3', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/workspace/audit', 'Workspace Audit', 'Workspace Audit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6b7aac20e77515232cb8c84c4970c0d2', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/workspace/delete', 'Workspace Delete', 'Workspace Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4391923029413b6cbee973f8cfeb5857', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/workspace/download', 'Workspace Download', 'Workspace Download', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6c567483fbe99dfc59671388a666be9a', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/workspace/list', 'Workspace List', 'Workspace List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('605675c8a85c2662074094df498d3b1b', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/workspace/mkdir', 'Workspace Mkdir', 'Workspace Mkdir', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('69aa7f58eed2a0f50baa043acae04a67', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/workspace/rename', 'Workspace Rename', 'Workspace Rename', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9a417be5ff1831cb1e575bc3fcf1fc40', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/:id/workspace/upload', 'Workspace Upload', 'Workspace Upload', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4360a9db4f4263a0895a2a3295e25340', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/all', 'Instance All', 'Instance All', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('301980d8eccabb227f785bb304b25b96', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/instance/get', 'Instance Get', 'Instance Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('bde39204966b0800fdc765a2d4b7652b', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/model/get', 'Model Get', 'Model Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c100e5c00ff4fa9edfc36c2044357ecc', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/model/rule/add', 'Rule Add', 'Rule Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('046bfe2bccc69ecd510ed8dea0a49b85', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/model/rule/delete', 'Rule Delete', 'Rule Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f6fc217b7a9833bd1bf7ac1cbcbf77ac', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/model/rule/edit', 'Rule Edit', 'Rule Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('add826cc0b9b5bd638d8153fed18ad77', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/model/rule/get', 'Rule Get', 'Rule Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6b7a4ab6bfaf58633100290286d3dd0e', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/model/rule/list', 'Rule List', 'Rule List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6f92d6844d6d5e1aa36e63ebfa11118c', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/audit-event/get', 'Audit Event Get', 'Audit Event Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('22e1f36fba6b2dc067246c8f536ff3d9', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/audit-event/list', 'Audit Event List', 'Audit Event List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c6c575ef69257a72231870d9465a5d25', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/audit-log/delete', 'Audit Log Delete', 'Audit Log Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5ff14dffe82e6da15808d772dddc463e', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/audit-log/get', 'Audit Log Get', 'Audit Log Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('56646bc7928411f7973393ff606c2536', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/audit-log/list', 'Audit Log List', 'Audit Log List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('355e226e2001f25e05abfb1d690a36d5', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/cost/get', 'Cost Get', 'Cost Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('aec056a09b7e4167a75b5a3137e0cc3f', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/cost/list', 'Cost List', 'Cost List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3c87e34dd80e526bb2384c105ce73afe', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/invocation/get', 'Invocation Get', 'Invocation Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('80124b68d86f9734a6fc840563d92d52', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/invocation/list', 'Invocation List', 'Invocation List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('cdac62241f26bbe32d1caf02dcef8e2d', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/risk-hit/get', 'Risk Hit Get', 'Risk Hit Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ffd0c7b65291ae1daa712a8e43fca5ba', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/monitor/risk-hit/list', 'Risk Hit List', 'Risk Hit List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('72aede8e0fabd04f3b7171e25d416872', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/openclaw/configs/:instanceId', 'Configs', 'Configs', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4bb062215abd97b6a72121ee701261e9', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/runtime/rollout/:id/cancel', 'Cancel', 'Cancel', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5ba05253fb7e79a8dbf6c2b719b58236', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/runtime/rollout/:id/pause', 'Pause', 'Pause', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('82b63bcd5aa5cd126a87e2aa9f0859cd', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/runtime/rollout/:id/progress', 'Progress', 'Progress', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1cc461203fe9c1b388ab29ece5d6490b', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/runtime/rollout/:id/resume', 'Resume', 'Resume', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('569b1d604342bc80ace7ab05069f3478', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/runtime/rollout/create', 'Rollout Create', 'Rollout Create', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a35bea27690d40994917f2e954df5a7c', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/runtime/rollout/list', 'Rollout List', 'Rollout List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5b1515bcde3a68d5cbed2aa2e0d452d2', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/config/add', 'Config Add', 'Config Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9d9896640e382a08be90eee1a5447203', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/config/delete', 'Config Delete', 'Config Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('2dc6159565473b79817dbb2044bf00a3', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/config/edit', 'Config Edit', 'Config Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('339c0e45b0db06a5aed8ad335a3fc710', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/config/get', 'Config Get', 'Config Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d0e98d2d8ddc4c47a19b6168d4f1b594', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/config/list', 'Config List', 'Config List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('042766ba8888461b06a9037c4c8ac4a2', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/job-item/get', 'Job Item Get', 'Job Item Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7c049257f301b70b619f182a989de82e', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/job-item/list', 'Job Item List', 'Job Item List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('730f51b3167b8e0b9a913ccbe8df5c2a', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/job/add', 'Job Add', 'Job Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('93828451f49fd3a51d38d4a68d41a669', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/job/delete', 'Job Delete', 'Job Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('772d99054f8365dc95a19280c32a8997', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/job/edit', 'Job Edit', 'Job Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b693e525d9779bed39cf3c99d575f4c9', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/job/get', 'Job Get', 'Job Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('594b7cf9c3c5b80dd4fedd786207e439', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/job/list', 'Job List', 'Job List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4f242dc8d19085f440006f5d367f276a', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/report/get', 'Report Get', 'Report Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('bc965914b23d24e2dcc450b5c08f8230', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/scan/report/list', 'Report List', 'Report List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5fc102f9fab81d8455246f54d25bda6d', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/settings/image/delete', 'Image Delete', 'Image Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a528f0d649b121e31b1431651c0166b5', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/settings/image/list', 'Image List', 'Image List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('2382234970fc453d79364357a474ea18', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/settings/image/upsert', 'Image Upsert', 'Image Upsert', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7a7349e7e511bf5a2b7850456125ee64', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/event/list', 'Event List', 'Event List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('e0862ae491784542e7fba16b35640a55', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/get', 'Team Get', 'Team Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c8f92d5f8da366a5fe1bdb3b075f83b0', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/member/add', 'Member Add', 'Member Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f05d47b0ee6297355d6f9a85e8fc358a', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/member/delete', 'Member Delete', 'Member Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1431ea04acbacfbd931ed3039e5b692b', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/member/edit', 'Member Edit', 'Member Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b91a996b03c8b7eb767e9bbf4430f58b', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/member/list', 'Member List', 'Member List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b4a42994af8eb59d9f8ea1d2f851a177', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/task/dispatch', 'Task Dispatch', 'Task Dispatch', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6ecd7a292c1e588b944938470fc34fe5', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/task/list', 'Task List', 'Task List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('66ef7563766102f5696012f62a48dc0c', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/work-item/add', 'Work Item Add', 'Work Item Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('fe9b8ef9387001647259cbad4563736f', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/work-item/delete', 'Work Item Delete', 'Work Item Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('13b121445f442bcd3023253cf9ca00cb', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/work-item/edit', 'Work Item Edit', 'Work Item Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7d20ec64713f18f2fa659c7f647a947c', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/team/work-item/list', 'Work Item List', 'Work Item List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4075f42ffe35ebf0d367f0015c414b0e', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/usage/list', 'Usage List', 'Usage List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a386efd33649438bb913c905269abd0b', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/volume/:id', 'Volume', 'Volume', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c068a3eee1b481f3a7d3c01ef093ce0a', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/volume/:id/unbind', 'Unbind', 'Unbind', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7e42620144eca152cdc03fa276a0c135', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/volume/create', 'Volume Create', 'Volume Create', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c8436d0a8f9051daacfab4008fa81915', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/volume/delete', 'Volume Delete', 'Volume Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('70f78dae283be585cb3d175f68b40663', 'a1b2c3d4e5f64780901234567890abcd', 'api/v1/agent/volume/list', 'Volume List', 'Volume List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a7291d6ec5064f238bf279db1acedf42', 'docmenudir000000000000000000000a', 'api/v1/doc/dir/byref', 'Dir Byref', 'Dir Byref', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5caa4c9d7bd8c40970d8115b96b883b3', 'kbmenudir000000000000000000000a', 'api/v1/kb/datasource/:datasourceId/runs', 'Runs', 'Runs', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ec76c665d073723c2333ce387f9db5ef', 'kbmenudir000000000000000000000a', 'api/v1/kb/datasource/:datasourceId/trigger', 'Trigger', 'Trigger', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9b3b72e769cfe42d8d3148bf9c349359', 'kbmenudir000000000000000000000a', 'api/v1/kb/dir/byref', 'Dir Byref', 'Dir Byref', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('adf4072be22720d027b04a68d7eb93c5', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/audit/list', 'Audit List', 'Audit List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('707666d30b6aa86ba05814747922cb53', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/budget/add', 'Budget Add', 'Budget Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1a87ee8e99a36c50cf67e1d9e289a727', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/budget/delete', 'Budget Delete', 'Budget Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('939eb949c3c495f5f872ba988640ea66', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/budget/edit', 'Budget Edit', 'Budget Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('982952fb89d8ae2c8dd00275735d87dd', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/budget/get', 'Budget Get', 'Budget Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('08ee6fe61f4b1e76fe0338a71c6ef61a', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/budget/spend/history', 'Spend History', 'Spend History', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('dab8a0f978b415dc6cdf1119fec408ea', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/credential/discover-models', 'Credential Discover Models', 'Credential Discover Models', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6691cf61e993da18a13e6c3fae142d9a', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/credential/get', 'Credential Get', 'Credential Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4c636ef4c58377e1c3312ad8350998cd', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/daily/list', 'Daily List', 'Daily List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('eadf9856640717dff898a2ff63097dd7', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/dept/edit', 'Dept Edit', 'Dept Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1e4b0f788f0778eba3a10137d2ba43bc', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/dept/get', 'Dept Get', 'Dept Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a7fa62d3fe56895fe27323e08d93febb', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/endUser/add', 'Enduser Add', 'Enduser Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('76ae457032f889caa8e4c81662cb11cb', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/endUser/delete', 'Enduser Delete', 'Enduser Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3fc6aa91a4a21a7da558e38d78277961', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/endUser/edit', 'Enduser Edit', 'Enduser Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5d63bd9916dde34ede28ed9dacd36ed3', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/endUser/list', 'Enduser List', 'Enduser List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5aa1a23a9b61abab75ce0aae1488ff8e', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/group/get', 'Group Get', 'Group Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3c767ec5c5cf18a023c7fbd829df854a', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/key/block', 'Key Block', 'Key Block', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5fd1165088a72a3ea8fb7608fa8a1049', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/key/check-use', 'Key Check Use', 'Key Check Use', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5ab62142a27ddac78e7ba5cda75118ff', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/key/get', 'Key Get', 'Key Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('fc63d95ddddadcf62cecdbceeab6b4b1', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/model/all', 'Model All', 'Model All', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6bf784ccbe8e560dc502fde0d209b7e9', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/model/get', 'Model Get', 'Model Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('2f4f6a251b33a2cc18134f1b004e935b', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/project/add', 'Project Add', 'Project Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('087f801a5d98daa4da70800e99a81488', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/project/delete', 'Project Delete', 'Project Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('40e87bad79968a48c82edcd73679ba8d', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/project/edit', 'Project Edit', 'Project Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('8dda952743db99567196170f5c2219c2', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/project/get', 'Project Get', 'Project Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('760269eb88a0bcc2d04a9ce1010e0c62', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/project/list', 'Project List', 'Project List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c5f37087e565af6b1feff1204eec112d', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/prompt/add', 'Prompt Add', 'Prompt Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('bb83f50a1025478038b571667ef1eacf', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/prompt/get', 'Prompt Get', 'Prompt Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9d58f18edb94df6c70602cda18e9bd09', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/prompt/list', 'Prompt List', 'Prompt List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d0b166f24408d157e5cc4e7f5959a087', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/spend/aggregate', 'Spend Aggregate', 'Spend Aggregate', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d97a5a9e0933591e5fd4cc195fc72549', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/spend/get', 'Spend Get', 'Spend Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7c26461c5224b1cf07c705c4389f7c8c', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/tag/add', 'Tag Add', 'Tag Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a7650058d6c28e4e806246a2d0f0652d', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/tag/delete', 'Tag Delete', 'Tag Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('5597741fa4876a1f9a2c26cfc958b83e', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/tag/edit', 'Tag Edit', 'Tag Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f12d04149fcd6a5b83594b2bc8aa3741', '45b37c9e9663411570679e7b5170fbbd', 'api/v1/llm/tag/list', 'Tag List', 'Tag List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d340994693c4bac8c6e8a2c6278b2aa0', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/config/user/edit', 'User Edit', 'User Edit', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('edced5e7c99ff70bd97c82b9cc158cef', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/config/user/get', 'User Get', 'User Get', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f7dbf19cc886351c5f88ab82e1588209', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/group/get', 'Group Get', 'Group Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a0f3d9f73d669488dad9eb46134ac645', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/group/grant/get', 'Grant Get', 'Grant Get', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('914515f8992f91a1ee48a3b3069fe834', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/group/grant/save', 'Grant Save', 'Grant Save', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3a1152310b8df19b841b60ed38cb47bc', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/key/block', 'Key Block', 'Key Block', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6fa3c5261f14f7d43a7ef330d35a9d49', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/key/get', 'Key Get', 'Key Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b0ab77279aed86f97a590c82e482adb7', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/prompt/get', 'Prompt Get', 'Prompt Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f1cc44465588bfc9d246a45f52e1430c', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/resource/get', 'Resource Get', 'Resource Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7bc3e6ae77e6822e2ce4224e0d584772', 'e4d4281cba5ee1a570865c1696bf974a', 'api/v1/mcp/server/get', 'Server Get', 'Server Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a542d641e6157628b090baa434173da8', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/all', 'Project All', 'Project All', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7858163e013959c26cf5ddf216f749b2', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/binding/get', 'Binding Get', 'Binding Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('762e8ebad9d10dfe4e9b5356f8f78ba0', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/binding/list', 'Binding List', 'Binding List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('0a68c811df8b082dea55062ed8d8ef40', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/config/field/list', 'Field List', 'Field List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3b39a4ada28f8e7f420672852aa9934b', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/config/status/list', 'Status List', 'Status List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f6da3800dff03039c48541f405f4dbe3', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/get', 'Project Get', 'Project Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c4bfb28c35a5035de2a172258a22f140', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/milestone/get', 'Milestone Get', 'Milestone Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b9bc9d3b32f1dc86b33139760b1d7e61', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/overview', 'Project Overview', 'Project Overview', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('530a9a640cbc6d253073d48c813c4ba0', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/task/comment/add', 'Comment Add', 'Comment Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('97fb225e0bc3d657df7d2d820243de45', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/task/comment/delete', 'Comment Delete', 'Comment Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('806d025198b6a13419b3c848ab68cb53', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/task/comment/list', 'Comment List', 'Comment List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('670b7bbaa264b5706e9669c497885d0b', 'wqia8s3qkidtd9m4oyerq1ua1ira106j', 'api/v1/project/task/get', 'Task Get', 'Task Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6348ca3bb600f5c03566a61c43b41ed7', 'reviewmenudir000000000000000000a', 'api/v1/review/order/approve', 'Order Approve', 'Order Approve', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7a426a9f4b9303e39e5a75c304a154de', 'reviewmenudir000000000000000000a', 'api/v1/review/order/create', 'Order Create', 'Order Create', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('2cc389aabc03b069e8a677ec34ed31fb', 'reviewmenudir000000000000000000a', 'api/v1/review/order/mine', 'Order Mine', 'Order Mine', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('85c36c59207882e3c7134915d5d5a356', 'reviewmenudir000000000000000000a', 'api/v1/review/order/reject', 'Order Reject', 'Order Reject', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1345b15d39b21eccbb24fb3fc5dbf4f6', 'reviewmenudir000000000000000000a', 'api/v1/review/order/review', 'Order Review', 'Order Review', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('8712a225631b9cdfbf0d770b105ab415', 'schedmenudir0000000000000000000a', 'api/v1/schedule/calendar-sync/add', 'Calendar Sync Add', 'Calendar Sync Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c0397438e530ac7889ad8e9e30c1bf1c', 'schedmenudir0000000000000000000a', 'api/v1/schedule/calendar-sync/delete', 'Calendar Sync Delete', 'Calendar Sync Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('acf7b5b5238939ce5ca9afc85a61f864', 'schedmenudir0000000000000000000a', 'api/v1/schedule/calendar-sync/discover', 'Calendar Sync Discover', 'Calendar Sync Discover', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ecc8542e683e14c6ad4bc55979883720', 'schedmenudir0000000000000000000a', 'api/v1/schedule/calendar-sync/edit', 'Calendar Sync Edit', 'Calendar Sync Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('380ac45b6c05fcf023a5600082082467', 'schedmenudir0000000000000000000a', 'api/v1/schedule/calendar-sync/list', 'Calendar Sync List', 'Calendar Sync List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ba1f9234710f88622a87b214d930184d', 'schedmenudir0000000000000000000a', 'api/v1/schedule/calendar-sync/run', 'Calendar Sync Run', 'Calendar Sync Run', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d3a5d74fad48dfd5d488ec90092a94d8', 'schedmenudir0000000000000000000a', 'api/v1/schedule/event/detail', 'Event Detail', 'Event Detail', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('443632c77f647ceda21744bed38c4697', 'schedmenudir0000000000000000000a', 'api/v1/schedule/freebusy', 'Schedule Freebusy', 'Schedule Freebusy', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('744981468a22a47be0ae041ab5d2b6fc', 'schedmenudir0000000000000000000a', 'api/v1/schedule/freeslots', 'Schedule Freeslots', 'Schedule Freeslots', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a8857e8854937a5205c4eaa380e8a7dc', 'schedmenudir0000000000000000000a', 'api/v1/schedule/room/list', 'Room List', 'Room List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('42fb04f9ca9e6f99f127dbfa940d600f', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/label/all', 'Label All', 'Label All', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('66c79c1a9b9b3e6c0ce13d1b30a4a5f0', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/label/get', 'Label Get', 'Label Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('11e43c713214a7a3542b9263c86eed9e', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/label/trans/list', 'Trans List', 'Trans List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3b0cc36014f2bd90cd6761d574d4abbd', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/label/trans/upsert', 'Trans Upsert', 'Trans Upsert', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('e1ba62a45b8d0b57896b3d24e885fe9a', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/market/import', 'Market Import', 'Market Import', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3f8bb8307273c4a5688e00ab93871c74', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/market/search', 'Market Search', 'Market Search', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ea7485952300788e28396f6a1f9782e9', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/market/site/add', 'Site Add', 'Site Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('53965e0b220a83a998f9b102702f5cee', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/market/site/delete', 'Site Delete', 'Site Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('349f6ec3b5f82dca111f51577d4cef89', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/market/site/edit', 'Site Edit', 'Site Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('bf26ec0f43dfb653823fc8db72db257f', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/market/site/list', 'Site List', 'Site List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('eac55e9c55484590dfe0226dcd18ab3b', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/market/sources', 'Market Sources', 'Market Sources', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1c483f2484a7c37b7c879df718cffc5e', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/market/sync', 'Market Sync', 'Market Sync', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('0deb68215ba7bf14cd2f5da92a6b91cf', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/namespace/all', 'Namespace All', 'Namespace All', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a086d1f094c23d096bf680f0b8ec5572', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/namespace/get', 'Namespace Get', 'Namespace Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ee2924ff32543e7a6b24ace14d8c07e6', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/namespace/member/add', 'Member Add', 'Member Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b17fb89ec3e877a3dad2f1c2981a39aa', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/namespace/member/list', 'Member List', 'Member List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a911977b47a452395b671e897bb1e40b', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/namespace/member/remove', 'Member Remove', 'Member Remove', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7b04b8558de7325d2db9fe9d31755af1', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/file/download', 'File Download', 'File Download', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('388c79b9224f27784cf88ffc0ab46226', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/get', 'Skill Get', 'Skill Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1eb35d633ceedbaf173752d6c40828ad', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/package/create', 'Package Create', 'Package Create', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a22878f9ad09f7951a384e1ae8a3a4fc', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/package/parse', 'Package Parse', 'Package Parse', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ca24b0cf487901398b50e290e89da53c', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/search', 'Skill Search', 'Skill Search', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('dd05f608ab5e8d81b75ec8ec60ffed9d', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/setHidden', 'Skill Sethidden', 'Skill Sethidden', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('2cdbd823974fbc968ca139c1d22c5bec', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/tag/add', 'Tag Add', 'Tag Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('bf0204c5ee0929191b1f58b719731c1e', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/tag/list', 'Tag List', 'Tag List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('01cc77ca03ba5c228fd28f5234f4c58d', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/tag/remove', 'Tag Remove', 'Tag Remove', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a76f09a48e4586ba773c607d3cc4f89d', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/version/add', 'Version Add', 'Version Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('13c562904e508033122ebeec6d4c158c', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/version/download', 'Version Download', 'Version Download', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f110cfbd4677d4700b6044b709af997b', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/version/file/list', 'File List', 'File List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c479d42b27942d6c587b288f62ed70a5', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/version/get', 'Version Get', 'Version Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('362d9ed5235573b55752e4200ac26402', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/version/list', 'Version List', 'Version List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('78284776796cece1c62362fa62ea081b', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/version/publish', 'Version Publish', 'Version Publish', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('be2f467ff9ba72b007e0b92f86a7c689', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/version/upload', 'Version Upload', 'Version Upload', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9926fab2d916edcb21cef3b07bae9fc0', 'hu789rpqoi29g6tcgjuut0w9cs7zvccd', 'api/v1/skill/skill/version/yank', 'Version Yank', 'Version Yank', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('e12602dc95f217ece11736ef56a1aa05', 'statsmenudir0000000000000000000a', 'api/v1/stats/llm/overview', 'Llm Overview', 'Llm Overview', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b0b84074b9ea5d49ee00361981f63e3c', 'statsmenudir0000000000000000000a', 'api/v1/stats/llm/top', 'Llm Top', 'Llm Top', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('e7dc1f703e5a9ad2b9f2f23ae2eb280d', 'statsmenudir0000000000000000000a', 'api/v1/stats/llm/trend', 'Llm Trend', 'Llm Trend', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('72d1da1bdf901eeebfe26ca6585fd585', 'statsmenudir0000000000000000000a', 'api/v1/stats/skill/install-trend', 'Skill Install Trend', 'Skill Install Trend', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('95c9d8bdaaf3651769b51129e9199833', 'statsmenudir0000000000000000000a', 'api/v1/stats/skill/overview', 'Skill Overview', 'Skill Overview', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('3b23704b5d778ec09e398e74559718d7', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/cache/remove', 'Cache Remove', 'Cache Remove', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4f93d482ee1fbabbae737e361d452371', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/agent/delete', 'Agent Delete', 'Agent Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('e453a7c24ab3037e7e9a33f2968a57d0', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/appperm/get', 'Appperm Get', 'Appperm Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d7217250651b679398b4321e522d867b', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/channel', 'Device Channel', 'Device Channel', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('18eead970a2b64c0409bfa5bc98b413f', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/channel/install-plugin', 'Channel Install Plugin', 'Channel Install Plugin', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('10f4e41129299f0532843b95ee78fca7', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/channel/login', 'Channel Login', 'Channel Login', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('837c28f000d5e8b459a12a9679b0376d', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/channel/logout', 'Channel Logout', 'Channel Logout', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c2b1063cfa8b556f5c47c2e6276bf847', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/channel/qr', 'Channel Qr', 'Channel Qr', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('888f9e9e9cc329faba2cb6dc2fcee6e5', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/channel/unbind', 'Channel Unbind', 'Channel Unbind', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('8cccf9fa14451c903ef542a63641e9d8', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/channels', 'Device Channels', 'Device Channels', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('923a5b79e094768dc6149df3c43d936d', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/commands/:deviceId', 'Commands', 'Commands', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('c104c2177f2250422a5db963be06efc7', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/config-changes', 'Device Config Changes', 'Device Config Changes', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('6e065204d7db6fd0f06f0f3847d1ad0a', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/detail', 'Device Detail', 'Device Detail', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('7957a0e50f918a87a4a8a9bb82d052be', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/get', 'Device Get', 'Device Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('43ed6f683536b1db2d5f5759d3993de0', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/logs', 'Device Logs', 'Device Logs', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('231dcb8fcd7c4427679062f69a64e9ba', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/openclaw-config', 'Device Openclaw Config', 'Device Openclaw Config', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('69cad0d73a1d82075d59ce8e1043303d', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/selected-agents', 'Device Selected Agents', 'Device Selected Agents', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('19360275f971c86e8b2043fb968c8592', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/skills', 'Device Skills', 'Device Skills', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f73828bfac89e3685986e18a24109981', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/client/admin/device/status-history', 'Device Status History', 'Device Status History', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('2823cf08a84d4bd71a2f16ea3fdf4aef', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/dept/treeSelect', 'Dept Treeselect', 'Dept Treeselect', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('243efcc4e2f92f5e8a25eff0385e60d4', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/dict/data/getDictData', 'Data Getdictdata', 'Data Getdictdata', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('558b96777c3b0307b11f11d4b6159cf5', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/loginLog/clear', 'Loginlog Clear', 'Loginlog Clear', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('1825683405432b4c0147a5e6433762be', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/loginLog/delete', 'Loginlog Delete', 'Loginlog Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('555aa7d4e017419a9f272db56ec14b66', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/logout', 'System Logout', 'System Logout', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('dce9d036e32eb26dde3cd322f53b4100', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/menu/get', 'Menu Get', 'Menu Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d46304124bfcefe6896ea2f1e66eb32c', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/menu/getParams', 'Menu Getparams', 'Menu Getparams', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('76af8f86cc6603fa4877667fea8a03aa', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/menu/list', 'Menu List', 'Menu List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ec820d774d349419f32452972ffcf050', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/notice/delete', 'Notice Delete', 'Notice Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('07c7c86f1f721025dc6c9f11dec315b6', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/notice/list', 'Notice List', 'Notice List', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ae4b2e0b0416c0c2490119f63932bb24', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/notice/read', 'Notice Read', 'Notice Read', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ec500130d23d2e380da4caaad91553fc', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/notice/readAll', 'Notice Readall', 'Notice Readall', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('44442fb64adf59d3dc6b671a1eda98cb', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/notice/unreadCount', 'Notice Unreadcount', 'Notice Unreadcount', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('49205a31a9d3fd0900b3163d9cf4667f', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/online/delete', 'Online Delete', 'Online Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4e9c7abe5ff183594879412df042072b', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/online/kick', 'Online Kick', 'Online Kick', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a03b738d68391a513e1ccdf7848cf13a', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/operLog/clear', 'Operlog Clear', 'Operlog Clear', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('103411483926c57b0cdf92b6edc02b81', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/operLog/delete', 'Operlog Delete', 'Operlog Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('2eda5ce09515f27130de25a14c86c1d4', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/operLog/get', 'Operlog Get', 'Operlog Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('07d32fec6952620d5479b5884c450218', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/permgroup/options', 'Permgroup Options', 'Permgroup Options', '', 'nocheck', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('f44dfb8f6ff8dbd5ff79fe4534cd1242', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/personal/edit', 'Personal Edit', 'Personal Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('9726fd0d551e98e29f2b7997117e164a', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/personal/getPersonalInfo', 'Personal Getpersonalinfo', 'Personal Getpersonalinfo', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('8faa9a0c556eb7beebe50cddb7dbe581', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/personal/resetPwd', 'Personal Resetpwd', 'Personal Resetpwd', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('71d273f72e7bc49a2a070c7c6cb52c8c', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/personal/totp/activate', 'Totp Activate', 'Totp Activate', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('4c627d5d0f1d586f2cadc77cf396749d', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/personal/totp/disable', 'Totp Disable', 'Totp Disable', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('e61a43bff89ed66ce6fde8cad8df20ab', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/personal/totp/setup', 'Totp Setup', 'Totp Setup', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('757576a113a4fb20c69aac268660af86', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/role/get', 'Role Get', 'Role Get', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('ba857bb463f7f2e5e01a6b17337fdc75', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/role/getParams', 'Role Getparams', 'Role Getparams', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('765c00449e025f8e0188209156a0f265', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/add', 'User Add', 'User Add', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('331e02684c29d8f2091defc81297a9db', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/delete', 'User Delete', 'User Delete', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('931f2645e6b3835e1938cdbc47cdfb03', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/edit', 'User Edit', 'User Edit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('101a7cfa1af730c4062bbe1470ec94fd', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/getEdit', 'User Getedit', 'User Getedit', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('2c42ef85c1714447f9c167826a6fbbc1', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/getUserMenus', 'User Getusermenus', 'User Getusermenus', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('a6b986ca3ef10a9232ec7b3f0f5da54f', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/getUsers', 'User Getusers', 'User Getusers', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('56bea494f6279ac0628aae2ded1b1446', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/params', 'User Params', 'User Params', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('0c00d519f047affd6430137277e16ee9', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/resetPwd', 'User Resetpwd', 'User Resetpwd', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('b013f39fed0c282efd787c675a2403a0', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/resolve', 'User Resolve', 'User Resolve', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('d198f51a15186ac0481ebd7ff2fe3152', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/search', 'User Search', 'User Search', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('60ff129170837c5328ad393cdd25e21f', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/setStatus', 'User Setstatus', 'User Setstatus', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]'),
+    ('66a15a36a032f7e315f47adbbb4545db', 'jeo9mvaihkkm4hs0mrhlpqg2nxuvvgqr', 'api/v1/system/user/totp/reset', 'Totp Reset', 'Totp Reset', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '[]');
+
 
 
 --
