@@ -16,12 +16,13 @@ import (
 
 type SkillService struct {
 	repo     repository.ISkillRepository
+	nsRepo   repository.ISkillNamespaceRepository // F-017 PRIVATE 技能的命名空间成员判定
 	userRepo repository.IUserRepository
 	secRepo  repository.ISkillSecurityRepository // 发布门禁：版本最新审计须为「安全」
 }
 
-func NewSkillService(r repository.ISkillRepository, ur repository.IUserRepository, sr repository.ISkillSecurityRepository) *SkillService {
-	return &SkillService{repo: r, userRepo: ur, secRepo: sr}
+func NewSkillService(r repository.ISkillRepository, nr repository.ISkillNamespaceRepository, ur repository.IUserRepository, sr repository.ISkillSecurityRepository) *SkillService {
+	return &SkillService{repo: r, nsRepo: nr, userRepo: ur, secRepo: sr}
 }
 
 func (s *SkillService) List(ctx context.Context, namespaceId, slug, name, status, keyWords string, pageNum, pageSize int) ([]*entity.Skill, int64, error) {
@@ -77,10 +78,25 @@ func (s *SkillService) Search(ctx context.Context, query string, limit int, embe
 	return s.repo.SearchByVector(ctx, VectorToPGText(vec), limit)
 }
 
-func (s *SkillService) Get(ctx context.Context, skillId string) (*entity.Skill, error) {
+// Get 技能详情（F-017 横向越权修复）：PUBLIC 登录即可读（市场浏览/安装流依赖），
+// PRIVATE → 属主 / 命名空间成员 / 超管；其余「未找到」。
+func (s *SkillService) Get(ctx context.Context, skillId, callerId string, callerIsAdmin bool) (*entity.Skill, error) {
 	sk, err := s.repo.Get(ctx, skillId)
 	if err != nil {
 		return nil, err
+	}
+	isMember := false
+	if callerId != "" && sk.Visibility == 1 {
+		ms, _ := s.nsRepo.ListMembers(ctx, sk.NamespaceId)
+		for _, m := range ms {
+			if m.UserId == callerId {
+				isMember = true
+				break
+			}
+		}
+	}
+	if !canReadSkill(sk.OwnerId, sk.Visibility, callerId, callerIsAdmin, isMember) {
+		return nil, errDetailNotFound
 	}
 	// 回填所有者姓名/工号（与 List 一致；详情抽屉/接口要展示「姓名（工号）」）。
 	s.enrichOwners(ctx, []*entity.Skill{sk})

@@ -35,8 +35,17 @@ func (s *McpServerService) All(ctx context.Context) ([]*entity.McpServer, error)
 	return s.repo.All(ctx)
 }
 
-func (s *McpServerService) Get(ctx context.Context, id string) (*entity.McpServer, error) {
-	return s.repo.Get(ctx, id)
+// Get MCP 服务详情（F-017 横向越权修复）：完整配置含地址/请求头/环境变量（敏感面），
+// 创建者 / 超管可读，其余「未找到」。
+func (s *McpServerService) Get(ctx context.Context, id, callerId string, callerIsAdmin bool) (*entity.McpServer, error) {
+	sv, err := s.repo.Get(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if !canReadMCPServer(sv.CreatedBy, callerId, callerIsAdmin) {
+		return nil, errDetailNotFound
+	}
+	return sv, nil
 }
 
 func (s *McpServerService) GetByName(ctx context.Context, name string) (*entity.McpServer, error) {

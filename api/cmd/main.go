@@ -217,7 +217,7 @@ func main() {
 
 	// Skill 模块服务
 	skillNSSvc := service.NewSkillNamespaceService(skillNSRepo)
-	skillSvc := service.NewSkillService(skillRepo, userRepo, skillSecRepo)
+	skillSvc := service.NewSkillService(skillRepo, skillNSRepo, userRepo, skillSecRepo)
 	skillLabelSvc := service.NewSkillLabelService(skillLabelRepo)
 	skillSecSvc := service.NewSkillSecurityService(skillSecRepo, skillScanner)
 	skillPkgSvc := service.NewSkillPackageService(skillRepo, skillSecRepo, skillStorage, skillScanner, skillEmbed)

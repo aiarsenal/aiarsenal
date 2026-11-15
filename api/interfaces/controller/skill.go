@@ -37,7 +37,8 @@ func (h *SkillController) Get(c *gin.Context) {
 		middleware.Fail(c, "参数错误")
 		return
 	}
-	sk, err := h.svc.Get(c, id)
+	u := middleware.GetUser(c)
+	sk, err := h.svc.Get(c, id, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "未找到")
 		return
