@@ -50,7 +50,8 @@ func (h *McpServerController) Get(c *gin.Context) {
 		middleware.Fail(c, "参数错误")
 		return
 	}
-	v, err := h.svc.Get(c, id)
+	u := middleware.GetUser(c)
+	v, err := h.svc.Get(c, id, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "未找到")
 		return

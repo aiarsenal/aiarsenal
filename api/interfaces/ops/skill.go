@@ -68,7 +68,8 @@ func buildSkillServer(d Deps) *mcp.Server {
 	opsTool(srv, "skill_get", "查技能详情（真实数据）：skill_id 取全量字段（含溯源：贡献人/原作者/原链接/来源标识/标签）；要装到实例用 skill_install",
 		[]toolArg{{"skill_id", "技能 id", true}},
 		func(ctx context.Context, a map[string]any) (string, error) {
-			s, err := d.Skill.Get(ctx, argStr(a, "skill_id", ""))
+			// ops 工具通道=系统路径（实例令牌换取的平台凭据）：全量字段按设计可达
+			s, err := d.Skill.Get(ctx, argStr(a, "skill_id", ""), "", true)
 			if err != nil {
 				return fmt.Sprintf("未找到技能：%s", argStr(a, "skill_id", "")), nil
 			}
@@ -535,7 +536,8 @@ func buildSkillWriteServer(d Deps) *mcp.Server {
 	opsTool(srv, "skill_update", "更新技能元数据（写真实库）：改名称/简介/可见性；内容更新走导入链（skill_market_import_url 传原链接=追加新版本）",
 		[]toolArg{{"skill_id", "技能 id", true}, {"display_name", "新名称（缺省不改）", false}, {"summary", "新简介（缺省不改）", false}, {"visibility", "可见性：0=公开 1=私有（缺省不改）", false}},
 		func(ctx context.Context, a map[string]any) (string, error) {
-			sk, err := d.Skill.Get(ctx, argStr(a, "skill_id", ""))
+			// ops 工具通道=系统路径：元数据管理按平台自身权威执行
+			sk, err := d.Skill.Get(ctx, argStr(a, "skill_id", ""), "", true)
 			if err != nil {
 				return "", fmt.Errorf("未找到技能：%s", argStr(a, "skill_id", ""))
 			}
@@ -681,7 +683,8 @@ func waitSkillAudit(ctx context.Context, d Deps, versionId string, waitSec int) 
 // skillVerLabel 技能名 + 版本号（通知/回执文案用，查不到回落 id）。
 func skillVerLabel(ctx context.Context, d Deps, skillId, versionId string) (string, string) {
 	name, ver := skillId, versionId
-	if sk, err := d.Skill.Get(ctx, skillId); err == nil && sk != nil && sk.DisplayName != "" {
+	// ops 通知文案查询=系统路径（展示名回填，非用户数据面）
+	if sk, err := d.Skill.Get(ctx, skillId, "", true); err == nil && sk != nil && sk.DisplayName != "" {
 		name = sk.DisplayName
 	}
 	if v, err := d.Skill.GetVersion(ctx, versionId); err == nil && v != nil && v.Version != "" {

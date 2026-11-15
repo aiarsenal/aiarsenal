@@ -54,7 +54,8 @@ func (h *SkillNamespaceController) Get(c *gin.Context) {
 		middleware.Fail(c, "参数错误")
 		return
 	}
-	ns, err := h.svc.Get(c, id)
+	u := middleware.GetUser(c)
+	ns, err := h.svc.Get(c, id, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "未找到")
 		return

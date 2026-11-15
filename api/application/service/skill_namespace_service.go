@@ -24,8 +24,30 @@ func (s *SkillNamespaceService) All(ctx context.Context) ([]*entity.SkillNamespa
 	return s.repo.All(ctx)
 }
 
-func (s *SkillNamespaceService) Get(ctx context.Context, namespaceId string) (*entity.SkillNamespace, error) {
-	return s.repo.Get(ctx, namespaceId)
+// Get 命名空间详情（F-017 横向越权修复）：创建者 / 命名空间成员 / 超管可读，
+// 其余一律「未找到」（不泄露存在性）。userId 为空（系统路径）按不可读处理——
+// 唯一调用方是鉴权后的 controller。
+func (s *SkillNamespaceService) Get(ctx context.Context, namespaceId, callerId string, callerIsAdmin bool) (*entity.SkillNamespace, error) {
+	ns, err := s.repo.Get(ctx, namespaceId)
+	if err != nil {
+		return nil, err
+	}
+	isMember := false
+	if callerId != "" {
+		for _, m := range func() []*entity.SkillNamespaceMember {
+			ms, _ := s.repo.ListMembers(ctx, namespaceId)
+			return ms
+		}() {
+			if m.UserId == callerId {
+				isMember = true
+				break
+			}
+		}
+	}
+	if !canReadNamespace(ns.CreatedBy, callerId, callerIsAdmin, isMember) {
+		return nil, errDetailNotFound
+	}
+	return ns, nil
 }
 
 func (s *SkillNamespaceService) Add(ctx context.Context, n *entity.SkillNamespace) (string, error) {
