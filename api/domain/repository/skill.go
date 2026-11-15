@@ -85,7 +85,9 @@ type ISkillSecurityRepository interface {
 	GetAudit(ctx context.Context, auditId string) (*entity.SkillSecurityAudit, error)
 	AddAudit(ctx context.Context, a *entity.SkillSecurityAudit) (string, error)
 	Rescan(ctx context.Context, versionId string) (string, error) // 创建新扫描任务，返回 auditId
-	UpdateAudit(ctx context.Context, auditId string, status, severity uint, findings json.RawMessage, scannerRaw string) error
+	UpdateAudit(ctx context.Context, auditId string, status, severity uint, findings json.RawMessage, scannerRaw, contentHash string) error
+	// ListAllAuditsBySkillVersion 取版本全部审计（id 升序，门禁全记录检查用，F-013）。
+	ListAllAuditsBySkillVersion(ctx context.Context, versionId string) ([]*entity.SkillSecurityAudit, error)
 	// LatestAuditBySkillVersion 取版本最新一条审计（安装/发布门禁用；无记录返回 err）。
 	LatestAuditBySkillVersion(ctx context.Context, versionId string) (*entity.SkillSecurityAudit, error)
 	// LatestAuditsByVersions 批量取各版本最新审计（版本列表回填 auditStatus 用）。

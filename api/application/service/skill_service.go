@@ -174,7 +174,7 @@ func (s *SkillService) PublishVersion(ctx context.Context, versionId string) err
 	if v.Status == 2 {
 		return errors.New("已撤回的版本不可发布")
 	}
-	if err := ensureSkillVersionSafe(ctx, s.secRepo, versionId); err != nil {
+	if err := ensureSkillVersionSafe(ctx, s.secRepo, s.repo, versionId); err != nil {
 		return err
 	}
 	if err := s.repo.PublishVersion(ctx, versionId); err != nil {

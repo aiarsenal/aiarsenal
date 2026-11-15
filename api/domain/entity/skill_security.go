@@ -25,8 +25,11 @@ type SkillSecurityAudit struct {
 	Severity       uint            `gorm:"column:severity" json:"severity"` // 0~4
 	FindingsJson   json.RawMessage `gorm:"column:findings_json;type:jsonb" json:"findingsJson,omitempty"`
 	ScannerRaw     string          `gorm:"column:scanner_raw" json:"scannerRaw"`
-	ScannedAt      *types.Time     `gorm:"column:scanned_at" json:"scannedAt"`
-	CreatedAt      *types.Time     `gorm:"column:created_at" json:"createdAt"`
+	// ContentHash 扫描时文件集聚合哈希（sha256(sorted path:filesha)，F-013）：门禁用它
+	// 与当前文件集重算值比对——审计与内容强绑定，竞态期/内容变更后的过期 PASSED 不再放行。
+	ContentHash string      `gorm:"column:content_hash" json:"contentHash,omitempty"`
+	ScannedAt   *types.Time `gorm:"column:scanned_at" json:"scannedAt"`
+	CreatedAt   *types.Time `gorm:"column:created_at" json:"createdAt"`
 }
 
 func (SkillSecurityAudit) TableName() string { return "aa_skill_security_audit" }

@@ -1232,7 +1232,7 @@ const deviceSkillPackagePath = "/api/v1/system/client/skill/package"
 func (s *ClientService) resolveSkillVersionId(ctx context.Context, sk *entity.Skill) (string, error) {
 	if sk.LatestVersionId != "" {
 		if v, err := s.skillRepo.GetVersion(ctx, sk.LatestVersionId); err == nil && v != nil &&
-			v.Status != 2 && ensureSkillVersionSafe(ctx, s.skillSecRepo, v.VersionId) == nil {
+			v.Status != 2 && ensureSkillVersionSafe(ctx, s.skillSecRepo, s.skillRepo, v.VersionId) == nil {
 			return v.VersionId, nil
 		}
 	}
@@ -1244,7 +1244,7 @@ func (s *ClientService) resolveSkillVersionId(ctx context.Context, sk *entity.Sk
 		if v.Status == 2 { // 跳过已 yanked
 			continue
 		}
-		if ensureSkillVersionSafe(ctx, s.skillSecRepo, v.VersionId) != nil { // 跳过非「安全」
+		if ensureSkillVersionSafe(ctx, s.skillSecRepo, s.skillRepo, v.VersionId) != nil { // 跳过非「安全」
 			continue
 		}
 		return v.VersionId, nil
@@ -1361,7 +1361,7 @@ func (s *ClientService) AdminInstallDeviceSkill(ctx context.Context, deviceId, s
 	if versionId == "" {
 		return "", fmt.Errorf("技能无可用版本: %s", skillId)
 	}
-	if err := ensureSkillVersionSafe(ctx, s.skillSecRepo, versionId); err != nil {
+	if err := ensureSkillVersionSafe(ctx, s.skillSecRepo, s.skillRepo, versionId); err != nil {
 		return "", err
 	}
 	payload, _ := json.Marshal(map[string]any{

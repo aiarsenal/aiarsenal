@@ -70,15 +70,27 @@ func (r *SkillSecurityRepository) Rescan(ctx context.Context, versionId string) 
 }
 
 // UpdateAudit 扫描完成后回写结论（status 见 entity.AuditStatus*，severity 取最高，findings jsonb）。
-func (r *SkillSecurityRepository) UpdateAudit(ctx context.Context, auditId string, status, severity uint, findings json.RawMessage, scannerRaw string) error {
+func (r *SkillSecurityRepository) UpdateAudit(ctx context.Context, auditId string, status, severity uint, findings json.RawMessage, scannerRaw, contentHash string) error {
 	return r.db.WithContext(ctx).Model(&entity.SkillSecurityAudit{}).Where("audit_id = ?", auditId).
 		Updates(map[string]interface{}{
 			"status":        status,
 			"severity":      severity,
 			"findings_json": findings,
 			"scanner_raw":   scannerRaw,
+			"content_hash":  contentHash,
 			"scanned_at":    time.Now(),
 		}).Error
+}
+
+// ListAllAuditsBySkillVersion 取版本全部审计（id 升序）：门禁要求历史无 FAILED 且
+// 最新 PASSED 的内容哈希与当前文件集一致（F-013），只看最新一条会被竞态期/洗白结论骗过。
+func (r *SkillSecurityRepository) ListAllAuditsBySkillVersion(ctx context.Context, versionId string) ([]*entity.SkillSecurityAudit, error) {
+	var list []*entity.SkillSecurityAudit
+	if err := r.db.WithContext(ctx).Where("skill_version_id = ?", versionId).
+		Order("id asc").Find(&list).Error; err != nil {
+		return nil, err
+	}
+	return list, nil
 }
 
 // LatestAuditBySkillVersion 取版本最新一条审计（同版本多次重扫取 id 最大=最近一次）。

@@ -712,7 +712,7 @@ func (s *AgentRuntimeService) ListInstanceSkills(ctx context.Context, instanceId
 func (s *AgentRuntimeService) resolveLatestVersionId(ctx context.Context, sk *entity.Skill) (string, error) {
 	if sk.LatestVersionId != "" {
 		if v, err := s.skillRepo.GetVersion(ctx, sk.LatestVersionId); err == nil && v != nil &&
-			v.Status != 2 && ensureSkillVersionSafe(ctx, s.skillSecRepo, v.VersionId) == nil {
+			v.Status != 2 && ensureSkillVersionSafe(ctx, s.skillSecRepo, s.skillRepo, v.VersionId) == nil {
 			return v.VersionId, nil
 		}
 	}
@@ -724,7 +724,7 @@ func (s *AgentRuntimeService) resolveLatestVersionId(ctx context.Context, sk *en
 		if v.Status == 2 { // 跳过已 yanked
 			continue
 		}
-		if ensureSkillVersionSafe(ctx, s.skillSecRepo, v.VersionId) != nil { // 跳过非「安全」
+		if ensureSkillVersionSafe(ctx, s.skillSecRepo, s.skillRepo, v.VersionId) != nil { // 跳过非「安全」
 			continue
 		}
 		return v.VersionId, nil
@@ -750,7 +750,7 @@ func (s *AgentRuntimeService) InstallSkill(ctx context.Context, instanceId, skil
 		return "", fmt.Errorf("技能无可用版本: %s", skillId)
 	}
 	// 安全门禁：显式指定/解析出的版本最新审计须为「安全」，否则拒绝下发（取包端点同拦）。
-	if err := ensureSkillVersionSafe(ctx, s.skillSecRepo, versionId); err != nil {
+	if err := ensureSkillVersionSafe(ctx, s.skillSecRepo, s.skillRepo, versionId); err != nil {
 		return "", err
 	}
 	// 关联随真实安装结果落（方案 B）：这里不预写 aa_agent_instance_skill，
