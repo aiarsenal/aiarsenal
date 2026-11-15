@@ -153,6 +153,11 @@ func inspectZip(raw []byte) (*zipInspectResult, error) {
 }
 
 // persistVersionFiles 存储所有文件并建 SkillFile 记录（需 versionId）。
+// persistVersionFiles 存储所有文件并建 SkillFile 记录（需 versionId）。
+// 不变量（F-013 门禁依赖）：AddVersion 先于本函数、且 UNIQUE(skill_id,version) 保证
+// 同号版本不可重建——存储 key 含版本号字符串，同号覆盖写通道因此不存在；
+// 若未来把 persist 挪到 finalize 之前或 AddVersion 改成 upsert，此隐式防线被拆，
+// 门禁的 content_hash 只绑定 DB 行、不校验存储字节，覆盖通道将静默打开。
 func (s *SkillPackageService) persistVersionFiles(ctx context.Context, skillId, versionId, version string, ins *zipInspectResult) ([]*entity.SkillFile, error) {
 	files := make([]*entity.SkillFile, 0, len(ins.Files))
 	for _, fd := range ins.Files {
@@ -178,7 +183,8 @@ func (s *SkillPackageService) persistVersionFiles(ctx context.Context, skillId, 
 	return files, nil
 }
 
-// finalizeVersion 组装 SkillVersion(DRAFT) 入库 + 搜索文档 + 安全扫描。fileCount/totalSize 由解析期已知。
+// finalizeVersion 组装 SkillVersion(DRAFT) 入库 + 搜索文档（扫描派发已移至
+// dispatchSecurityScan，在文件持久化完成后调用）。fileCount/totalSize 由解析期已知。
 func (s *SkillPackageService) finalizeVersion(ctx context.Context, sk *entity.Skill, version, changelog string, ins *zipInspectResult, fileCount int, totalSize int64, userId string) (string, error) {
 	// jsonb 列保持 nil→NULL 语义，勿赋空串（MEMORY jsonb-column-empty-string-gotcha）
 	var metaJSON, manifestJSON json.RawMessage
@@ -207,17 +213,15 @@ func (s *SkillPackageService) finalizeVersion(ctx context.Context, sk *entity.Sk
 		return "", err
 	}
 	s.upsertSearchDoc(ctx, sk, ins.Frontmatter, ins.SkillMDBody, ins.ManifestBytes)
-	if s.scanner != nil {
-		auditId, _ := s.secRepo.Rescan(ctx, versionId)
-		if auditId != "" {
-			s.scanner.ScanVersionAsync(versionId, auditId)
-		}
-	}
 	slog.Info("skill version 创建完成", "skillId", sk.SkillId, "versionId", versionId, "version", version, "fileCount", fileCount)
 	return versionId, nil
 }
 
-// createVersionFromZip inspect→finalize→persist 编排（skill 须已存在）。三入口共用。
+// createVersionFromZip inspect→finalize→persist→派发扫描 编排（skill 须已存在）。三入口共用。
+// 派发必须在 persistVersionFiles 之后（F-013 竞态修复）：扫描 goroutine 的 ListFiles
+// 与文件插入并发时只看到空/部分文件集，首扫会以「缺 SKILL.md」低危误判 PASSED——
+// 该结论经门禁成为恶意包通行证。文件持久化全部完成后再建审计（PENDING）并派发，
+// persist 失败早退则无审计行，门禁「尚无安全审计记录」天然 fail-closed。
 func (s *SkillPackageService) createVersionFromZip(ctx context.Context, sk *entity.Skill, version, changelog string, raw []byte, userId string) (string, error) {
 	ins, err := inspectZip(raw)
 	if err != nil {
@@ -228,9 +232,26 @@ func (s *SkillPackageService) createVersionFromZip(ctx context.Context, sk *enti
 		return "", err
 	}
 	if _, err := s.persistVersionFiles(ctx, sk.SkillId, versionId, version, ins); err != nil {
-		return versionId, err // version 已建，文件失败带 err 返回（上传失败可重试）
+		// version 已建、文件半途失败：审计未创建（派发在 persist 之后），门禁 fail-closed。
+		// 同号重传会撞 UNIQUE(skill_id,version)——须先在版本管理里删除失败版本再重传。
+		return versionId, err
 	}
+	s.dispatchSecurityScan(ctx, versionId)
 	return versionId, nil
+}
+
+// dispatchSecurityScan 文件持久化完成后派发安全扫描：建 PENDING 审计（UI 立即可见）
+// 再异步扫描。scanner/secRepo 未接线（部分装配路径）时静默跳过，与既有 nil-guard 一致。
+func (s *SkillPackageService) dispatchSecurityScan(ctx context.Context, versionId string) {
+	if s.scanner == nil || s.secRepo == nil {
+		return
+	}
+	auditId, err := s.secRepo.Rescan(ctx, versionId)
+	if err != nil || auditId == "" {
+		slog.Error("skill 安全审计创建失败（该版本将被门禁拦截，可重扫恢复）", "versionId", versionId, "err", err)
+		return
+	}
+	s.scanner.ScanVersionAsync(versionId, auditId)
 }
 
 // UploadVersion 给已存在 skill 上传新版本 zip（前端版本管理弹窗用）。
@@ -368,10 +389,18 @@ func (s *SkillPackageService) OpenFile(ctx context.Context, versionId, filePath 
 // 仅拦机器取包端点（DownloadPackage/DownloadDevicePackage）；管理端 /version/download
 // 不拦（供管理员检查不安全包内容用）。
 func (s *SkillPackageService) EnsureVersionSafe(ctx context.Context, versionId string) error {
-	return ensureSkillVersionSafe(ctx, s.secRepo, versionId)
+	return ensureSkillVersionSafe(ctx, s.secRepo, s.repo, versionId)
 }
 
+// ErrSkillContentMismatch 存储字节与文件行 sha256 不符（下载时逐文件校验，F-013 门禁
+// 的内容绑定闭环到存储层：门禁哈希绑定的是 DB 行，下载时把字节对回行值，带外篡改
+// 存储对象的包不再静默流出）。控制器应映射为 403。
+var ErrSkillContentMismatch = errors.New("skill 文件内容校验失败：存储字节与扫描时不一致")
+
 // DownloadVersion 把版本所有文件打包成 zip 返回（filename + bytes）。
+// 三条下载链（管理端 /version/download、机器 /agent/runtime/skill/package、设备
+// /system/client/skill/package）共用本函数：打包时逐文件流式 sha256 与行值比对，
+// 读不到或校验失败即整体失败（fail-closed，不再静默跳过缺文件）。
 func (s *SkillPackageService) DownloadVersion(ctx context.Context, versionId string) (string, []byte, error) {
 	files, err := s.repo.ListFiles(ctx, versionId)
 	if err != nil {
@@ -382,15 +411,22 @@ func (s *SkillPackageService) DownloadVersion(ctx context.Context, versionId str
 	for _, f := range files {
 		rc, e := s.storage.Open(ctx, f.StorageKey)
 		if e != nil {
-			continue
+			return "", nil, fmt.Errorf("%w: %s 打开失败: %v", ErrSkillContentMismatch, f.FilePath, e)
 		}
 		w, e := zw.Create(f.FilePath)
 		if e != nil {
 			rc.Close()
-			continue
+			return "", nil, fmt.Errorf("%w: %s 打包失败: %v", ErrSkillContentMismatch, f.FilePath, e)
 		}
-		_, _ = io.Copy(w, rc)
+		h := sha256.New()
+		if _, err := io.Copy(io.MultiWriter(w, h), rc); err != nil {
+			rc.Close()
+			return "", nil, fmt.Errorf("%w: %s 读取失败: %v", ErrSkillContentMismatch, f.FilePath, err)
+		}
 		rc.Close()
+		if got := hex.EncodeToString(h.Sum(nil)); got != f.Sha256 {
+			return "", nil, fmt.Errorf("%w: %s（sha256 不符）", ErrSkillContentMismatch, f.FilePath)
+		}
 	}
 	if err := zw.Close(); err != nil {
 		return "", nil, err

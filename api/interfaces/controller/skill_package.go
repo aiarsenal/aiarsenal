@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"path"
@@ -140,6 +141,10 @@ func (h *SkillPackageController) DownloadVersion(c *gin.Context) {
 	}
 	filename, data, err := h.pkgSvc.DownloadVersion(c, versionId)
 	if err != nil {
+		if errors.Is(err, service.ErrSkillContentMismatch) {
+			c.Data(http.StatusForbidden, "text/plain; charset=utf-8", []byte(err.Error()))
+			return
+		}
 		middleware.Fail(c, "打包失败")
 		return
 	}
@@ -165,6 +170,10 @@ func (h *SkillPackageController) DownloadPackage(c *gin.Context) {
 	}
 	filename, data, err := h.pkgSvc.DownloadVersion(c, versionId)
 	if err != nil {
+		if errors.Is(err, service.ErrSkillContentMismatch) {
+			c.Data(http.StatusForbidden, "text/plain; charset=utf-8", []byte(err.Error()))
+			return
+		}
 		c.Data(http.StatusInternalServerError, "text/plain; charset=utf-8", []byte("打包失败"))
 		return
 	}
@@ -194,6 +203,10 @@ func (h *SkillPackageController) DownloadDevicePackage(c *gin.Context) {
 	}
 	filename, data, err := h.pkgSvc.DownloadVersion(c, versionId)
 	if err != nil {
+		if errors.Is(err, service.ErrSkillContentMismatch) {
+			c.Data(http.StatusForbidden, "text/plain; charset=utf-8", []byte(err.Error()))
+			return
+		}
 		c.Data(http.StatusInternalServerError, "text/plain; charset=utf-8", []byte("打包失败"))
 		return
 	}

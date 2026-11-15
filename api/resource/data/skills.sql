@@ -570,6 +570,7 @@ CREATE TABLE public.aa_skill_security_audit (
     severity smallint DEFAULT 0 NOT NULL,
     findings_json jsonb,
     scanner_raw text,
+    content_hash character varying(64),
     scanned_at timestamp without time zone,
     created_at timestamp without time zone
 );
