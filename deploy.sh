@@ -64,6 +64,16 @@ GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO aiarsenal;" >/dev/null
     "${PSQL[@]}" -d "$db" -tAc "SELECT 'ALTER SEQUENCE ' || quote_ident(sequencename) || ' OWNER TO aiarsenal;' FROM pg_sequences WHERE schemaname='public' AND sequenceowner <> 'aiarsenal'" | "${PSQL[@]}" -d "$db" >/dev/null
   done
   echo "==> 数据库重建完成（10 个库 + GRANT）"
+  # F-002：演示种子显式开关。默认不加载任何用户账号（首个超管由 api 启动引导
+  # 随机生成口令并一次性打印）；演示环境须显式声明后加载 demo.sql。
+  if [ "${AIARSENAL_DEMO:-}" = "true" ]; then
+    echo "==> AIARSENAL_DEMO=true：加载演示种子（101 个演示账号，公开口令 aiarsenal123）"
+    "${PSQL[@]}" -d aiarsenal -f "${SQL_DIR}/demo.sql"
+    echo "!! 演示种子已加载：演示账号具备公开默认口令，务必确保部署对公网隔离"
+  else
+    echo "==> 未声明 AIARSENAL_DEMO=true：不加载演示账号（生产形态）"
+    echo "    首个超管将在 api 首次启动时生成：口令打印在启动日志中，请立即登录修改"
+  fi
   exit 0
 fi
 
@@ -148,6 +158,9 @@ AIARSENAL_SECURITY_DATA_KEY=${AA_DATA_KEY}
 AIARSENAL_ACTOR_SIGN_KEY=aa-actor-$(openssl rand -hex 16)
 # SECRET_KEY：llm 网关解密 provider 凭据——必须与 AIARSENAL_SECURITY_DATA_KEY 同值（api 加密、llm 解密）
 SECRET_KEY=${AA_DATA_KEY}
+# AIARSENAL_ADMIN_PASSWORD：首个超管的初始口令（F-002 默认安装零种子，api 启动引导建号）。
+#   仅在库内无超管时被消费；请登录后立即修改。
+AIARSENAL_ADMIN_PASSWORD=$(openssl rand -base64 24 | tr -d '/+=' | head -c 32)
 SECRETS
   unset AA_ENC_KEY AA_DATA_KEY
   chown root:root /etc/aiarsenal/env && chmod 600 /etc/aiarsenal/env

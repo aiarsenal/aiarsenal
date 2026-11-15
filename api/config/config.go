@@ -13,22 +13,23 @@ import (
 
 // Config 全局配置（对应 config.yaml 各段）
 type Config struct {
-	Server   ServerConfig   `mapstructure:"server"`
-	Public   PublicConfig   `mapstructure:"public"`
-	Database DatabaseConfig `mapstructure:"database"`
-	Redis    RedisConfig    `mapstructure:"redis"`
-	Jwt      JwtConfig      `mapstructure:"jwt"`
-	Casbin   CasbinConfig   `mapstructure:"casbin"`
-	System   SystemConfig   `mapstructure:"system"`
-	Storage  StorageConfig  `mapstructure:"storage"`
-	Actor    ActorConfig    `mapstructure:"actor"`
-	Agent    AgentConfig    `mapstructure:"agent"`
-	Password PasswordConfig `mapstructure:"password"`
-	Totp     TotpConfig     `mapstructure:"totp"`
-	Alert    AlertConfig    `mapstructure:"alert"`
-	Audit    AuditConfig    `mapstructure:"audit"`
-	Cors     CorsConfig     `mapstructure:"cors"`
-	Security SecurityConfig `mapstructure:"security"`
+	Server    ServerConfig    `mapstructure:"server"`
+	Public    PublicConfig    `mapstructure:"public"`
+	Database  DatabaseConfig  `mapstructure:"database"`
+	Redis     RedisConfig     `mapstructure:"redis"`
+	Jwt       JwtConfig       `mapstructure:"jwt"`
+	Casbin    CasbinConfig    `mapstructure:"casbin"`
+	System    SystemConfig    `mapstructure:"system"`
+	Storage   StorageConfig   `mapstructure:"storage"`
+	Actor     ActorConfig     `mapstructure:"actor"`
+	Agent     AgentConfig     `mapstructure:"agent"`
+	Password  PasswordConfig  `mapstructure:"password"`
+	Totp      TotpConfig      `mapstructure:"totp"`
+	Alert     AlertConfig     `mapstructure:"alert"`
+	Audit     AuditConfig     `mapstructure:"audit"`
+	Cors      CorsConfig      `mapstructure:"cors"`
+	Security  SecurityConfig  `mapstructure:"security"`
+	Bootstrap BootstrapConfig `mapstructure:"bootstrap"`
 
 	// jwtKeyFromFile 标记 jwt.encryptKey 是否直接取自 config.yaml（未被环境变量覆盖）。
 	// 不导出、不参与反序列化，仅由 Load 填入，供 insecureDefaults 上报。
@@ -39,6 +40,19 @@ type Config struct {
 	// pepperFromFile 标记 password.hash.pepper 是否直接取自 config.yaml（真值提交进
 	// git 等于把口令密钥公开）。同上，仅供 insecureDefaults 上报。
 	pepperFromFile bool
+	// adminPasswordFromFile 标记 bootstrap.adminPassword 是否直接取自 config.yaml（F-002）。
+	adminPasswordFromFile bool
+}
+
+// BootstrapConfig 首次启动引导配置（F-002）：默认安装零种子，首个超管由此引导。
+type BootstrapConfig struct {
+	// AdminPassword 初始超管口令：部署经 AIARSENAL_ADMIN_PASSWORD 注入（deploy.sh
+	// 随机生成）。留空=启动时 crypto/rand 生成并一次性打印。经 yaml 配置会被
+	// insecureDefaults 告警（口令进 git 等于公开）。
+	AdminPassword string `mapstructure:"adminPassword"`
+	// Demo 演示环境声明：true 时 rebuild-db 可加载 demo.sql 演示账号，且启动跳过
+	// 种子默认口令扫描。默认 false。
+	Demo bool `mapstructure:"demo"`
 }
 
 // PasswordConfig 口令加固配置（部署时定档，无管理界面）。三段在 Load 时经
@@ -373,6 +387,14 @@ func Load() (*Config, error) {
 	}
 	applyTrustedProxyEnvOverride(v)
 	applyCredentialEnvOverrides(v)
+	// F-002：初始超管口令经 env 注入（deploy.sh 随机生成）；yaml 真值触发不安全默认值告警。
+	yamlAdminPassword := v.GetString("bootstrap.adminPassword")
+	if k := os.Getenv("AIARSENAL_ADMIN_PASSWORD"); k != "" {
+		v.Set("bootstrap.adminPassword", k)
+	}
+	if os.Getenv("AIARSENAL_DEMO") != "" {
+		v.Set("bootstrap.demo", os.Getenv("AIARSENAL_DEMO") == "true")
+	}
 	c := &Config{}
 	if err := v.Unmarshal(c); err != nil {
 		return nil, fmt.Errorf("unmarshal config: %w", err)
@@ -383,6 +405,7 @@ func Load() (*Config, error) {
 	c.jwtKeyFromFile = jwtKeyFromConfigFile(c.Jwt.EncryptKey, yamlJwtKey)
 	c.pepperFromFile = pepperFromConfigFile(c.Password.Hash.Pepper, yamlPepper)
 	c.dataKeyFromFile = pepperFromConfigFile(c.Security.DataKey, yamlDataKey)
+	c.adminPasswordFromFile = pepperFromConfigFile(c.Bootstrap.AdminPassword, yamlAdminPassword)
 	c.warnInsecureDefaults()
 	cfg = c
 	return c, nil
@@ -459,6 +482,9 @@ func (c *Config) insecureDefaults() []string {
 	if c.dataKeyFromFile {
 		out = append(out, "security.dataKey")
 	}
+	if c.adminPasswordFromFile {
+		out = append(out, "bootstrap.adminPassword")
+	}
 	// F-003：Redis 已配置但未设口令——会话注册表/锁定计数/缓存可被任意本机进程读写。
 	// address 为空的零值配置不报（保持空配置零告警的既有钉子）。
 	if c.Redis.Default.Address != "" && c.Redis.Default.Password == "" {
@@ -525,6 +551,11 @@ func insecureDefaultNotice(item string) (title, body string) {
 				"deploy.sh 已在部署时自动设置 requirepass 并注入 AIARSENAL_REDIS_PASSWORD，" +
 				"手动部署请 redis-cli CONFIG SET requirepass 后 CONFIG REWRITE 持久化，" +
 				"并以 AIARSENAL_REDIS_PASSWORD 注入 api。"
+	case "bootstrap.adminPassword":
+		return "不安全配置默认值：初始超管口令写入 config.yaml",
+			"初始超管口令 bootstrap.adminPassword 的真值已随源码提交的 config.yaml 公开：" +
+				"读到该文件的攻击者可在全新部署中直接以该口令登录超管；处置：改经环境变量 " +
+				"AIARSENAL_ADMIN_PASSWORD 注入（deploy.sh 随机生成），并从 config.yaml 删除真值。"
 	case "database.default.link":
 		return "不安全配置默认值：数据库连接串使用公开口令",
 			"数据库连接串仍使用随源码公开的默认口令（或与账号同源），且该账号历史上" +
