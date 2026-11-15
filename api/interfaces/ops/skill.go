@@ -47,9 +47,10 @@ func buildSkillServer(d Deps) *mcp.Server {
 	opsTool(srv, "skill_list", "查技能库列表（真实数据）：按命名空间/slug/名称/关键词过滤；配对端点 platform-ops 的 skill_search 是语义检索",
 		[]toolArg{{"keyword", "名称/简介模糊过滤", false}, {"namespace_id", "按命名空间过滤", false}, {"status", "状态过滤：1=上架 0=下架（缺省全部）", false}, {"page", "页码，默认 1", false}, {"limit", "条数 1-50，默认 10", false}},
 		func(ctx context.Context, a map[string]any) (string, error) {
+			// ops 系统路径：全量可见（工具聚合按平台自身权威）
 			list, total, err := d.Skill.List(ctx, argStr(a, "namespace_id", ""), "", "",
 				argStr(a, "status", ""), argStr(a, "keyword", ""),
-				clampInt(argInt(a, "page", 1), 1, 10000), clampInt(argInt(a, "limit", 10), 1, 50))
+				clampInt(argInt(a, "page", 1), 1, 10000), clampInt(argInt(a, "limit", 10), 1, 50), "", true)
 			if err != nil {
 				return "", err
 			}
@@ -74,7 +75,8 @@ func buildSkillServer(d Deps) *mcp.Server {
 				return fmt.Sprintf("未找到技能：%s", argStr(a, "skill_id", "")), nil
 			}
 			tags := []string{}
-			if ts, terr := d.Skill.ListTags(ctx, s.SkillId); terr == nil {
+			// ops 系统路径：技能标签按平台权威全量
+			if ts, terr := d.Skill.ListTags(ctx, s.SkillId, "", true); terr == nil {
 				for _, t := range ts {
 					tags = append(tags, t.TagName)
 				}
@@ -98,14 +100,15 @@ func buildSkillServer(d Deps) *mcp.Server {
 			if q == "" {
 				return "", fmt.Errorf("query 不能为空")
 			}
-			rows, err := d.Skill.Search(ctx, q, clampInt(argInt(a, "limit", 5), 1, 20), d.Embed)
+			// ops 系统路径：全量可见
+			rows, err := d.Skill.Search(ctx, q, clampInt(argInt(a, "limit", 5), 1, 20), d.Embed, "", true)
 			return jsonOut(rows, err)
 		})
 
 	opsTool(srv, "skill_version_list", "查技能版本列表（真实数据）：版本号/状态（DRAFT|PUBLISHED|YANKED）/安全审计状态（SAFE|UNSAFE|SCANNING|SCAN_ERROR|NO_AUDIT）/变更记录",
 		[]toolArg{{"skill_id", "技能 id", true}},
 		func(ctx context.Context, a map[string]any) (string, error) {
-			list, err := d.Skill.ListVersions(ctx, argStr(a, "skill_id", ""))
+			list, err := d.Skill.ListVersions(ctx, argStr(a, "skill_id", ""), "", true) // ops 系统路径
 			if err != nil {
 				return "", err
 			}
@@ -177,8 +180,9 @@ func buildSkillServer(d Deps) *mcp.Server {
 	opsTool(srv, "skill_sec_list", "查技能安全审计（真实数据）：版本级扫描结论（PASSED|FAILED|SCANNING|ERROR|PENDING）与风险等级",
 		[]toolArg{{"version_id", "按版本 id 过滤", false}, {"status", "按结论过滤：0=PENDING 1=PASSED 2=FAILED 3=SCANNING 4=ERROR", false}, {"limit", "条数 1-50，默认 10", false}},
 		func(ctx context.Context, a map[string]any) (string, error) {
+			// ops 系统路径：全量可见（平台工具按自身权威）
 			list, total, err := d.SkillSec.ListAudits(ctx, argStr(a, "version_id", ""), argStr(a, "status", ""),
-				1, clampInt(argInt(a, "limit", 10), 1, 50))
+				1, clampInt(argInt(a, "limit", 10), 1, 50), "", true)
 			if err != nil {
 				return "", err
 			}
@@ -253,7 +257,8 @@ func buildSkillServer(d Deps) *mcp.Server {
 			}
 			ordered := []cand{}
 			seen := map[string]bool{}
-			if rows, err := d.Skill.Search(ctx, q, limit, d.Embed); err == nil {
+			// ops 系统路径（$smart 候选聚合）：全量可见
+			if rows, err := d.Skill.Search(ctx, q, limit, d.Embed, "", true); err == nil {
 				for _, r := range rows {
 					id, _ := r["skill_id"].(string)
 					if id == "" || seen[id] {
@@ -265,7 +270,8 @@ func buildSkillServer(d Deps) *mcp.Server {
 					ordered = append(ordered, cand{id, title, summ, "", r["score"]})
 				}
 			}
-			if list, _, err := d.Skill.List(ctx, "", "", "", "1", q, 1, limit); err == nil {
+			// ops 系统路径（$smart 检索的技能候选聚合）：全量可见
+			if list, _, err := d.Skill.List(ctx, "", "", "", "1", q, 1, limit, "", true); err == nil {
 				for _, sk := range list {
 					if seen[sk.SkillId] {
 						continue
@@ -284,7 +290,8 @@ func buildSkillServer(d Deps) *mcp.Server {
 				}
 				// 可装口径同 skill_install 的版本解析：任一非撤回且审计「安全」的版本即可装
 				installable, verLabel, latestAudit := false, "", "无版本"
-				if vs, err := d.Skill.ListVersions(ctx, c.id); err == nil {
+				// ops 系统路径：安装口径的版本聚合按平台权威全量
+				if vs, err := d.Skill.ListVersions(ctx, c.id, "", true); err == nil {
 					for _, v := range vs { // ListVersions 按 id desc：最新非撤回版本的状态作展示
 						if v.Status == 2 {
 							continue
@@ -647,7 +654,8 @@ func parseSkillHandle(h string) (owner, slug string) {
 
 // skillFindBySlug 命名空间内按 slug 精确匹配（List 是 LIKE 匹配，需遍历比对）。
 func skillFindBySlug(ctx context.Context, d Deps, namespaceId, slug string) *entity.Skill {
-	list, _, err := d.Skill.List(ctx, namespaceId, slug, "", "", "", 1, 50)
+	// ops 系统路径：全量可见（内部查重）
+	list, _, err := d.Skill.List(ctx, namespaceId, slug, "", "", "", 1, 50, "", true)
 	if err != nil {
 		return nil
 	}
@@ -687,7 +695,7 @@ func skillVerLabel(ctx context.Context, d Deps, skillId, versionId string) (stri
 	if sk, err := d.Skill.Get(ctx, skillId, "", true); err == nil && sk != nil && sk.DisplayName != "" {
 		name = sk.DisplayName
 	}
-	if v, err := d.Skill.GetVersion(ctx, versionId); err == nil && v != nil && v.Version != "" {
+	if v, err := d.Skill.GetVersion(ctx, versionId, "", true); err == nil && v != nil && v.Version != "" {
 		ver = v.Version
 	}
 	return name, ver

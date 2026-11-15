@@ -626,6 +626,16 @@ func (r *AgentInstanceCommandRepository) List(ctx context.Context, instanceId st
 	return
 }
 
+// HasInstallCommandForVersion 该实例是否存在针对此 versionId 的 install_skill 命令
+// （F-017b G2：机器取包的归属绑定——实例只能下载它被下达安装命令的版本）。
+func (r *AgentInstanceCommandRepository) HasInstallCommandForVersion(ctx context.Context, instanceId, versionId string) (bool, error) {
+	var n int64
+	err := r.db.WithContext(ctx).Model(&entity.AgentInstanceCommand{}).
+		Where("instance_id = ? AND command_type = 'install_skill' AND payload_json->>'versionId' = ?", instanceId, versionId).
+		Count(&n).Error
+	return n > 0, err
+}
+
 func (r *AgentInstanceCommandRepository) Get(ctx context.Context, id string) (*entity.AgentInstanceCommand, error) {
 	var e entity.AgentInstanceCommand
 	if err := r.db.WithContext(ctx).Where("instance_command_id = ?", id).First(&e).Error; err != nil {

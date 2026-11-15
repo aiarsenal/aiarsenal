@@ -35,14 +35,60 @@ const (
 // storage 为 runtime-go storage.Storage 接口（local / s3 兼容 OSS/COS/MinIO/AWS）。
 type SkillPackageService struct {
 	repo    repository.ISkillRepository
+	nsRepo  repository.ISkillNamespaceRepository // F-017b 内容面门禁的成员判定
 	secRepo repository.ISkillSecurityRepository
 	storage storagestg.Storage
 	scanner *ScannerService
 	embed   EmbeddingProvider
+
+	// F-017b G2：机器取包的归属绑定（实例/设备的 install_skill 命令队列校验）。
+	// 装配期注入；nil=部分装配路径放行（与既有 nil-guard 语义一致，正文披露）。
+	hasAgentInstall  func(ctx context.Context, instanceId, versionId string) (bool, error)
+	hasDeviceInstall func(ctx context.Context, deviceId, versionId string) (bool, error)
 }
 
-func NewSkillPackageService(r repository.ISkillRepository, sr repository.ISkillSecurityRepository, s storagestg.Storage, sc *ScannerService, e EmbeddingProvider) *SkillPackageService {
-	return &SkillPackageService{repo: r, secRepo: sr, storage: s, scanner: sc, embed: e}
+// SetMachineInstallBindings 装配期注入机器取包的队列校验（main 两处装配调用）。
+func (s *SkillPackageService) SetMachineInstallBindings(
+	agent func(ctx context.Context, instanceId, versionId string) (bool, error),
+	device func(ctx context.Context, deviceId, versionId string) (bool, error),
+) {
+	s.hasAgentInstall = agent
+	s.hasDeviceInstall = device
+}
+
+// EnsureAgentPackageBinding 实例取包绑定（F-017b G2）：该版本必须在实例的
+// install_skill 命令队列中出现过——否则实例令牌无法拉取未授予它的技能包。
+func (s *SkillPackageService) EnsureAgentPackageBinding(ctx context.Context, instanceId, versionId string) error {
+	if s.hasAgentInstall == nil {
+		return nil
+	}
+	ok, err := s.hasAgentInstall(ctx, instanceId, versionId)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		return errDetailNotFound
+	}
+	return nil
+}
+
+// EnsureDevicePackageBinding 设备取包绑定（F-017b G2）：同 EnsureAgentPackageBinding。
+func (s *SkillPackageService) EnsureDevicePackageBinding(ctx context.Context, deviceId, versionId string) error {
+	if s.hasDeviceInstall == nil {
+		return nil
+	}
+	ok, err := s.hasDeviceInstall(ctx, deviceId, versionId)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		return errDetailNotFound
+	}
+	return nil
+}
+
+func NewSkillPackageService(r repository.ISkillRepository, nr repository.ISkillNamespaceRepository, sr repository.ISkillSecurityRepository, s storagestg.Storage, sc *ScannerService, e EmbeddingProvider) *SkillPackageService {
+	return &SkillPackageService{repo: r, nsRepo: nr, secRepo: sr, storage: s, scanner: sc, embed: e}
 }
 
 // ===== 内部结构 =====
@@ -362,6 +408,37 @@ func (s *SkillPackageService) OpenFile(ctx context.Context, versionId, filePath 
 		return nil, nil, err
 	}
 	return f, rc, nil
+}
+
+// GetVersion 版本行（F-017b 内容面门禁的 skillId 反查用）。
+func (s *SkillPackageService) GetVersion(ctx context.Context, versionId string) (*entity.SkillVersion, error) {
+	return s.repo.GetVersion(ctx, versionId)
+}
+
+// EnsureSkillReadable 技能内容面（版本文件列表/单文件下载/整包下载）的可读门禁（F-017b）：
+// 与详情谓词同语义（属主/命名空间成员/超管；PUBLIC 任何登录用户）。仅 JWT 管理通道调用；
+// 机器通道（实例/设备令牌）有自己的鉴权与安检门禁，不经此函数。
+func (s *SkillPackageService) EnsureSkillReadable(ctx context.Context, skillId, callerId string, callerIsAdmin bool) error {
+	sk, err := s.repo.Get(ctx, skillId)
+	if err != nil {
+		return errDetailNotFound
+	}
+	isMember := false
+	if callerId != "" && sk.Visibility == 1 {
+		if s.nsRepo != nil {
+			ms, _ := s.nsRepo.ListMembers(ctx, sk.NamespaceId)
+			for _, m := range ms {
+				if m.UserId == callerId {
+					isMember = true
+					break
+				}
+			}
+		}
+	}
+	if !canReadSkill(sk.OwnerId, sk.Visibility, callerId, callerIsAdmin, isMember) {
+		return errDetailNotFound
+	}
+	return nil
 }
 
 // EnsureVersionSafe 设备/实例取包前的安全门禁：最新审计须为「安全」。
@@ -735,7 +812,8 @@ func (s *SkillPackageService) findSkillBySlug(ctx context.Context, namespaceId, 
 	if slug == "" {
 		return nil, nil
 	}
-	list, _, err := s.repo.List(ctx, namespaceId, slug, "", "", "", 1, 50)
+	// 内部查重（ImportZip 幂等）：系统路径不过可见性 scope
+	list, _, err := s.repo.List(ctx, namespaceId, slug, "", "", "", 1, 50, "", true, nil)
 	if err != nil {
 		return nil, err
 	}

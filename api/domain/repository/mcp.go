@@ -10,8 +10,9 @@ import (
 // MCP 模块仓储接口（mcp 库）。软删表统一 Where deleted_at is null。
 
 type IMcpServerRepository interface {
-	List(ctx context.Context, name, typ string, pageNum, pageSize int) (list []*entity.McpServer, total int64, err error)
+	List(ctx context.Context, name, typ string, pageNum, pageSize int, createdBy string) (list []*entity.McpServer, total int64, err error)
 	All(ctx context.Context) (list []*entity.McpServer, err error)
+	AllByCreator(ctx context.Context, createdBy string) (list []*entity.McpServer, err error)
 	Get(ctx context.Context, id string) (*entity.McpServer, error)
 	GetByName(ctx context.Context, name string) (*entity.McpServer, error)
 	Add(ctx context.Context, e *entity.McpServer) (string, error)

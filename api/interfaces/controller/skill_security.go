@@ -20,9 +20,14 @@ func (h *SkillSecurityController) ListAudits(c *gin.Context) {
 		middleware.Fail(c, err.Error())
 		return
 	}
-	list, total, err := h.svc.ListAudits(c, req.VersionId, req.Status, req.PageNum, req.PageSize)
+	u := middleware.GetUser(c)
+	list, total, err := h.svc.ListAudits(c, req.VersionId, req.Status, req.PageNum, req.PageSize, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
-		middleware.Fail(c, "获取数据失败")
+		if service.IsDetailNotFound(err) {
+			middleware.Fail(c, "未找到")
+		} else {
+			middleware.Fail(c, "获取数据失败")
+		}
 		return
 	}
 	pn := req.PageNum

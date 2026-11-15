@@ -9,7 +9,7 @@ import (
 
 // ===== 命名空间 =====
 type ISkillNamespaceRepository interface {
-	List(ctx context.Context, slug, name, nsType, status string, pageNum, pageSize int) (list []*entity.SkillNamespace, total int64, err error)
+	List(ctx context.Context, slug, name, nsType, status string, pageNum, pageSize int, viewerId string, viewerAdmin bool, memberNs []string) (list []*entity.SkillNamespace, total int64, err error)
 	All(ctx context.Context) (list []*entity.SkillNamespace, err error)
 	Get(ctx context.Context, namespaceId string) (*entity.SkillNamespace, error)
 	GetBySlug(ctx context.Context, slug string) (*entity.SkillNamespace, error)
@@ -18,6 +18,10 @@ type ISkillNamespaceRepository interface {
 	Delete(ctx context.Context, namespaceId string) error
 	// 成员
 	ListMembers(ctx context.Context, namespaceId string) ([]*entity.SkillNamespaceMember, error)
+	// MemberNamespaceIds 用户所在的全部命名空间 id（F-017b 技能列表可见性 scope 用）。
+	MemberNamespaceIds(ctx context.Context, userId string) ([]string, error)
+	// AllForCaller 用户面命名空间全量（F-017b A-03：非超管按可见性 scope 过滤）。
+	AllForCaller(ctx context.Context, viewerId string, viewerAdmin bool, memberNs []string) (list []*entity.SkillNamespace, err error)
 	AddMember(ctx context.Context, m *entity.SkillNamespaceMember) error
 	RemoveMember(ctx context.Context, memberId string) error
 }
@@ -34,7 +38,7 @@ type ISkillMarketSiteRepository interface {
 
 // ===== 技能 =====
 type ISkillRepository interface {
-	List(ctx context.Context, namespaceId, slug, name, status, keyWords string, pageNum, pageSize int) (list []*entity.Skill, total int64, err error)
+	List(ctx context.Context, namespaceId, slug, name, status, keyWords string, pageNum, pageSize int, viewerId string, viewerAdmin bool, memberNs []string) (list []*entity.Skill, total int64, err error)
 	Get(ctx context.Context, skillId string) (*entity.Skill, error)
 	// ListBySlug 按 slug 精确匹配（List 的 slug 参数是 like 模糊，不适合回查）。
 	ListBySlug(ctx context.Context, slug string) (list []*entity.Skill, err error)
@@ -61,7 +65,7 @@ type ISkillRepository interface {
 	AddFile(ctx context.Context, f *entity.SkillFile) error
 	// 搜索文档（含向量）
 	UpsertSearchDocument(ctx context.Context, skillId, title, summary, keywords, searchText, namespaceId, namespaceSlug, ownerId string, visibility, status uint, vectorText string) error
-	SearchByVector(ctx context.Context, queryVectorText string, limit int) ([]map[string]interface{}, error)
+	SearchByVector(ctx context.Context, queryVectorText string, limit int, viewerId string, viewerAdmin bool, memberNs []string) ([]map[string]interface{}, error)
 }
 
 // ===== 标签 =====

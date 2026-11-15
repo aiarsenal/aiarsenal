@@ -219,8 +219,9 @@ func main() {
 	skillNSSvc := service.NewSkillNamespaceService(skillNSRepo)
 	skillSvc := service.NewSkillService(skillRepo, skillNSRepo, userRepo, skillSecRepo)
 	skillLabelSvc := service.NewSkillLabelService(skillLabelRepo)
-	skillSecSvc := service.NewSkillSecurityService(skillSecRepo, skillScanner)
-	skillPkgSvc := service.NewSkillPackageService(skillRepo, skillSecRepo, skillStorage, skillScanner, skillEmbed)
+	skillSecSvc := service.NewSkillSecurityService(skillSecRepo, skillRepo, skillNSRepo, skillScanner)
+	skillPkgSvc := service.NewSkillPackageService(skillRepo, skillNSRepo, skillSecRepo, skillStorage, skillScanner, skillEmbed)
+
 	// 第三方 skill 市场：可同步市场(讯飞)走适配器站内搜索/同步；其余外部市场不代搜不代抓，
 	// 收录到 aa_skill_market_site 目录（种子见 skills.sql，页面可增删改查），引导用户去原站搜索后回来导入。
 	skillReg := market.NewRegistry()
@@ -296,6 +297,8 @@ func main() {
 	clientDeviceRepo := persistence.NewClientDeviceRepository()
 	clientPackageRepo := persistence.NewClientPackageRepository()
 	clientCommandRepo := persistence.NewClientCommandRepository()
+	// F-017b G2：机器取包的归属绑定（实例/设备命令队列校验）
+	skillPkgSvc.SetMachineInstallBindings(agentCmdRepo.HasInstallCommandForVersion, clientCommandRepo.HasSkillInstallForVersion)
 	clientLogRepo := persistence.NewClientLogRepository()
 	clientConfigChangeRepo := persistence.NewClientConfigChangeRepository()
 	clientAppRepo := persistence.NewClientAppRepository()

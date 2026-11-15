@@ -23,7 +23,8 @@ func (h *McpServerController) List(c *gin.Context) {
 		middleware.Fail(c, err.Error())
 		return
 	}
-	list, total, err := h.svc.List(c, req.Name, req.Type, req.PageNum, req.PageSize)
+	u := middleware.GetUser(c)
+	list, total, err := h.svc.List(c, req.Name, req.Type, req.PageNum, req.PageSize, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "获取数据失败")
 		return
@@ -36,7 +37,8 @@ func (h *McpServerController) List(c *gin.Context) {
 }
 
 func (h *McpServerController) All(c *gin.Context) {
-	list, err := h.svc.All(c)
+	u := middleware.GetUser(c)
+	list, err := h.svc.AllForCaller(c, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "获取数据失败")
 		return

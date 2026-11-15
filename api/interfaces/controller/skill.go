@@ -19,7 +19,8 @@ func (h *SkillController) List(c *gin.Context) {
 		middleware.Fail(c, err.Error())
 		return
 	}
-	list, total, err := h.svc.List(c, req.NamespaceId, req.Slug, req.Name, req.Status, req.KeyWords, req.PageNum, req.PageSize)
+	u := middleware.GetUser(c)
+	list, total, err := h.svc.List(c, req.NamespaceId, req.Slug, req.Name, req.Status, req.KeyWords, req.PageNum, req.PageSize, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "获取数据失败")
 		return
@@ -116,9 +117,14 @@ func (h *SkillController) ListVersions(c *gin.Context) {
 		middleware.Fail(c, "参数错误")
 		return
 	}
-	list, err := h.svc.ListVersions(c, id)
+	u := middleware.GetUser(c)
+	list, err := h.svc.ListVersions(c, id, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
-		middleware.Fail(c, "获取数据失败")
+		if service.IsDetailNotFound(err) {
+			middleware.Fail(c, "未找到")
+		} else {
+			middleware.Fail(c, "获取数据失败")
+		}
 		return
 	}
 	middleware.Success(c, gin.H{"list": list})
@@ -130,7 +136,8 @@ func (h *SkillController) GetVersion(c *gin.Context) {
 		middleware.Fail(c, "参数错误")
 		return
 	}
-	v, err := h.svc.GetVersion(c, id)
+	u := middleware.GetUser(c)
+	v, err := h.svc.GetVersion(c, id, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "未找到")
 		return
@@ -190,7 +197,8 @@ func (h *SkillController) ListTags(c *gin.Context) {
 		middleware.Fail(c, "参数错误")
 		return
 	}
-	list, err := h.svc.ListTags(c, id)
+	u := middleware.GetUser(c)
+	list, err := h.svc.ListTags(c, id, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "获取数据失败")
 		return

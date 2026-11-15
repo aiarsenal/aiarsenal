@@ -16,12 +16,27 @@ func NewSkillNamespaceService(r repository.ISkillNamespaceRepository) *SkillName
 	return &SkillNamespaceService{repo: r}
 }
 
-func (s *SkillNamespaceService) List(ctx context.Context, slug, name, nsType, status string, pageNum, pageSize int) ([]*entity.SkillNamespace, int64, error) {
-	return s.repo.List(ctx, slug, name, nsType, status, pageNum, pageSize)
+// List 命名空间列表（F-017b A-03）：非超管按可见性 scope（GLOBAL/自己的/成员）。
+func (s *SkillNamespaceService) List(ctx context.Context, slug, name, nsType, status string, pageNum, pageSize int, callerId string, callerIsAdmin bool) ([]*entity.SkillNamespace, int64, error) {
+	var memberNs []string
+	if !callerIsAdmin && callerId != "" {
+		memberNs, _ = s.repo.MemberNamespaceIds(ctx, callerId)
+	}
+	return s.repo.List(ctx, slug, name, nsType, status, pageNum, pageSize, callerId, callerIsAdmin, memberNs)
 }
 
+// All 系统路径全量（ops 工具通道）；用户面见 AllForCaller。
 func (s *SkillNamespaceService) All(ctx context.Context) ([]*entity.SkillNamespace, error) {
 	return s.repo.All(ctx)
+}
+
+// AllForCaller 用户面全量（F-017b A-03）：同 List 的可见性 scope。
+func (s *SkillNamespaceService) AllForCaller(ctx context.Context, callerId string, callerIsAdmin bool) ([]*entity.SkillNamespace, error) {
+	var memberNs []string
+	if !callerIsAdmin && callerId != "" {
+		memberNs, _ = s.repo.MemberNamespaceIds(ctx, callerId)
+	}
+	return s.repo.AllForCaller(ctx, callerId, callerIsAdmin, memberNs)
 }
 
 // Get 命名空间详情（F-017 横向越权修复）：创建者 / 命名空间成员 / 超管可读，
@@ -78,7 +93,26 @@ func (s *SkillNamespaceService) Delete(ctx context.Context, namespaceId string) 
 	return s.repo.Delete(ctx, namespaceId)
 }
 
-func (s *SkillNamespaceService) ListMembers(ctx context.Context, namespaceId string) ([]*entity.SkillNamespaceMember, error) {
+// ListMembers 成员列表（F-017b）：创建者 / 成员 / 超管可读——成员名单是谓词
+// 消费数据面，横向枚举一并关闭。
+func (s *SkillNamespaceService) ListMembers(ctx context.Context, namespaceId, callerId string, callerIsAdmin bool) ([]*entity.SkillNamespaceMember, error) {
+	ns, err := s.repo.Get(ctx, namespaceId)
+	if err != nil {
+		return nil, err
+	}
+	isMember := false
+	if callerId != "" {
+		ms, _ := s.repo.ListMembers(ctx, namespaceId)
+		for _, mm := range ms {
+			if mm.UserId == callerId {
+				isMember = true
+				break
+			}
+		}
+	}
+	if !canReadNamespace(ns.CreatedBy, callerId, callerIsAdmin, isMember) {
+		return nil, errDetailNotFound
+	}
 	return s.repo.ListMembers(ctx, namespaceId)
 }
 

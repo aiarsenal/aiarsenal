@@ -349,6 +349,16 @@ func NewClientCommandRepository() *ClientCommandRepository {
 }
 
 // Enqueue 入队一条 pending 指令。raw SQL：pgx 编不了 *types.Time（created_at），用 now()。
+// HasSkillInstallForVersion 该设备是否存在针对此 versionId 的 skill_install 命令
+// （F-017b G2：设备取包的归属绑定）。
+func (r *ClientCommandRepository) HasSkillInstallForVersion(ctx context.Context, deviceId, versionId string) (bool, error) {
+	var n int64
+	err := r.db.WithContext(ctx).Model(&entity.ClientCommand{}).
+		Where("device_id = ? AND action = 'skill_install' AND payload->>'versionId' = ?", deviceId, versionId).
+		Count(&n).Error
+	return n > 0, err
+}
+
 func (r *ClientCommandRepository) Enqueue(ctx context.Context, e *entity.ClientCommand) error {
 	if e.CommandId == "" {
 		e.CommandId = idgen.New()

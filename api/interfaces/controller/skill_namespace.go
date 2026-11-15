@@ -26,7 +26,8 @@ func (h *SkillNamespaceController) List(c *gin.Context) {
 		return
 	}
 	slog.Debug("skill namespace 列表请求", "slug", req.Slug, "name", req.Name, "type", req.Type, "status", req.Status, "pageNum", req.PageNum, "pageSize", req.PageSize)
-	list, total, err := h.svc.List(c, req.Slug, req.Name, req.Type, req.Status, req.PageNum, req.PageSize)
+	u := middleware.GetUser(c)
+	list, total, err := h.svc.List(c, req.Slug, req.Name, req.Type, req.Status, req.PageNum, req.PageSize, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		slog.Error("skill namespace 列表失败", "slug", req.Slug, "type", req.Type, "status", req.Status, "err", err)
 		middleware.Fail(c, "获取数据失败")
@@ -40,7 +41,8 @@ func (h *SkillNamespaceController) List(c *gin.Context) {
 }
 
 func (h *SkillNamespaceController) All(c *gin.Context) {
-	list, err := h.svc.All(c)
+	u := middleware.GetUser(c)
+	list, err := h.svc.AllForCaller(c, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "获取数据失败")
 		return
@@ -116,9 +118,14 @@ func (h *SkillNamespaceController) ListMembers(c *gin.Context) {
 		middleware.Fail(c, "参数错误")
 		return
 	}
-	list, err := h.svc.ListMembers(c, id)
+	u := middleware.GetUser(c)
+	list, err := h.svc.ListMembers(c, id, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
-		middleware.Fail(c, "获取数据失败")
+		if service.IsDetailNotFound(err) {
+			middleware.Fail(c, "未找到")
+		} else {
+			middleware.Fail(c, "获取数据失败")
+		}
 		return
 	}
 	middleware.Success(c, gin.H{"list": list})

@@ -28,7 +28,8 @@ func (h *McpProbeController) Test(c *gin.Context) {
 	if req.McpServerReq != nil {
 		form = mcpServerFromReq(req.McpServerReq)
 	}
-	res, ms, err := h.svc.Test(c, req.ServerId, form)
+	u := middleware.GetUser(c)
+	res, ms, err := h.svc.Test(c, req.ServerId, form, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	out := dto.McpServerTestRes{Ok: err == nil, DurationMs: ms,
 		Tools: []dto.McpToolPreview{}, Prompts: []dto.McpPromptPreview{}, Resources: []dto.McpResourcePreview{}}
 	if err != nil {
@@ -55,7 +56,8 @@ func (h *McpProbeController) CallTool(c *gin.Context) {
 		middleware.Fail(c, err.Error())
 		return
 	}
-	text, ms, err := h.svc.CallTool(c, req.ServerId, req.Tool, req.Arguments)
+	u := middleware.GetUser(c)
+	text, ms, err := h.svc.CallTool(c, req.ServerId, req.Tool, req.Arguments, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, err.Error())
 		return

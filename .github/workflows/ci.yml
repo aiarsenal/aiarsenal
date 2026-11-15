@@ -103,6 +103,52 @@ jobs:
           AUDIT_TEST_DSN: postgres://postgres:postgres@127.0.0.1:5432/aiarsenal?sslmode=disable
         run: go test -tags=integration ./interfaces/middleware/ -run TestIntegration -v -timeout 120s
 
+  # F-017b/G4：可见性 scope（skill/namespace 列表与向量检索）的 SQL 正确性只有真
+  # PG 能验（pgvector 扩展）——一次性环境不可复现，进流水线。预算预留的集成覆盖
+  # 随该修复自身的 PR（其测试 DSN 门控，合入后在本模块自动可跑）。
+  integration-pgvector:
+    name: Integration (pgvector scope)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: aa_skill
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.27'
+          check-latest: true
+          cache: true
+          cache-dependency-path: api/go.sum
+
+      - name: Load skill and llm schemas
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql -h 127.0.0.1 -U postgres -d aa_skill -v ON_ERROR_STOP=1 -f api/resource/data/skills.sql
+          psql -h 127.0.0.1 -U postgres -d aa_skill -c "CREATE DATABASE aa_llm"
+          psql -h 127.0.0.1 -U postgres -d aa_llm -v ON_ERROR_STOP=1 -f api/resource/data/llm.sql
+
+      - name: Skill and namespace visibility scope (real PG)
+        working-directory: api
+        env:
+          SKILL_TEST_DSN: postgres://postgres:postgres@127.0.0.1:5432/aa_skill?sslmode=disable
+        run: go test -count=1 -run "TestSkillListAndSearchScope|TestNamespaceListAndAllScope" ./infrastructure/persistence/ -v -timeout 120s
+
   ui:
     name: UI (web-antd build)
     runs-on: ubuntu-latest

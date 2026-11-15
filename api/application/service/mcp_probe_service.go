@@ -27,11 +27,20 @@ func NewMcpProbeService(r repository.IMcpServerRepository, a repository.IMcpActi
 }
 
 // Test 连接测试：serverId 优先取已保存配置，否则用表单字段（新增弹窗“先测后存”）。
-func (s *McpProbeService) Test(ctx context.Context, serverId string, form *entity.McpServer) (*mcpclient.ProbeResult, int, error) {
+func (s *McpProbeService) Test(ctx context.Context, serverId string, form *entity.McpServer, callerId string, callerIsAdmin bool) (*mcpclient.ProbeResult, int, error) {
+	// F-017b G3：ad-hoc 表单（serverId 为空，"先测后存"）仅超管可用——非超管可填
+	// 任意 URL/stdio command 的既有权能收口；已保存服务走下方属主门禁。
+	if serverId == "" && !callerIsAdmin {
+		return nil, 0, errDetailNotFound
+	}
 	if serverId != "" {
 		saved, err := s.serverRepo.Get(ctx, serverId)
 		if err != nil {
 			return nil, 0, err
+		}
+		// F-017b 使用面门禁：他人服务配置（凭据面）不得借连
+		if !canReadMCPServer(saved.CreatedBy, callerId, callerIsAdmin) {
+			return nil, 0, errDetailNotFound
 		}
 		form = saved
 	}
@@ -53,10 +62,14 @@ func (s *McpProbeService) Test(ctx context.Context, serverId string, form *entit
 }
 
 // CallTool 试调用（仅对已保存 server；成功/失败都落审计）。
-func (s *McpProbeService) CallTool(ctx context.Context, serverId, tool string, args map[string]any) (text string, durationMs int, err error) {
+func (s *McpProbeService) CallTool(ctx context.Context, serverId, tool string, args map[string]any, callerId string, callerIsAdmin bool) (text string, durationMs int, err error) {
 	saved, err := s.serverRepo.Get(ctx, serverId)
 	if err != nil {
 		return "", 0, err
+	}
+	// F-017b 使用面门禁：他人服务配置（凭据面）不得借调工具
+	if !canReadMCPServer(saved.CreatedBy, callerId, callerIsAdmin) {
+		return "", 0, errDetailNotFound
 	}
 	if saved.Type == "openapi" {
 		return "", 0, errOpenapiUnsupported

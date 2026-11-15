@@ -6,6 +6,10 @@ import "errors"
 // 不返回「数据不存在」以外的信息——存在性本身也不泄露）。
 var errDetailNotFound = errors.New("未找到")
 
+// IsDetailNotFound controller 层区分「归属拒绝」（映射为未找到信封）与真实内部错误
+// （获取数据失败）——拒绝形态与资源不存在同形，内部故障不冒充拒绝。
+func IsDetailNotFound(err error) bool { return errors.Is(err, errDetailNotFound) }
+
 // F-017 详情路由横向越权：属主型资源的读取谓词收口（纯函数表测 + service 接线）。
 // B 轮实测：列表被拒、详情放行的函数级授权不一致——零权限账号可横向读他人
 // 用户档案、超管角色标识、MCP 服务完整配置（地址/请求头/环境变量）、技能与命名空间。

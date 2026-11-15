@@ -27,12 +27,26 @@ func NewMcpServerService(r repository.IMcpServerRepository) *McpServerService {
 // SetChannelNotice main.go 装配后回指（构造早于通知出口）：server 增删通知用。
 func (s *McpServerService) SetChannelNotice(c *ChannelNoticeService) { s.channelNotice = c }
 
-func (s *McpServerService) List(ctx context.Context, name, typ string, pn, ps int) ([]*entity.McpServer, int64, error) {
-	return s.repo.List(ctx, name, typ, pn, ps)
+// List 管理面列表（F-017b）：非超管仅见自己创建的服务（配置含凭据面，与 Get 谓词同语义）。
+func (s *McpServerService) List(ctx context.Context, name, typ string, pn, ps int, callerId string, callerIsAdmin bool) ([]*entity.McpServer, int64, error) {
+	filter := ""
+	if !callerIsAdmin {
+		filter = callerId
+	}
+	return s.repo.List(ctx, name, typ, pn, ps, filter)
 }
 
+// All 系统路径（MCP 网关工具聚合，gateway/sse.go 消费）：全量启用服务，不做属主过滤。
 func (s *McpServerService) All(ctx context.Context) ([]*entity.McpServer, error) {
 	return s.repo.All(ctx)
+}
+
+// AllForCaller 用户面 /mcp/server/all（F-017b）：非超管仅见自己创建且启用的服务。
+func (s *McpServerService) AllForCaller(ctx context.Context, callerId string, callerIsAdmin bool) ([]*entity.McpServer, error) {
+	if callerIsAdmin {
+		return s.repo.All(ctx)
+	}
+	return s.repo.AllByCreator(ctx, callerId)
 }
 
 // Get MCP 服务详情（F-017 横向越权修复）：完整配置含地址/请求头/环境变量（敏感面），
