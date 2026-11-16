@@ -309,7 +309,7 @@ cd /home/ubuntu/aiarsenal && git pull && sudo bash deploy.sh prod
 
 ## 👤 默认账号
 
-基线种子内置管理员与演示账号（密码均为 `aiarsenal123`）：**`hi` / `aiarsenal123`**（超管）、`user001` ~ `user100`（演示用户）。**首次部署后请立即修改默认密码**。种子口令是公开的夹具值，有意不经强度策略（策略只约束改密接口）——也正因此，改密之后 `aiarsenal123` 无法再被设回。演示数据（部门树 / 用户 / 日志）均为虚构，与任何真实组织无关。
+**默认安装零种子**（F-002）：基线不携带任何用户账号，首个超管由 api 首次启动时引导生成——口令取 `AIARSENAL_ADMIN_PASSWORD` 环境变量（`deploy.sh` 随机生成注入），未提供则随机生成并**一次性打印在启动日志**中，请立即登录修改。演示账号（`hi` / `user001` ~ `user100`，公开口令 `aiarsenal123`）已移入 `api/resource/data/demo.sql`，仅在显式声明演示环境时加载：`AIARSENAL_DEMO=true sudo bash deploy.sh rebuild-db`——演示账号具备公开默认口令，务必物理隔离公网；存量部署升级后启动时若检测到演示形态账号仍可用公开口令登录，会触发安全告警（`seed_default_password`）。种子口令是公开的夹具值，有意不经强度策略（策略只约束改密接口）——也正因此，改密之后 `aiarsenal123` 无法再被设回。演示数据（部门树 / 用户 / 岗位绑定）均为虚构，与任何真实组织无关；部门 leader_id 在零种子安装下悬空（全库无外键，纯展示列）。注意：初始口令打印在启动日志（systemd journal）中——**journal 读权限即超管口令权限**，请按此收紧日志访问。
 
 首页落地页为纯项目介绍（无控制台入口），登录地址 `<域名>/#/auth/login`。
 

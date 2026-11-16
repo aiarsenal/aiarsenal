@@ -85,6 +85,12 @@ func main() {
 	} else if n > 0 {
 		log.Printf("migrated %d legacy budget requests into aa_review_order", n)
 	}
+	// 2.2.1 首次启动引导超管（F-002）：默认安装零种子，库内无超管时创建并一次性打印口令。
+	if err := service.BootstrapAdmin(context.Background()); err != nil {
+		log.Printf("warn: bootstrap admin: %v", err)
+	}
+	// 2.2.2 种子默认口令扫描（F-002）：存量部署的演示账号若仍可用公开口令登录，后台告警。
+	go service.ScanSeedDefaultPasswords(context.Background())
 	if _, err := db.InitRedis(); err != nil {
 		log.Fatalf("init redis: %v", err)
 	}

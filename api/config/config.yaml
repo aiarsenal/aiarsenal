@@ -51,6 +51,14 @@ jwt:
   excludePaths:
     - "/api/v1/system/login"
 
+# 首次启动引导（F-002）：默认安装零种子，首个超管由此引导生成。
+# adminPassword 留空=启动时随机生成并一次性打印（推荐）；真值走
+# AIARSENAL_ADMIN_PASSWORD 环境变量（deploy.sh 生成注入），写入本文件会触发不安全默认值告警。
+# demo=true 声明演示环境：rebuild-db 可加载 demo.sql 演示账号，启动跳过种子默认口令扫描。
+bootstrap:
+  adminPassword: ""
+  demo: false
+
 # 口令加固（部署时定档，无管理界面）。校验参数自描述在存量串内：换 algorithm/
 # iterations 只影响之后新产生的口令，存量照常校验。详见 README「鉴权与安全」。
 password:
