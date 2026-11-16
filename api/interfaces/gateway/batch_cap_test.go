@@ -69,7 +69,11 @@ func TestEndpointRejectsOversizedBody(t *testing.T) {
 	c.Request = httptest.NewRequest(http.MethodPost, "/mcp", strings.NewReader(huge))
 	s.Endpoint(c)
 	if w.Code != http.StatusBadRequest || !strings.Contains(w.Body.String(), "maxRequestBytes") {
-		t.Fatalf("超限字节应 400 且点名 maxRequestBytes, got %d body=%s", w.Code, w.Body.String()[:120])
+		b := w.Body.String()
+		if len(b) > 120 {
+			b = b[:120]
+		}
+		t.Fatalf("超限字节应 400 且点名 maxRequestBytes, got %d body=%s", w.Code, b)
 	}
 }
 
@@ -104,6 +108,10 @@ func TestByteGateWiring(t *testing.T) {
 	if !strings.Contains(string(src), `raw, err := readRequestBody(c)`) ||
 		!strings.Contains(string(src), `int64(len(raw)) > int64(config.Get().Mcp.MaxRequestBytes)`) {
 		t.Fatal("Endpoint 的字节上限接线丢失——「1 条子请求+巨大 arguments」的放大面复活（F-032 补口回归）")
+	}
+	// 有界读：MaxBytesReader 在读取层封顶（乱序/超大 chunked body 不得先全量缓冲）。
+	if !strings.Contains(string(src), `http.MaxBytesReader(c.Writer, c.Request.Body, int64(config.Get().Mcp.MaxRequestBytes))`) {
+		t.Fatal("有界读缺失——超限 body 会先被 io.ReadAll 全量缓冲再判（内存放大面复活）")
 	}
 }
 

@@ -90,6 +90,13 @@ func (s *Service) Endpoint(c *gin.Context) {
 	// 不受限；字节闸在条数判定之前整体截住（读出并回填，下游解析不受影响）。
 	raw, err := readRequestBody(c)
 	if err != nil {
+		var mbe *http.MaxBytesError
+		if errors.As(err, &mbe) {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"error": fmt.Sprintf("request body exceeds maxRequestBytes %d", config.Get().Mcp.MaxRequestBytes),
+			})
+			return
+		}
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "read body: " + err.Error()})
 		return
 	}
@@ -131,11 +138,14 @@ func (s *Service) Endpoint(c *gin.Context) {
 	s.handlerFor(scope).ServeHTTP(c.Writer, c.Request)
 }
 
-// readRequestBody 读出请求体并原样回填（与 countJSONRPCBatch 的读-回填约定一致）。
+// readRequestBody 有界读出请求体并原样回填（与 countJSONRPCBatch 的读-回填约定一致）。
+// F-032 补口：MaxBytesReader 在读取层即封顶——超限 body 不会先被全量缓冲再判
+// （有效 key 的 chunked 超大 body 无法迫使网关吃内存）；读出失败由调用方映射 400。
 func readRequestBody(c *gin.Context) ([]byte, error) {
 	if c.Request.Body == nil {
 		return nil, nil
 	}
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, int64(config.Get().Mcp.MaxRequestBytes))
 	raw, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		return nil, err

@@ -1,6 +1,10 @@
 package proxy
 
 import (
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -37,5 +41,21 @@ func TestRedactURLQueries(t *testing.T) {
 		if got := redactURLQueries(tc.in); got != tc.want {
 			t.Errorf("%s: got %q want %q", tc.name, got, tc.want)
 		}
+	}
+}
+
+// TestRecordErrorRedactWiring 接线守卫：recordError 必须在写审计行前调用脱敏
+// （纯函数测试杀不掉「接线被删」，源码断言兜底——与字节闸守卫同范式）。
+func TestRecordErrorRedactWiring(t *testing.T) {
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("runtime.Caller 失败")
+	}
+	src, err := os.ReadFile(filepath.Join(filepath.Dir(file), "handler.go"))
+	if err != nil {
+		t.Fatalf("读取 handler.go: %v", err)
+	}
+	if !strings.Contains(string(src), "excStr = redactURLQueries(excStr)") {
+		t.Fatal("recordError 的脱敏接线丢失——Gemini ?key= 凭据落库面复活（F-031 补口回归）")
 	}
 }
