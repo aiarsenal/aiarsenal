@@ -266,10 +266,17 @@ type McpConfig struct {
 	// 防止单请求放大千倍成本。MCP 2025-06-18 规范已移除批量语义，上限只为兼容旧客户端。
 	// <=0 回落默认值。
 	MaxBatchItems int `mapstructure:"maxBatchItems"`
+	// MaxRequestBytes 单请求体字节上限（F-032 补口）：批量上限只数条数——「1 条子请求
+	// + 巨大 arguments」不受条数闸约束；字节上限在条数判定之前整体截住。<=0 回落默认值。
+	MaxRequestBytes int `mapstructure:"maxRequestBytes"`
 }
 
 // DefaultMaxBatchItems 批量请求默认上限（等保默认，可经 yaml/env 调整）。
 const DefaultMaxBatchItems = 20
+
+// DefaultMaxRequestBytes 单请求体默认字节上限（2MB：包体 ≤10MB 的技能包不走 MCP 网关，
+// 常规对话/工具调用 payload 远小于此；可经 yaml/env 调整）。
+const DefaultMaxRequestBytes = 2 * 1024 * 1024
 
 type ServerConfig struct {
 	Address string `mapstructure:"address"`
@@ -575,12 +582,20 @@ func applyMcpEnvOverride(v *viper.Viper) {
 			v.Set("mcp.maxBatchItems", n)
 		}
 	}
+	if k := os.Getenv("AIARSENAL_MCP_MAX_REQUEST_BYTES"); k != "" {
+		if n, err := strconv.Atoi(k); err == nil {
+			v.Set("mcp.maxRequestBytes", n)
+		}
+	}
 }
 
 // applyMcpDefaults 归一 MCP 配置：未配置/非法值回落默认上限（fail-closed 语义）。
 func (c *Config) applyMcpDefaults() {
 	if c.Mcp.MaxBatchItems <= 0 {
 		c.Mcp.MaxBatchItems = DefaultMaxBatchItems
+	}
+	if c.Mcp.MaxRequestBytes <= 0 {
+		c.Mcp.MaxRequestBytes = DefaultMaxRequestBytes
 	}
 }
 

@@ -86,6 +86,19 @@ func (s *Service) handlerFor(scope string) *mcp.StreamableHTTPHandler {
 func (s *Service) Endpoint(c *gin.Context) {
 	// F-032：JSON-RPC 批量请求子条数上限——超限整单拒绝（fail-closed），防止单请求
 	// 放大千倍成本。放在 scope 解析与会话建立之前，最便宜的位置先挡。
+	// F-032 补口：单请求体字节上限——批量条数闸只数条数，「1 条子请求+巨大 arguments」
+	// 不受限；字节闸在条数判定之前整体截住（读出并回填，下游解析不受影响）。
+	raw, err := readRequestBody(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "read body: " + err.Error()})
+		return
+	}
+	if int64(len(raw)) > int64(config.Get().Mcp.MaxRequestBytes) {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": fmt.Sprintf("request body of %d bytes exceeds maxRequestBytes %d", len(raw), config.Get().Mcp.MaxRequestBytes),
+		})
+		return
+	}
 	if n, ok := countJSONRPCBatch(c); ok && n > config.Get().Mcp.MaxBatchItems {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": fmt.Sprintf("batch of %d exceeds maxBatchItems %d", n, config.Get().Mcp.MaxBatchItems),
@@ -116,6 +129,19 @@ func (s *Service) Endpoint(c *gin.Context) {
 	}
 
 	s.handlerFor(scope).ServeHTTP(c.Writer, c.Request)
+}
+
+// readRequestBody 读出请求体并原样回填（与 countJSONRPCBatch 的读-回填约定一致）。
+func readRequestBody(c *gin.Context) ([]byte, error) {
+	if c.Request.Body == nil {
+		return nil, nil
+	}
+	raw, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		return nil, err
+	}
+	c.Request.Body = io.NopCloser(bytes.NewReader(raw))
+	return raw, nil
 }
 
 // countJSONRPCBatch 探测请求体是否为 JSON-RPC 批量（数组）并返回条数。

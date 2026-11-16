@@ -36,6 +36,7 @@ database:
 # MCP 网关（api 模块第三 main）
 mcp:
   maxBatchItems: 20    # JSON-RPC 批量请求子条数上限（F-032）；超限整单拒绝。经 AIARSENAL_MCP_MAX_BATCH_ITEMS 覆盖
+  maxRequestBytes: 2097152  # 单请求体字节上限（F-032 补口）：「1 条子请求+巨大 arguments」不受条数闸约束，字节在条数判定前整体截住。经 AIARSENAL_MCP_MAX_REQUEST_BYTES 覆盖
 
 # Redis
 redis:

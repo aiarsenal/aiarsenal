@@ -88,7 +88,19 @@ func (s *McpKeyService) Delete(ctx context.Context, ids []string) error {
 			return fmt.Errorf("密钥 %s 不存在或已删除", id)
 		}
 	}
-	return s.repo.Delete(ctx, ids)
+	if err := s.repo.Delete(ctx, ids); err != nil {
+		return err
+	}
+	// F-033 补口（TOCTOU 收口）：删除后逐个复核——预检与删除之间被并发删除的行
+	// 会让 repo.Delete 零行生效却返回成功；复核使「删除结果真实性」闭环（低频管理
+	// 动作，N 次点查可接受）。仍存在的行按不存在处理已不可能（预检刚过），此分支
+	// 仅在极端并发下触发，报错让管理员重试。
+	for _, id := range ids {
+		if _, err := s.repo.Get(ctx, id); err == nil {
+			return fmt.Errorf("密钥 %s 删除未生效（并发变更），请重试", id)
+		}
+	}
+	return nil
 }
 
 func (s *McpKeyService) Block(ctx context.Context, id string, blocked bool, by string) error {

@@ -57,6 +57,56 @@ func TestCountJSONRPCBatch(t *testing.T) {
 	}
 }
 
+// ---- F-032 补口：单请求体字节上限（条数闸只数条数，1 条+巨大 arguments 不受限）----
+// 变异锚点：删字节闸 → 巨 body 格红；阈值判断反转 → 正常格红。
+
+func TestEndpointRejectsOversizedBody(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	s := &Service{}
+	huge := `{"jsonrpc":"2.0","id":1,"params":{"blob":"` + strings.Repeat("x", 2*1024*1024+1) // 与 config 默认 2MB 对齐（gateway 包不引 config 常量） + `"}}`
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = httptest.NewRequest(http.MethodPost, "/mcp", strings.NewReader(huge))
+	s.Endpoint(c)
+	if w.Code != http.StatusBadRequest || !strings.Contains(w.Body.String(), "maxRequestBytes") {
+		t.Fatalf("超限字节应 400 且点名 maxRequestBytes, got %d body=%s", w.Code, w.Body.String()[:120])
+	}
+}
+
+// TestRequestBodyRoundtrip readRequestBody 的读-回填约定（与 countJSONRPCBatch 同款）。
+func TestRequestBodyRoundtrip(t *testing.T) {
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request = httptest.NewRequest(http.MethodPost, "/mcp", strings.NewReader(`{"jsonrpc":"2.0","id":1}`))
+	raw, err := readRequestBody(c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(raw) != `{"jsonrpc":"2.0","id":1}` {
+		t.Fatalf("读出内容不符: %q", string(raw))
+	}
+	again, _ := io.ReadAll(c.Request.Body)
+	if string(again) != `{"jsonrpc":"2.0","id":1}` {
+		t.Fatalf("请求体未被原样回填: %q", string(again))
+	}
+}
+
+// TestByteGateWiring 接线守卫：Endpoint 必须先读体并做字节上限判定（F-032 补口）。
+// 纯函数表测杀不掉「接线被删」，以源码断言兜底（与 countJSONRPCBatch 守卫同款）。
+func TestByteGateWiring(t *testing.T) {
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("runtime.Caller 失败")
+	}
+	src, err := os.ReadFile(filepath.Join(filepath.Dir(file), "sse.go"))
+	if err != nil {
+		t.Fatalf("读取 sse.go: %v", err)
+	}
+	if !strings.Contains(string(src), `raw, err := readRequestBody(c)`) ||
+		!strings.Contains(string(src), `int64(len(raw)) > int64(config.Get().Mcp.MaxRequestBytes)`) {
+		t.Fatal("Endpoint 的字节上限接线丢失——「1 条子请求+巨大 arguments」的放大面复活（F-032 补口回归）")
+	}
+}
+
 // ---- Endpoint 超限拒绝（需要 config，走 TestMain chdir）----
 
 func TestEndpointRejectsOversizedBatch(t *testing.T) {
