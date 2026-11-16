@@ -32,6 +32,41 @@ func TestApplyMcpDefaults(t *testing.T) {
 	}
 }
 
+func TestApplyMcpDefaultsMaxRequestBytes(t *testing.T) {
+	c := &Config{}
+	c.applyMcpDefaults()
+	if c.Mcp.MaxRequestBytes != DefaultMaxRequestBytes {
+		t.Fatalf("未配置应回落默认 2MB, got %d", c.Mcp.MaxRequestBytes)
+	}
+	c2 := &Config{}
+	c2.Mcp.MaxRequestBytes = 0
+	c2.applyMcpDefaults()
+	if c2.Mcp.MaxRequestBytes != DefaultMaxRequestBytes {
+		t.Fatalf("显式 0 应回落默认, got %d", c2.Mcp.MaxRequestBytes)
+	}
+	c3 := &Config{}
+	c3.Mcp.MaxRequestBytes = 4096
+	c3.applyMcpDefaults()
+	if c3.Mcp.MaxRequestBytes != 4096 {
+		t.Fatalf("显式正值应保留, got %d", c3.Mcp.MaxRequestBytes)
+	}
+}
+
+func TestApplyMcpEnvOverrideRequestBytes(t *testing.T) {
+	t.Setenv("AIARSENAL_MCP_MAX_REQUEST_BYTES", "8192")
+	v := viper.New()
+	applyMcpEnvOverride(v)
+	c := &Config{}
+	if err := v.Unmarshal(c); err != nil {
+		t.Fatal(err)
+	}
+	c.applyMcpDefaults()
+	if c.Mcp.MaxRequestBytes != 8192 {
+		t.Fatalf("env 注入应生效, got %d", c.Mcp.MaxRequestBytes)
+	}
+	os.Unsetenv("AIARSENAL_MCP_MAX_REQUEST_BYTES")
+}
+
 func TestApplyMcpEnvOverride(t *testing.T) {
 	t.Setenv("AIARSENAL_MCP_MAX_BATCH_ITEMS", "7")
 	v := viper.New()

@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -566,8 +567,24 @@ func capStr(s string) string {
 	return s
 }
 
+// urlInTextRe 文本中的 http(s) URL（*url.Error 的 Error() 形态含完整 URL）。
+var urlInTextRe = regexp.MustCompile(`https?://[^"'\s]*`)
+
+// redactURLQueries 剥 URL 查询串（F-031 残余收口，审计建议项）：Gemini 上游 URL
+// 内嵌 ?key=<APIKey>，传输层错误的 *url.Error 文本进 recordError 会把活凭据落库
+// aa_llm_error_log。只剥 ? 后段——host/path 保留，运维定位语义不变。
+func redactURLQueries(s string) string {
+	return urlInTextRe.ReplaceAllStringFunc(s, func(u string) string {
+		if i := strings.IndexByte(u, '?'); i >= 0 {
+			return u[:i] + "?<redacted>"
+		}
+		return u
+	})
+}
+
 func (h *Handler) recordError(c *gin.Context, m *model.Model, k *model.VirtualKey, hash, reqID string, start time.Time,
 	callType, apiBase, excType, excStr, statusCode, requestBody string) {
+	excStr = redactURLQueries(excStr)
 	rec := store.SpendRecord{
 		RequestID: reqID, CallType: callType, ApiKey: hash, StartTime: start, EndTime: time.Now(),
 		Model: m.ProviderModel, ModelID: m.ModelId, ModelGroup: m.ModelGroup, Provider: m.Provider,
