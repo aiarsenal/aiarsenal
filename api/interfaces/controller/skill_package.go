@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"path"
@@ -55,7 +56,8 @@ func (h *SkillPackageController) Search(c *gin.Context) {
 			limit = n
 		}
 	}
-	rows, err := h.svc.Search(c, q, limit, h.embed)
+	u := middleware.GetUser(c)
+	rows, err := h.svc.Search(c, q, limit, h.embed, middleware.GetUserId(c), u != nil && u.IsAdmin == 1)
 	if err != nil {
 		middleware.Fail(c, "检索失败")
 		return
@@ -98,6 +100,9 @@ func (h *SkillPackageController) Create(c *gin.Context) {
 // ListFiles 版本文件列表。
 // GET /api/v1/skill/skill/version/file/list?versionId=
 func (h *SkillPackageController) ListFiles(c *gin.Context) {
+	if err := h.readableGate(c); err != nil {
+		return
+	}
 	versionId := c.Query("versionId")
 	if versionId == "" {
 		middleware.Fail(c, "参数错误")
@@ -114,6 +119,9 @@ func (h *SkillPackageController) ListFiles(c *gin.Context) {
 // DownloadFile 下载版本内单个文件。
 // GET /api/v1/skill/skill/file/download?versionId=&filePath=
 func (h *SkillPackageController) DownloadFile(c *gin.Context) {
+	if err := h.readableGate(c); err != nil {
+		return
+	}
 	versionId := c.Query("versionId")
 	filePath := c.Query("filePath")
 	if versionId == "" || filePath == "" {
@@ -130,9 +138,33 @@ func (h *SkillPackageController) DownloadFile(c *gin.Context) {
 	c.DataFromReader(http.StatusOK, -1, f.ContentType, rc, nil)
 }
 
+// readableGate 内容面端点的可读门禁（F-017b）：versionId→skillId→归属谓词；
+// 拒绝形态与既有 handler 一致（「未找到」信封）。
+func (h *SkillPackageController) readableGate(c *gin.Context) error {
+	versionId := c.Query("versionId")
+	if versionId == "" {
+		middleware.Fail(c, "参数错误")
+		return errors.New("missing versionId")
+	}
+	v, err := h.pkgSvc.GetVersion(c, versionId)
+	if err != nil || v == nil {
+		middleware.Fail(c, "未找到")
+		return err
+	}
+	u := middleware.GetUser(c)
+	if err := h.pkgSvc.EnsureSkillReadable(c, v.SkillId, middleware.GetUserId(c), u != nil && u.IsAdmin == 1); err != nil {
+		middleware.Fail(c, "未找到")
+		return err
+	}
+	return nil
+}
+
 // DownloadVersion 下载整包 zip。
 // GET /api/v1/skill/skill/version/download?versionId=
 func (h *SkillPackageController) DownloadVersion(c *gin.Context) {
+	if err := h.readableGate(c); err != nil {
+		return
+	}
 	versionId := c.Query("versionId")
 	if versionId == "" {
 		middleware.Fail(c, "参数错误")
@@ -163,6 +195,12 @@ func (h *SkillPackageController) DownloadPackage(c *gin.Context) {
 		c.Data(http.StatusForbidden, "text/plain; charset=utf-8", []byte(err.Error()))
 		return
 	}
+	// F-017b G2：归属绑定——该版本必须在实例的 install_skill 命令队列里（实例令牌
+	// 不能拉取未被授予安装的版本；防跨实例横向取包）。
+	if err := h.pkgSvc.EnsureAgentPackageBinding(c, middleware.GetInstanceId(c), versionId); err != nil {
+		c.Data(http.StatusForbidden, "text/plain; charset=utf-8", []byte("该版本不在本实例的安装队列"))
+		return
+	}
 	filename, data, err := h.pkgSvc.DownloadVersion(c, versionId)
 	if err != nil {
 		c.Data(http.StatusInternalServerError, "text/plain; charset=utf-8", []byte("打包失败"))
@@ -190,6 +228,11 @@ func (h *SkillPackageController) DownloadDevicePackage(c *gin.Context) {
 	// 安全门禁：同 DownloadPackage（机器取包必须审计「安全」）。
 	if err := h.pkgSvc.EnsureVersionSafe(c, versionId); err != nil {
 		c.Data(http.StatusForbidden, "text/plain; charset=utf-8", []byte(err.Error()))
+		return
+	}
+	// F-017b G2：设备归属绑定（同实例通道语义）。
+	if err := h.pkgSvc.EnsureDevicePackageBinding(c, middleware.GetUser(c).DeviceId, versionId); err != nil {
+		c.Data(http.StatusForbidden, "text/plain; charset=utf-8", []byte("该版本不在本设备的安装队列"))
 		return
 	}
 	filename, data, err := h.pkgSvc.DownloadVersion(c, versionId)

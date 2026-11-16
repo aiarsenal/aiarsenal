@@ -11,15 +11,46 @@ import (
 )
 
 type SkillSecurityService struct {
-	repo    repository.ISkillSecurityRepository
-	scanner *ScannerService
+	repo      repository.ISkillSecurityRepository
+	skillRepo repository.ISkillRepository // F-017b A-01：审计行的技能归属判定
+	nsRepo    repository.ISkillNamespaceRepository
+	scanner   *ScannerService
 }
 
-func NewSkillSecurityService(r repository.ISkillSecurityRepository, sc *ScannerService) *SkillSecurityService {
-	return &SkillSecurityService{repo: r, scanner: sc}
+func NewSkillSecurityService(r repository.ISkillSecurityRepository, sr repository.ISkillRepository, nr repository.ISkillNamespaceRepository, sc *ScannerService) *SkillSecurityService {
+	return &SkillSecurityService{repo: r, skillRepo: sr, nsRepo: nr, scanner: sc}
 }
 
-func (s *SkillSecurityService) ListAudits(ctx context.Context, versionId, status string, pageNum, pageSize int) ([]*entity.SkillSecurityAudit, int64, error) {
+// ListAudits 审计列表（F-017b A-01 收口）：VersionId 为空的跨技能枚举仅超管可用；
+// 非超管必须指定 versionId 且该技能可读（与详情谓词同语义）——否则「未找到」，
+// 堵「分页枚举他人 PRIVATE 技能 versionId → 喂给 version/get 与机器取包」的 ID oracle。
+func (s *SkillSecurityService) ListAudits(ctx context.Context, versionId, status string, pageNum, pageSize int, callerId string, callerIsAdmin bool) ([]*entity.SkillSecurityAudit, int64, error) {
+	if !callerIsAdmin {
+		if versionId == "" {
+			return nil, 0, errDetailNotFound
+		}
+		v, err := s.skillRepo.GetVersion(ctx, versionId)
+		if err != nil {
+			return nil, 0, errDetailNotFound
+		}
+		sk, skerr := s.skillRepo.Get(ctx, v.SkillId)
+		if skerr != nil {
+			return nil, 0, errDetailNotFound
+		}
+		isMember := false
+		if callerId != "" && sk.Visibility == 1 {
+			ms, _ := s.nsRepo.ListMembers(ctx, sk.NamespaceId)
+			for _, m := range ms {
+				if m.UserId == callerId {
+					isMember = true
+					break
+				}
+			}
+		}
+		if !canReadSkill(sk.OwnerId, sk.Visibility, callerId, callerIsAdmin, isMember) {
+			return nil, 0, errDetailNotFound
+		}
+	}
 	return s.repo.ListAudits(ctx, versionId, status, pageNum, pageSize)
 }
 

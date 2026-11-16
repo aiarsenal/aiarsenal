@@ -83,9 +83,9 @@ func main() {
 	}
 	skillScanner := service.NewScannerService(skillRepo, skillSecRepo, skillStorage)
 	skillNSSvc := service.NewSkillNamespaceService(skillNSRepo)
-	skillSvc := service.NewSkillService(skillRepo, userRepo, skillSecRepo)
-	skillSecSvc := service.NewSkillSecurityService(skillSecRepo, skillScanner)
-	skillPkgSvc := service.NewSkillPackageService(skillRepo, skillSecRepo, skillStorage, skillScanner, embed)
+	skillSvc := service.NewSkillService(skillRepo, skillNSRepo, userRepo, skillSecRepo)
+	skillSecSvc := service.NewSkillSecurityService(skillSecRepo, skillRepo, nil, skillScanner)
+	skillPkgSvc := service.NewSkillPackageService(skillRepo, skillNSRepo, skillSecRepo, skillStorage, skillScanner, embed)
 	skillReg := market.NewRegistry()
 	skillReg.Register(xfyun.New())
 	skillMarketSiteSvc := service.NewSkillMarketSiteService(persistence.NewSkillMarketSiteRepository())

@@ -23,8 +23,12 @@ type McpServerRepository struct{ db *gorm.DB }
 
 func NewMcpServerRepository() *McpServerRepository { return &McpServerRepository{db: db.McpDB()} }
 
-func (r *McpServerRepository) List(ctx context.Context, name, typ string, pageNum, pageSize int) (list []*entity.McpServer, total int64, err error) {
+func (r *McpServerRepository) List(ctx context.Context, name, typ string, pageNum, pageSize int, createdBy string) (list []*entity.McpServer, total int64, err error) {
 	q := r.db.WithContext(ctx).Model(&entity.McpServer{}).Where("deleted_at is null")
+	// F-017b：非超管只见自己创建的服务（配置含 url/headers/env 凭据面，与 Get 谓词同语义）
+	if createdBy != "" {
+		q = q.Where("created_by = ?", createdBy)
+	}
 	if name != "" {
 		q = q.Where("name like ? or description like ?", "%"+name+"%", "%"+name+"%")
 	}
@@ -40,7 +44,16 @@ func (r *McpServerRepository) List(ctx context.Context, name, typ string, pageNu
 }
 
 func (r *McpServerRepository) All(ctx context.Context) (list []*entity.McpServer, err error) {
+	// 系统路径专用（MCP 网关聚合工具用）：不做属主过滤——调用方是 gateway/sse.go，
+	// 工具聚合需要全部启用服务（分组/访问控制在 mcp_group_access 层）。
 	err = r.db.WithContext(ctx).Where("deleted_at is null and enabled = 1").Order("id desc").Find(&list).Error
+	return
+}
+
+// AllByCreator 非超管的 /mcp/server/all：仅自己创建且启用的服务（F-017b）。
+func (r *McpServerRepository) AllByCreator(ctx context.Context, createdBy string) (list []*entity.McpServer, err error) {
+	err = r.db.WithContext(ctx).Where("deleted_at is null and enabled = 1 and created_by = ?", createdBy).
+		Order("id desc").Find(&list).Error
 	return
 }
 

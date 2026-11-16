@@ -15,8 +15,21 @@ type SkillRepository struct{ db *gorm.DB }
 
 func NewSkillRepository() *SkillRepository { return &SkillRepository{db: db.SkillDB()} }
 
-func (r *SkillRepository) List(ctx context.Context, namespaceId, slug, name, status, keyWords string, pageNum, pageSize int) (list []*entity.Skill, total int64, err error) {
+func (r *SkillRepository) List(ctx context.Context, namespaceId, slug, name, status, keyWords string, pageNum, pageSize int, viewerId string, viewerAdmin bool, memberNs []string) (list []*entity.Skill, total int64, err error) {
 	q := r.db.WithContext(ctx).Model(&entity.Skill{}).Where("deleted_at is null")
+	// F-017b 可见性 scope：非超管 → PUBLIC 或 自己的 或 所在命名空间的（与详情谓词同语义）。
+	// 三分支必须收进单个括号 Where——q.Or 会平铺进整条链，破坏 namespace/name 等后续
+	// 过滤并绕过 deleted_at is null（审计 B-01 实证；M4 实验后的 git checkout 曾把本
+	// 修复回退进推送树——复审 N1 实证抓回，教训：变异还原禁碰未提交修复）。
+	if !viewerAdmin {
+		if viewerId == "" {
+			q = q.Where("visibility = 0")
+		} else if len(memberNs) > 0 {
+			q = q.Where("(visibility = 0 OR owner_id = ? OR (visibility = 1 AND namespace_id IN ?))", viewerId, memberNs)
+		} else {
+			q = q.Where("(visibility = 0 OR owner_id = ?)", viewerId)
+		}
+	}
 	if namespaceId != "" {
 		q = q.Where("namespace_id = ?", namespaceId)
 	}
@@ -197,17 +210,39 @@ func (r *SkillRepository) UpsertSearchDocument(ctx context.Context, skillId, tit
 }
 
 // SearchByVector 向量相似度检索（cosine 距离 <=>，越小越相似）。
-func (r *SkillRepository) SearchByVector(ctx context.Context, queryVectorText string, limit int) ([]map[string]interface{}, error) {
+// F-017b 可见性 scope：非超管只见 PUBLIC/自己的/所在命名空间的文档（与列表同语义），
+// 堵「search 泄露他人 PRIVATE 技能 id → version/list → download」的发现段。
+func (r *SkillRepository) SearchByVector(ctx context.Context, queryVectorText string, limit int, viewerId string, viewerAdmin bool, memberNs []string) ([]map[string]interface{}, error) {
 	if limit <= 0 {
 		limit = 10
 	}
+	// 可见性 scope 按分支拼装：占位符与参数严格成对（审计 B-02——无条件追加 viewerId
+	// 使 admin/匿名分支占位符错配，ops skill_search 与超管检索全挂）。外层括号防 OR
+	// 逃逸出 status=1/semantic_vector 条件。
+	var visScope string
+	var visArgs []interface{}
+	switch {
+	case viewerAdmin:
+		visScope = "true"
+	case viewerId == "":
+		visScope = "s.visibility = 0"
+	case len(memberNs) > 0:
+		visScope = "(s.visibility = 0 OR s.owner_id = ? OR (s.visibility = 1 AND s.namespace_id IN ?))"
+		visArgs = append(visArgs, viewerId, memberNs)
+	default:
+		visScope = "(s.visibility = 0 OR s.owner_id = ?)"
+		visArgs = append(visArgs, viewerId)
+	}
+	args := []interface{}{queryVectorText}
+	args = append(args, visArgs...)
+	args = append(args, queryVectorText, limit)
 	var rows []map[string]interface{}
 	err := r.db.WithContext(ctx).Raw(`
 		select s.skill_id as skill_id, s.title as title, s.summary as summary, s.namespace_slug as namespace_slug,
 			1 - (s.semantic_vector <=> ?::vector) as score
 		from aa_skill_search_document s
-		where s.semantic_vector is not null and s.status = 1
+		where s.semantic_vector is not null and s.status = 1 and (`+visScope+`)
 		order by s.semantic_vector <=> ?::vector
-		limit ?`, queryVectorText, queryVectorText, limit).Scan(&rows).Error
+		limit ?`, args...).Scan(&rows).Error
 	return rows, err
 }

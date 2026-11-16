@@ -16,16 +16,23 @@ import (
 
 type SkillService struct {
 	repo     repository.ISkillRepository
+	nsRepo   repository.ISkillNamespaceRepository // F-017 PRIVATE 技能的命名空间成员判定
 	userRepo repository.IUserRepository
 	secRepo  repository.ISkillSecurityRepository // 发布门禁：版本最新审计须为「安全」
 }
 
-func NewSkillService(r repository.ISkillRepository, ur repository.IUserRepository, sr repository.ISkillSecurityRepository) *SkillService {
-	return &SkillService{repo: r, userRepo: ur, secRepo: sr}
+func NewSkillService(r repository.ISkillRepository, nr repository.ISkillNamespaceRepository, ur repository.IUserRepository, sr repository.ISkillSecurityRepository) *SkillService {
+	return &SkillService{repo: r, nsRepo: nr, userRepo: ur, secRepo: sr}
 }
 
-func (s *SkillService) List(ctx context.Context, namespaceId, slug, name, status, keyWords string, pageNum, pageSize int) ([]*entity.Skill, int64, error) {
-	list, total, err := s.repo.List(ctx, namespaceId, slug, name, status, keyWords, pageNum, pageSize)
+// List 技能列表（F-017b 可见性 scope）：非超管只见 PUBLIC/自己的/所在命名空间的技能。
+func (s *SkillService) List(ctx context.Context, namespaceId, slug, name, status, keyWords string, pageNum, pageSize int, callerId string, callerIsAdmin bool) ([]*entity.Skill, int64, error) {
+	var memberNs []string
+	viewerId, viewerAdmin := callerId, callerIsAdmin
+	if !viewerAdmin && viewerId != "" {
+		memberNs, _ = s.nsRepo.MemberNamespaceIds(ctx, viewerId)
+	}
+	list, total, err := s.repo.List(ctx, namespaceId, slug, name, status, keyWords, pageNum, pageSize, viewerId, viewerAdmin, memberNs)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -66,7 +73,8 @@ func (s *SkillService) enrichOwners(ctx context.Context, list []*entity.Skill) {
 }
 
 // Search 语义检索：query → embedding → pgvector 余弦相似度排序。
-func (s *SkillService) Search(ctx context.Context, query string, limit int, embed EmbeddingProvider) ([]map[string]interface{}, error) {
+// Search 向量检索（F-017b 可见性 scope：与列表同语义，堵发现段）。
+func (s *SkillService) Search(ctx context.Context, query string, limit int, embed EmbeddingProvider, callerId string, callerIsAdmin bool) ([]map[string]interface{}, error) {
 	if embed == nil || query == "" {
 		return nil, nil
 	}
@@ -74,13 +82,32 @@ func (s *SkillService) Search(ctx context.Context, query string, limit int, embe
 	if err != nil {
 		return nil, err
 	}
-	return s.repo.SearchByVector(ctx, VectorToPGText(vec), limit)
+	var memberNs []string
+	if !callerIsAdmin && callerId != "" {
+		memberNs, _ = s.nsRepo.MemberNamespaceIds(ctx, callerId)
+	}
+	return s.repo.SearchByVector(ctx, VectorToPGText(vec), limit, callerId, callerIsAdmin, memberNs)
 }
 
-func (s *SkillService) Get(ctx context.Context, skillId string) (*entity.Skill, error) {
+// Get 技能详情（F-017 横向越权修复）：PUBLIC 登录即可读（市场浏览/安装流依赖），
+// PRIVATE → 属主 / 命名空间成员 / 超管；其余「未找到」。
+func (s *SkillService) Get(ctx context.Context, skillId, callerId string, callerIsAdmin bool) (*entity.Skill, error) {
 	sk, err := s.repo.Get(ctx, skillId)
 	if err != nil {
 		return nil, err
+	}
+	isMember := false
+	if callerId != "" && sk.Visibility == 1 {
+		ms, _ := s.nsRepo.ListMembers(ctx, sk.NamespaceId)
+		for _, m := range ms {
+			if m.UserId == callerId {
+				isMember = true
+				break
+			}
+		}
+	}
+	if !canReadSkill(sk.OwnerId, sk.Visibility, callerId, callerIsAdmin, isMember) {
+		return nil, errDetailNotFound
 	}
 	// 回填所有者姓名/工号（与 List 一致；详情抽屉/接口要展示「姓名（工号）」）。
 	s.enrichOwners(ctx, []*entity.Skill{sk})
@@ -122,7 +149,28 @@ func (s *SkillService) SetHidden(ctx context.Context, skillId string, hidden uin
 
 // ListVersions 版本列表：回填各版本最新安全审计状态（auditStatus，见 entity.AuditStatus*），
 // 供 UI 展示「安全/不安全/扫描中…」并预禁发布/安装不安全版本。
-func (s *SkillService) ListVersions(ctx context.Context, skillId string) ([]*entity.SkillVersion, error) {
+func (s *SkillService) ListVersions(ctx context.Context, skillId, callerId string, callerIsAdmin bool) ([]*entity.SkillVersion, error) {
+	// F-017b 枚举段门禁：版本 id 列表随主技能可读性（B2 链的 version/list 段）。
+	// 系统路径（callerId 空 + admin）不过滤；运营/agent 通道按平台权威全量。
+	if !callerIsAdmin {
+		sk, err := s.repo.Get(ctx, skillId)
+		if err != nil {
+			return nil, errDetailNotFound
+		}
+		isMember := false
+		if callerId != "" && sk.Visibility == 1 {
+			ms, _ := s.nsRepo.ListMembers(ctx, sk.NamespaceId)
+			for _, m := range ms {
+				if m.UserId == callerId {
+					isMember = true
+					break
+				}
+			}
+		}
+		if !canReadSkill(sk.OwnerId, sk.Visibility, callerId, callerIsAdmin, isMember) {
+			return nil, errDetailNotFound
+		}
+	}
 	list, err := s.repo.ListVersions(ctx, skillId)
 	if err != nil {
 		return nil, err
@@ -144,8 +192,34 @@ func (s *SkillService) ListVersions(ctx context.Context, skillId string) ([]*ent
 	return list, nil
 }
 
-func (s *SkillService) GetVersion(ctx context.Context, versionId string) (*entity.SkillVersion, error) {
-	return s.repo.GetVersion(ctx, versionId)
+// GetVersion 版本详情（F-017b 审计 B-03）：与 version/list/download 同一内容面，
+// 归属门禁同 ListVersions——PRIVATE 技能的版本行（ManifestJson/ParsedMetadataJson/changelog）
+// 不对非属主/非成员/非超管暴露。
+func (s *SkillService) GetVersion(ctx context.Context, versionId, callerId string, callerIsAdmin bool) (*entity.SkillVersion, error) {
+	v, err := s.repo.GetVersion(ctx, versionId)
+	if err != nil {
+		return nil, err
+	}
+	if !callerIsAdmin {
+		sk, skerr := s.repo.Get(ctx, v.SkillId)
+		if skerr != nil {
+			return nil, errDetailNotFound
+		}
+		isMember := false
+		if callerId != "" && sk.Visibility == 1 {
+			ms, _ := s.nsRepo.ListMembers(ctx, sk.NamespaceId)
+			for _, m := range ms {
+				if m.UserId == callerId {
+					isMember = true
+					break
+				}
+			}
+		}
+		if !canReadSkill(sk.OwnerId, sk.Visibility, callerId, callerIsAdmin, isMember) {
+			return nil, errDetailNotFound
+		}
+	}
+	return v, nil
 }
 
 // AddVersion 新建草稿版本（版本默认 DRAFT 状态）
@@ -190,7 +264,28 @@ func (s *SkillService) YankVersion(ctx context.Context, versionId, by, reason st
 
 // ===== 标签 =====
 
-func (s *SkillService) ListTags(ctx context.Context, skillId string) ([]*entity.SkillTag, error) {
+// ListTags 技能标签（F-017b A-04 收口）：与详情谓词同语义——标签/存在性不得
+// 被非属主探测；ops 工具通道传系统身份。
+func (s *SkillService) ListTags(ctx context.Context, skillId, callerId string, callerIsAdmin bool) ([]*entity.SkillTag, error) {
+	if !callerIsAdmin {
+		sk, err := s.repo.Get(ctx, skillId)
+		if err != nil {
+			return nil, errDetailNotFound
+		}
+		isMember := false
+		if callerId != "" && sk.Visibility == 1 {
+			ms, _ := s.nsRepo.ListMembers(ctx, sk.NamespaceId)
+			for _, m := range ms {
+				if m.UserId == callerId {
+					isMember = true
+					break
+				}
+			}
+		}
+		if !canReadSkill(sk.OwnerId, sk.Visibility, callerId, callerIsAdmin, isMember) {
+			return nil, errDetailNotFound
+		}
+	}
 	return s.repo.ListTags(ctx, skillId)
 }
 
