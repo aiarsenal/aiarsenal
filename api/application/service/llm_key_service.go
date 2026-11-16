@@ -3,9 +3,14 @@ package service
 import (
 	"context"
 	"errors"
+	"os"
+	"strconv"
 	"time"
 
 	"aiarsenal/domain/entity"
+	"github.com/redis/go-redis/v9"
+
+	"aiarsenal/config"
 	"aiarsenal/domain/repository"
 	"aiarsenal/domain/types"
 	"aiarsenal/infrastructure/crypto"
@@ -58,11 +63,19 @@ func (s *LLMKeyService) Edit(ctx context.Context, e *entity.LLMVirtualKey) error
 	if e.TokenHash == "" {
 		return errors.New("tokenHash 不能为空")
 	}
-	return s.repo.Edit(ctx, e)
+	if err := s.repo.Edit(ctx, e); err != nil {
+		return err
+	}
+	s.bustKeyCache(ctx, e.TokenHash)
+	return nil
 }
 
 func (s *LLMKeyService) Delete(ctx context.Context, hashes []string) error {
-	return s.repo.Delete(ctx, hashes)
+	if err := s.repo.Delete(ctx, hashes); err != nil {
+		return err
+	}
+	s.bustKeyCache(ctx, hashes...)
+	return nil
 }
 
 func (s *LLMKeyService) Block(ctx context.Context, tokenHash string, blocked bool, by string) error {
@@ -71,7 +84,45 @@ func (s *LLMKeyService) Block(ctx context.Context, tokenHash string, blocked boo
 		v = 1
 	}
 	// 用 UpdateBlocked（map 更新）而非 Edit（结构体 Updates）：解封 v=0 时 gorm 会当零值跳过、不生效。
-	return s.repo.UpdateBlocked(ctx, tokenHash, v, by)
+	if err := s.repo.UpdateBlocked(ctx, tokenHash, v, by); err != nil {
+		return err
+	}
+	s.bustKeyCache(ctx, tokenHash)
+	return nil
+}
+
+// vkeyBustChannel 缓存失效通道，与 llm 网关 internal/auth/middleware.go 两处须同步。
+const vkeyBustChannel = "vkey-bust"
+
+// llmRedisDB llm 网关 redis 逻辑库：api 与 llm 共用实例但默认分库（api db1 / llm db2），
+// DEL 跨库不可见，失效走 llm 库上的 pub/sub。库号对齐走两个不同名的变量——本侧
+// AIARSENAL_LLM_REDIS_DB（默认 2），llm 侧 REDIS_DB（默认 2，llm/internal/config）：
+// 改其一必须同步改另一个，否则通道静默断裂（兜底 5s TTL）。
+func llmRedisDB() int {
+	if v := os.Getenv("AIARSENAL_LLM_REDIS_DB"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil {
+			return n
+		}
+	}
+	return 2
+}
+
+// bustKeyCache 立即失效 llm 网关的 5s 虚拟密钥缓存（F-027）：封禁/删除/编辑后网关侧
+// 拒绝生效延迟从最长 5s 降到 0。封禁是低频管理动作，按调用新建短命连接可接受；
+// 网关不在线时消息即弃，兜底是网关侧 5s 缓存 TTL 自然过期。
+func (s *LLMKeyService) bustKeyCache(ctx context.Context, hashes ...string) {
+	if len(hashes) == 0 {
+		return
+	}
+	cl := redis.NewClient(&redis.Options{
+		Addr:     config.Get().Redis.Default.Address,
+		Password: config.Get().Redis.Default.Password,
+		DB:       llmRedisDB(),
+	})
+	defer cl.Close()
+	for _, h := range hashes {
+		_ = cl.Publish(ctx, vkeyBustChannel, h).Err()
+	}
 }
 
 // Rotate 轮换：生成新明文，token_hash 原地替换为新哈希；旧 hash 保留 5 分钟宽限期

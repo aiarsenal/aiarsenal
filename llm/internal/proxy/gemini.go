@@ -110,19 +110,19 @@ func (h *Handler) attemptGemini(c *gin.Context, m *model.Model, openaiBody []byt
 	url, method, headers, upBody, err := p.BuildUpstream(c, provReq)
 	if err != nil {
 		h.recordError(c, m, k, hash, reqID, start, "chat", baseURL, "build_upstream_error", err.Error(), "500", capStr(string(openaiBody)))
-		return attemptResult{failStatus: http.StatusInternalServerError, failBody: []byte(err.Error())}
+		return attemptResult{failStatus: http.StatusInternalServerError, failBody: upstreamFailBody(), rawUpstream: true}
 	}
 	auth.TouchActive(h.st, hash)
 	resp, br, cancelUpstream, err := h.doUpstream(c, method, url, headers, upBody)
 	if err != nil {
 		if resp == nil {
 			h.recordError(c, m, k, hash, reqID, start, "chat", baseURL, "upstream_error", err.Error(), "502", capStr(string(openaiBody)))
-			return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error()), rawUpstream: true}
+			return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 		}
 		// 首字节没等到（超时/零字节空流）：不伪装成成功空流，按上游失败走 failover。
 		h.recordError(c, m, k, hash, reqID, start, "chat", baseURL, "upstream_no_data", err.Error(), "502", capStr(string(openaiBody)))
 		h.bill(c, m, k, hash, reqID, start, "chat", baseURL, 0, 0, 0, "failed", capStr(string(openaiBody)), "")
-		return attemptResult{failStatus: http.StatusBadGateway, failBody: []byte(err.Error())}
+		return attemptResult{failStatus: http.StatusBadGateway, failBody: upstreamFailBody(), rawUpstream: true}
 	}
 	defer cancelUpstream()
 	defer resp.Body.Close()

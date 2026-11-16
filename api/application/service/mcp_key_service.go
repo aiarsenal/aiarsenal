@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"aiarsenal/domain/entity"
 	"aiarsenal/domain/repository"
@@ -75,8 +76,31 @@ func (s *McpKeyService) Edit(ctx context.Context, e *entity.McpBearerKey) error 
 	return s.repo.Edit(ctx, e)
 }
 
+// Delete 批量删除 MCP 密钥。F-033：仓库层 Delete 对不存在的 key_id 影响零行也返回
+// 成功——管理员以为删掉了、密钥实际仍可鉴权。先逐个确认存在（删除是低频管理动作，
+// N 次点查可接受），缺一即拒；空清单同属参数形状错误，同样拒绝。
 func (s *McpKeyService) Delete(ctx context.Context, ids []string) error {
-	return s.repo.Delete(ctx, ids)
+	if len(ids) == 0 {
+		return errors.New("keyId 不能为空")
+	}
+	for _, id := range ids {
+		if _, err := s.repo.Get(ctx, id); err != nil {
+			return fmt.Errorf("密钥 %s 不存在或已删除", id)
+		}
+	}
+	if err := s.repo.Delete(ctx, ids); err != nil {
+		return err
+	}
+	// F-033 补口（TOCTOU 收口）：删除后逐个复核——预检与删除之间被并发删除的行
+	// 会让 repo.Delete 零行生效却返回成功；复核使「删除结果真实性」闭环（低频管理
+	// 动作，N 次点查可接受）。仍存在的行按不存在处理已不可能（预检刚过），此分支
+	// 仅在极端并发下触发，报错让管理员重试。
+	for _, id := range ids {
+		if _, err := s.repo.Get(ctx, id); err == nil {
+			return fmt.Errorf("密钥 %s 删除未生效（并发变更），请重试", id)
+		}
+	}
+	return nil
 }
 
 func (s *McpKeyService) Block(ctx context.Context, id string, blocked bool, by string) error {
