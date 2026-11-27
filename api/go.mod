@@ -9,7 +9,7 @@ require (
 	github.com/casbin/casbin/v2 v2.135.0
 	github.com/docker/docker v28.5.2+incompatible
 	github.com/gin-gonic/gin v1.12.0
-	github.com/go-sql-driver/mysql v1.10.1
+	github.com/go-sql-driver/mysql v1.10.2
 	github.com/goccy/go-yaml v1.19.2
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/golang-migrate/migrate/v4 v4.19.1
